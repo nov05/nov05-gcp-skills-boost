@@ -11,4 +11,4 @@ sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
   
 ## 👉 Logs   
 
-* 2026-05-14 ✅ Tested the original script. 
+* 2026-05-14 ✅ Tested the original script. Check `clean_logs.txt`.  

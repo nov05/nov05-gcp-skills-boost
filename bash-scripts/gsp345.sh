@@ -24,9 +24,11 @@ BOLD=`tput bold`
 RESET=`tput sgr0`
 
 # Get required variables from user
+echo
 read -p "${YELLOW}${BOLD}Enter your bucket name: ${RESET}" BUCKET
 read -p "${YELLOW}${BOLD}Enter your VM instance name: ${RESET}" INSTANCE
 read -p "${YELLOW}${BOLD}Enter your VPC name: ${RESET}" VPC
+echo
 
 export BUCKET
 export INSTANCE
