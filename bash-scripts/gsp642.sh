@@ -31,6 +31,30 @@ show_spinner() {
     printf "    \b\b\b\b"
 }
 
+# cat >> ~/.bashrc <<'EOF'
+## Get project id, project number, region, zone
+export PROJECT_ID=$(gcloud config get-value project)
+export PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID \
+  --format='value(projectNumber)')
+export REGION=$(gcloud compute project-info describe \
+  --format="value(commonInstanceMetadata.items[google-compute-default-region])")
+export ZONE=$(gcloud compute project-info describe \
+  --format="value(commonInstanceMetadata.items[google-compute-default-zone])")
+# export BUCKET="$PROJECT_ID-bucket"
+# gcloud config set project $(gcloud projects list --format='value(PROJECT_ID)' --filter='qwiklabs-gcp')
+gcloud config set project $PROJECT_ID  
+gcloud config set compute/region $REGION
+echo
+echo "🔹  Project ID: $PROJECT_ID"
+echo "🔹  Project number: $PROJECT_NUMBER"
+echo "🔹  Region: $REGION"
+echo "🔹  Zone: $ZONE"
+echo "🔹  User: $USER"
+# echo "🔹  Bukect: $BUCKET"
+echo
+# EOF
+# source ~/.bashrc
+
 echo
 echo "${BLUE_TEXT}${BOLD_TEXT}╔════════════════════════════════════════════════════════╗${RESET_FORMAT}"
 echo "${BLUE_TEXT}${BOLD_TEXT}                     Begin of execution${RESET_FORMAT}"
@@ -42,8 +66,10 @@ gcloud config set project $DEVSHELL_PROJECT_ID
 
 # Create Firestore Database
 ## nam5 is the Firestore database location (region/multi-region) in North America.
-echo "${YELLOW_TEXT}${BOLD_TEXT}Creating Firestore database in nam5 region...${RESET_FORMAT}"
-(gcloud firestore databases create --location=nam5 --quiet) & show_spinner
+# echo "${YELLOW_TEXT}${BOLD_TEXT}Creating Firestore database in nam5 region...${RESET_FORMAT}"
+# (gcloud firestore databases create --location=nam5 --quiet) & show_spinner
+echo "${YELLOW_TEXT}${BOLD_TEXT}Creating Firestore database in $REGION region...${RESET_FORMAT}"
+(gcloud firestore databases create --location=$REGION --quiet) & show_spinner
 echo "${GREEN_TEXT}✅  Firestore database created${RESET_FORMAT}"
 echo
 
@@ -77,22 +103,22 @@ echo
 # Download required scripts
 echo "${YELLOW_TEXT}${BOLD_TEXT}Downloading required scripts...${RESET_FORMAT}"
 echo "${CYAN_TEXT}Downloading gsp642_create_test_data.js...${RESET_FORMAT}"
-(curl -sLO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/main/javascript-scripts/gsp642_create_test_data.js) & show_spinner
+curl -sLO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/main/javascript-scripts/gsp642/createTestData.js
 echo "${CYAN_TEXT}Downloading gsp642_import_test_data.js...${RESET_FORMAT}"
-(curl -sLO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/main/javascript-scripts/gsp642_import_test_data.js) & show_spinner
+curl -sLO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/main/javascript-scripts/gsp642/importTestData.js
 echo "${GREEN_TEXT}✅  Scripts downloaded${RESET_FORMAT}"
 echo
 
 # Create and import test data
 echo "${YELLOW_TEXT}${BOLD_TEXT}Generating and importing test data...${RESET_FORMAT}"
-echo "${CYAN_TEXT}Creating 1000 test records...${RESET_FORMAT}"
-(node gsp642_create_test_data 1000) & show_spinner
+echo "${CYAN_TEXT}Creating 1000 test records in customers_1000.csv...${RESET_FORMAT}"
+(node createTestData.js 1000) & show_spinner
 echo "${CYAN_TEXT}Importing 1000 records to Firestore...${RESET_FORMAT}"
-(node gsp642_import_test_data customers_1000.csv) & show_spinner
-echo "${CYAN_TEXT}Creating 20000 test records...${RESET_FORMAT}"
-(node gsp642_create_test_data 20000) & show_spinner
+(node importTestData.js customers_1000.csv) & show_spinner
+echo "${CYAN_TEXT}Creating 20000 test records in customers_20000.csv...${RESET_FORMAT}"
+(node createTestData.js 20000) & show_spinner
 echo "${CYAN_TEXT}Importing 20000 records to Firestore...${RESET_FORMAT}"
-(node gsp642_import_test_data customers_20000.csv) & show_spinner
+(node importTestData.js customers_20000.csv) & show_spinner
 echo "${GREEN_TEXT}✅  Test data generation and import completed${RESET_FORMAT}"
 echo
 
