@@ -15,4 +15,4 @@ s/\r//g;
 
 ## 👉 Logs
 
-* 2026-05-15 Changed and tested `bash-scripts/gsp642.sh`.  
+* 2026-05-15 Changed and tested `bash-scripts/gsp642.sh`. Check `clean_logs.txt`.   
