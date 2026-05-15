@@ -77,22 +77,22 @@ echo
 # Download required scripts
 echo "${YELLOW_TEXT}${BOLD_TEXT}Downloading required scripts...${RESET_FORMAT}"
 echo "${CYAN_TEXT}Downloading gsp642_create_test_data.js...${RESET_FORMAT}"
-(curl -sLO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/main/javascript-scripts/gsp642_create_test_data.js) & show_spinner
+(curl -sLO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/main/javascript-scripts/gsp642/createTestData.js) & show_spinner
 echo "${CYAN_TEXT}Downloading gsp642_import_test_data.js...${RESET_FORMAT}"
-(curl -sLO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/main/javascript-scripts/gsp642_import_test_data.js) & show_spinner
+(curl -sLO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/main/javascript-scripts/gsp642/importTestData.js) & show_spinner
 echo "${GREEN_TEXT}✅  Scripts downloaded${RESET_FORMAT}"
 echo
 
 # Create and import test data
 echo "${YELLOW_TEXT}${BOLD_TEXT}Generating and importing test data...${RESET_FORMAT}"
-echo "${CYAN_TEXT}Creating 1000 test records...${RESET_FORMAT}"
-(node gsp642_create_test_data 1000) & show_spinner
+echo "${CYAN_TEXT}Creating 1000 test records in customers_1000.csv...${RESET_FORMAT}"
+(node createTestData 1000) & show_spinner
 echo "${CYAN_TEXT}Importing 1000 records to Firestore...${RESET_FORMAT}"
-(node gsp642_import_test_data customers_1000.csv) & show_spinner
-echo "${CYAN_TEXT}Creating 20000 test records...${RESET_FORMAT}"
-(node gsp642_create_test_data 20000) & show_spinner
+(node importTestData customers_1000.csv) & show_spinner
+echo "${CYAN_TEXT}Creating 20000 test records in customers_20000.csv...${RESET_FORMAT}"
+(node createTestData 20000) & show_spinner
 echo "${CYAN_TEXT}Importing 20000 records to Firestore...${RESET_FORMAT}"
-(node gsp642_import_test_data customers_20000.csv) & show_spinner
+(node importTestData customers_20000.csv) & show_spinner
 echo "${GREEN_TEXT}✅  Test data generation and import completed${RESET_FORMAT}"
 echo
 
