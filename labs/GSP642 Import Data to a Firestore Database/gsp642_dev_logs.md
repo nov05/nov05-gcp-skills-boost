@@ -1,7 +1,7 @@
 ## 👉 For development
 
 ```bash
-rm -f gsp642.sh
+rm -rf *
 curl -LO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/dev/bash-scripts/gsp642.sh
 chmod +x gsp642.sh
 ./gsp642.sh 2>&1 | tee -a logs.txt

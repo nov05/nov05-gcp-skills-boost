@@ -103,9 +103,9 @@ echo
 # Download required scripts
 echo "${YELLOW_TEXT}${BOLD_TEXT}Downloading required scripts...${RESET_FORMAT}"
 echo "${CYAN_TEXT}Downloading gsp642_create_test_data.js...${RESET_FORMAT}"
-(curl -sLO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/main/javascript-scripts/gsp642/createTestData.js) & show_spinner
+curl -sLO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/main/javascript-scripts/gsp642/createTestData.js
 echo "${CYAN_TEXT}Downloading gsp642_import_test_data.js...${RESET_FORMAT}"
-(curl -sLO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/main/javascript-scripts/gsp642/importTestData.js) & show_spinner
+curl -sLO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/main/javascript-scripts/gsp642/importTestData.js
 echo "${GREEN_TEXT}✅  Scripts downloaded${RESET_FORMAT}"
 echo
 
