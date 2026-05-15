@@ -1,4 +1,5 @@
 #!/bin/bash
+## Changed by nov05, 2026-05-14
 
 # Define color variables
 BLACK=`tput setaf 0`
@@ -22,72 +23,51 @@ BG_WHITE=`tput setab 7`
 BOLD=`tput bold`
 RESET=`tput sgr0`
 
-# Display welcome message
-print_welcome() {
-    clear
-    echo "${BG_BLUE}${BOLD}====================================================${RESET}"
-    echo "${BG_BLUE}${BOLD}       Welcome to Dr. Abhishek Cloud Tutorials!     ${RESET}"
-    echo "${BG_BLUE}${BOLD}       Google Cloud Terraform Lab (GSP345)          ${RESET}"
-    echo "${BG_BLUE}${BOLD}====================================================${RESET}"
-    echo
-    echo "${BOLD}For more tutorials, visit:${RESET}"
-    echo "${CYAN}https://www.youtube.com/@drabhishek.5460/videos${RESET}"
-    echo
-}
-
-# Display completion message
-print_completion() {
-    echo
-    echo "${BG_GREEN}${BOLD}====================================================${RESET}"
-    echo "${BG_GREEN}${BOLD}       Lab Completed Successfully!                 ${RESET}"
-    echo "${BG_GREEN}${BOLD}====================================================${RESET}"
-    echo
-    echo "${BOLD}Thank you for completing this lab!${RESET}"
-    echo "${BOLD}Don't forget to subscribe to our channel for more tutorials:${RESET}"
-    echo "${CYAN}${BOLD}https://www.youtube.com/@drabhishek.5460/videos${RESET}"
-    echo
-}
-
-print_welcome
-
 # Get required variables from user
 read -p "${YELLOW}${BOLD}Enter your bucket name: ${RESET}" BUCKET
 read -p "${YELLOW}${BOLD}Enter your instance name: ${RESET}" INSTANCE
 read -p "${YELLOW}${BOLD}Enter your VPC name: ${RESET}" VPC
-read -p "${YELLOW}${BOLD}Enter your zone (e.g. us-central1-a): ${RESET}" ZONE
 
 export BUCKET
 export INSTANCE
 export VPC
-export ZONE
 
-echo "${GREEN}${BOLD}Variables set successfully!${RESET}"
+# cat >> ~/.bashrc <<'EOF'
+## Get project id, project number, region, zone
+export PROJECT_ID=$(gcloud config get-value project)
+export PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID \
+  --format='value(projectNumber)')
+export REGION=$(gcloud compute project-info describe \
+  --format="value(commonInstanceMetadata.items[google-compute-default-region])")
+export ZONE=$(gcloud compute project-info describe \
+  --format="value(commonInstanceMetadata.items[google-compute-default-zone])")
+# export BUCKET="$PROJECT_ID-bucket"
+# gcloud config set project $(gcloud projects list --format='value(PROJECT_ID)' --filter='qwiklabs-gcp')
+gcloud config set project $PROJECT_ID  
+gcloud config set compute/region $REGION
 echo
-
-echo "${BG_MAGENTA}${BOLD}Starting Lab Execution${RESET}"
+echo "🔹  Project ID: $PROJECT_ID"
+echo "🔹  Project number: $PROJECT_NUMBER"
+echo "🔹  Region: $REGION"
+echo "🔹  Zone: $ZONE"
+echo "🔹  User: $USER"
+# echo "🔹  Bukect: $BUCKET"
+echo
+# EOF
+# source ~/.bashrc
 
 gcloud auth list
 
-export PROJECT_ID=$(gcloud config get-value project)
-
-gcloud config set compute/zone $ZONE
-export REGION=${ZONE%-*}
-gcloud config set compute/region $REGION
-
-export PROJECT_ID=$DEVSHELL_PROJECT_ID
-
 instances_output=$(gcloud compute instances list --format="value(id)")
-
 # Read the instance IDs into variables
 IFS=$'\n' read -r -d '' instance_id_1 instance_id_2 <<< "$instances_output"
-
 # Output instance IDs with custom name
 export INSTANCE_ID_1=$instance_id_1
 export INSTANCE_ID_2=$instance_id_2
-
 echo "$instance_id_1"
 echo "$instance_id_2"
 
+cd ~
 touch main.tf
 touch variables.tf
 mkdir modules
@@ -103,9 +83,9 @@ cd storage
 touch storage.tf
 touch outputs.tf
 touch variables.tf
-cd
+cd ~
 
-cat > variables.tf <<EOF_CP
+cat > variables.tf <<EOF
 variable "region" {
  default = "$REGION"
 }
@@ -117,9 +97,9 @@ variable "zone" {
 variable "project_id" {
  default = "$PROJECT_ID"
 }
-EOF_CP
+EOF
 
-cat > main.tf <<EOF_CP
+cat > main.tf <<EOF
 terraform {
   required_providers {
     google = {
@@ -138,13 +118,13 @@ provider "google" {
 module "instances" {
   source     = "./modules/instances"
 }
-EOF_CP
+EOF
 
 terraform init 
 
-cd modules/instances/
+cd ~/modules/instances/
 
-cat > instances.tf <<EOF_CP
+cat > instances.tf <<EOF
 resource "google_compute_instance" "tf-instance-1" {
   name         = "tf-instance-1"
   machine_type = "n1-standard-1"
@@ -184,7 +164,7 @@ resource "google_compute_instance" "tf-instance-2" {
     EOT
   allow_stopping_for_update = true
 }
-EOF_CP
+EOF
 
 cd ~
 
@@ -194,20 +174,20 @@ terraform import module.instances.google_compute_instance.tf-instance-2 $INSTANC
 terraform plan
 terraform apply --auto-approve
 
-cd modules/storage/
+cd ~/modules/storage/
 
-cat > storage.tf <<EOF_CP
+cat > storage.tf <<EOF
 resource "google_storage_bucket" "storage-bucket" {
   name          = "$BUCKET"
   location      = "US"
   force_destroy = true
   uniform_bucket_level_access = true
 }
-EOF_CP
+EOF
 
 cd ~
 
-cat > main.tf <<EOF_CP
+cat > main.tf <<EOF
 terraform {
   required_providers {
     google = {
@@ -230,12 +210,12 @@ module "instances" {
 module "storage" {
   source     = "./modules/storage"
 }
-EOF_CP
+EOF
 
 terraform init
 terraform apply --auto-approve
 
-cat > main.tf <<EOF_CP
+cat > main.tf <<EOF
 terraform {
   backend "gcs" {
     bucket  = "$BUCKET"
@@ -262,13 +242,13 @@ module "instances" {
 module "storage" {
   source     = "./modules/storage"
 }
-EOF_CP
+EOF
 
 echo "yes" | terraform init
 
-cd modules/instances/
+cd ~/modules/instances/
 
-cat > instances.tf <<EOF_CP
+cat > instances.tf <<EOF
 resource "google_compute_instance" "tf-instance-1" {
   name         = "tf-instance-1"
   machine_type = "e2-standard-2"
@@ -328,7 +308,8 @@ resource "google_compute_instance" "$INSTANCE" {
     EOT
   allow_stopping_for_update = true
 }
-EOF_CP
+EOF
+
 cd ~
 
 terraform init
@@ -339,9 +320,9 @@ terraform taint module.instances.google_compute_instance.$INSTANCE
 terraform plan
 terraform apply --auto-approve
 
-cd modules/instances/
+cd ~/modules/instances/
 
-cat > instances.tf <<EOF_CP
+cat > instances.tf <<EOF
 resource "google_compute_instance" "tf-instance-1" {
   name         = "tf-instance-1"
   machine_type = "e2-standard-2"
@@ -438,13 +419,14 @@ module "vpc" {
         },
     ]
 }
-EOF_CP
+EOF
 
 terraform init
 terraform apply --auto-approve
 
-cd modules/instances/
-cat > instances.tf <<EOF_CP
+cd ~/modules/instances/
+
+cat > instances.tf <<EOF
 resource "google_compute_instance" "tf-instance-1" {
   name         = "tf-instance-1"
   machine_type = "e2-standard-2"
@@ -486,13 +468,13 @@ resource "google_compute_instance" "tf-instance-2" {
     EOT
   allow_stopping_for_update = true
 }
-EOF_CP
+EOF
 
 cd ~
 terraform init
 terraform apply --auto-approve
 
-cat > main.tf <<EOF_CP
+cat > main.tf <<EOF
 terraform {
   backend "gcs" {
     bucket  = "$BUCKET"
@@ -557,9 +539,11 @@ resource "google_compute_firewall" "tf-firewall"{
   source_tags = ["web"]
   source_ranges = ["0.0.0.0/0"]
 }
-EOF_CP
+EOF
 
 terraform init
 terraform apply --auto-approve
 
-print_completion
+cd~
+
+echo -e "\n✅  All done\n"
