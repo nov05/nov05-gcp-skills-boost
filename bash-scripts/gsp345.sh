@@ -29,7 +29,6 @@ read -p "${YELLOW}${BOLD}Enter your bucket name: ${RESET}" BUCKET
 read -p "${YELLOW}${BOLD}Enter your VM instance name: ${RESET}" INSTANCE
 read -p "${YELLOW}${BOLD}Enter your VPC name: ${RESET}" VPC
 echo
-
 export BUCKET
 export INSTANCE
 export VPC
@@ -364,7 +363,7 @@ resource "google_compute_instance" "tf_instance_3" {
   }
 
   network_interface {
- network = "default"
+    network = "default"
   }
   metadata_startup_script = <<-EOT
         #!/bin/bash
