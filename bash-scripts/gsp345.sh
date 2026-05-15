@@ -1,5 +1,5 @@
 #!/bin/bash
-## Changed by nov05, 2026-05-14
+## Created by nov05, 2026-05-14
 
 # Define color variables
 BLACK=`tput setaf 0`
@@ -67,6 +67,14 @@ export INSTANCE_ID_2=$instance_id_2
 echo "🔹  Instance ID 1: $instance_id_1"
 echo "🔹  Instance ID 2: $instance_id_2"
 
+cat << 'EOF'
+
+========================================================
+Task 1. Create the configuration files
+========================================================
+
+EOF
+
 cd ~
 touch main.tf
 touch variables.tf
@@ -83,6 +91,7 @@ cd storage
 touch storage.tf
 touch outputs.tf
 touch variables.tf
+
 cd ~
 
 cat > variables.tf <<EOF
@@ -122,14 +131,30 @@ EOF
 
 terraform init 
 
+cat << 'EOF'
+
+========================================================
+Task 2. Import infrastructure
+========================================================
+
+EOF
+
+MACHINE_TYPE_1=$(gcloud compute instances describe tf-instance-1 \
+  --zone=$ZONE \
+  --format='value(machineType.basename())')
+echo "VM instance tf-instance-1 machine type: $MACHINE_TYPE_1"
+
+MACHINE_TYPE_2=$(gcloud compute instances describe tf-instance-2 \
+  --zone=$ZONE \
+  --format='value(machineType.basename())')
+echo "VM instance tf-instance-2 machine type: $MACHINE_TYPE_2"
+
 cd ~/modules/instances/
 
-## Change by nov05, 2026-05-14 
-## Machine type of 3 instances: n1-standard-1 -> e2-standard-2
 cat > instances.tf <<EOF
-resource "google_compute_instance" "tf-instance-1" {
+resource "google_compute_instance" "tf_instance_1" {
   name         = "tf-instance-1"
-  machine_type = "e2-standard-2"
+  machine_type = "MACHINE_TYPE_1"
   zone         = "$ZONE"
 
   boot_disk {
@@ -147,9 +172,9 @@ resource "google_compute_instance" "tf-instance-1" {
   allow_stopping_for_update = true
 }
 
-resource "google_compute_instance" "tf-instance-2" {
+resource "google_compute_instance" "tf_instance_2" {
   name         = "tf-instance-2"
-  machine_type = "e2-standard-2"
+  machine_type = "MACHINE_TYPE_2"
   zone         = "$ZONE"
 
   boot_disk {
@@ -159,7 +184,7 @@ resource "google_compute_instance" "tf-instance-2" {
   }
 
   network_interface {
- network = "default"
+    network = "default"
   }
   metadata_startup_script = <<-EOT
         #!/bin/bash
@@ -170,16 +195,43 @@ EOF
 
 cd ~
 
-terraform import module.instances.google_compute_instance.tf-instance-1 $INSTANCE_ID_1
-terraform import module.instances.google_compute_instance.tf-instance-2 $INSTANCE_ID_2
+# terraform import module.instances.google_compute_instance.tf-instance-1 $INSTANCE_ID_1
+# terraform import module.instances.google_compute_instance.tf-instance-2 $INSTANCE_ID_2
+terraform import module.instances.google_compute_instance.tf_instance_1 $INSTANCE_ID_1
+terraform import module.instances.google_compute_instance.tf_instance_2 $INSTANCE_ID_2
 
 terraform plan
+
+answer=""
+echo -e "\nReady to proceed?"
+while true; do
+  printf " (y/n): "
+  read answer
+  if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
+    break
+  fi
+  ## move cursor up one line and clear it
+  echo -ne "\033[1A\033[2K"
+done
+
 terraform apply --auto-approve
+
+cat << 'EOF'
+
+========================================================
+Task 3. Configure a remote backend
+========================================================
+
+EOF
 
 cd ~/modules/storage/
 
+## Changed by nov05, 2026-05-14
+## resource "google_storage_bucket" "storage-bucket" { ->
+##   resource "google_storage_bucket" "storage_bucket" {
+
 cat > storage.tf <<EOF
-resource "google_storage_bucket" "storage-bucket" {
+resource "google_storage_bucket" "storage_bucket" {
   name          = "$BUCKET"
   location      = "US"
   force_destroy = true
@@ -214,6 +266,7 @@ module "storage" {
 }
 EOF
 
+## The backend bucket must already exist before Terraform can use it as a remote backend.
 terraform init
 terraform apply --auto-approve
 
@@ -248,10 +301,18 @@ EOF
 
 echo "yes" | terraform init
 
+cat << 'EOF'
+
+========================================================
+Task 4. Modify and update infrastructure
+========================================================
+
+EOF
+
 cd ~/modules/instances/
 
 cat > instances.tf <<EOF
-resource "google_compute_instance" "tf-instance-1" {
+resource "google_compute_instance" "tf_instance_1" {
   name         = "tf-instance-1"
   machine_type = "e2-standard-2"
   zone         = "$ZONE"
@@ -271,7 +332,7 @@ resource "google_compute_instance" "tf-instance-1" {
   allow_stopping_for_update = true
 }
 
-resource "google_compute_instance" "tf-instance-2" {
+resource "google_compute_instance" "tf_instance_2" {
   name         = "tf-instance-2"
   machine_type = "e2-standard-2"
   zone         = "$ZONE"
@@ -283,7 +344,7 @@ resource "google_compute_instance" "tf-instance-2" {
   }
 
   network_interface {
- network = "default"
+    network = "default"
   }
   metadata_startup_script = <<-EOT
         #!/bin/bash
@@ -291,7 +352,8 @@ resource "google_compute_instance" "tf-instance-2" {
   allow_stopping_for_update = true
 }
 
-resource "google_compute_instance" "$INSTANCE" {
+## resource "google_compute_instance" "$INSTANCE" {
+resource "google_compute_instance" "tf_instance_3" {
   name         = "$INSTANCE"
   machine_type = "e2-standard-2"
   zone         = "$ZONE"
@@ -317,15 +379,31 @@ cd ~
 terraform init
 terraform apply --auto-approve
 
-terraform taint module.instances.google_compute_instance.$INSTANCE
+cat << 'EOF'
 
+========================================================
+Task 5. Destroy resources
+========================================================
+
+EOF
+
+## terraform taint module.instances.google_compute_instance.$INSTANCE
+terraform taint module.instances.google_compute_instance.tf_instance_3
 terraform plan
 terraform apply --auto-approve
 
+cat << 'EOF'
+
+========================================================
+Task 6. Use a module from the Registry
+========================================================
+
+EOF
+
 cd ~/modules/instances/
 
 cat > instances.tf <<EOF
-resource "google_compute_instance" "tf-instance-1" {
+resource "google_compute_instance" "tf_instance_1" {
   name         = "tf-instance-1"
   machine_type = "e2-standard-2"
   zone         = "$ZONE"
@@ -345,7 +423,7 @@ resource "google_compute_instance" "tf-instance-1" {
   allow_stopping_for_update = true
 }
 
-resource "google_compute_instance" "tf-instance-2" {
+resource "google_compute_instance" "tf_instance_2" {
   name         = "tf-instance-2"
   machine_type = "e2-standard-2"
   zone         = "$ZONE"
@@ -364,116 +442,9 @@ resource "google_compute_instance" "tf-instance-2" {
     EOT
   allow_stopping_for_update = true
 }
-EOF_CP
-
-cd ~
-terraform apply --auto-approve
-
-cat > main.tf <<EOF_CP
-terraform {
-  backend "gcs" {
-    bucket  = "$BUCKET"
-    prefix  = "terraform/state"
-  }
-  required_providers {
-    google = {
-      source = "hashicorp/google"
-      version = "4.53.0"
-    }
-  }
-}
-
-provider "google" {
-  project     = var.project_id
-  region      = var.region
-  zone        = var.zone
-}
-
-module "instances" {
-  source     = "./modules/instances"
-}
-
-module "storage" {
-  source     = "./modules/storage"
-}
-
-module "vpc" {
-    source  = "terraform-google-modules/network/google"
-    version = "~> 6.0.0"
-
-    project_id   = "$PROJECT_ID"
-    network_name = "$VPC"
-    routing_mode = "GLOBAL"
-
-    subnets = [
-        {
-            subnet_name           = "subnet-01"
-            subnet_ip             = "10.10.10.0/24"
-            subnet_region         = "$REGION"
-        },
-        {
-            subnet_name           = "subnet-02"
-            subnet_ip             = "10.10.20.0/24"
-            subnet_region         = "$REGION"
-            subnet_private_access = "true"
-            subnet_flow_logs      = "true"
-            description           = "Subscribe to Dr. Abhishek Cloud Tutorials"
-        },
-    ]
-}
-EOF
-
-terraform init
-terraform apply --auto-approve
-
-cd ~/modules/instances/
-
-cat > instances.tf <<EOF
-resource "google_compute_instance" "tf-instance-1" {
-  name         = "tf-instance-1"
-  machine_type = "e2-standard-2"
-  zone         = "$ZONE"
-
-  boot_disk {
-    initialize_params {
-      image = "debian-cloud/debian-12"
-    }
-  }
-
-  network_interface {
-    network = "$VPC"
-    subnetwork = "subnet-01"
-  }
-  metadata_startup_script = <<-EOT
-        #!/bin/bash
-    EOT
-  allow_stopping_for_update = true
-}
-
-resource "google_compute_instance" "tf-instance-2" {
-  name         = "tf-instance-2"
-  machine_type = "e2-standard-2"
-  zone         = "$ZONE"
-
-  boot_disk {
-    initialize_params {
-      image = "debian-cloud/debian-12"
-    }
-  }
-
-  network_interface {
-    network = "$VPC"
-    subnetwork = "subnet-02"
-  }
-  metadata_startup_script = <<-EOT
-        #!/bin/bash
-    EOT
-  allow_stopping_for_update = true
-}
 EOF
 
 cd ~
-terraform init
 terraform apply --auto-approve
 
 cat > main.tf <<EOF
@@ -505,6 +476,7 @@ module "storage" {
 }
 
 module "vpc" {
+    ## remote module source
     source  = "terraform-google-modules/network/google"
     version = "~> 6.0.0"
 
@@ -517,6 +489,133 @@ module "vpc" {
             subnet_name           = "subnet-01"
             subnet_ip             = "10.10.10.0/24"
             subnet_region         = "$REGION"
+            description           = "GSP345"
+        },
+        {
+            subnet_name           = "subnet-02"
+            subnet_ip             = "10.10.20.0/24"
+            subnet_region         = "$REGION"
+            subnet_private_access = "true"
+            subnet_flow_logs      = "true"
+            description           = "GSP345"
+        },
+    ]
+}
+EOF
+
+terraform init
+terraform apply --auto-approve
+
+## Task 6.4 Navigate to the instances.tf file and update 
+## the configuration resources to connect tf-instance-1 
+## to subnet-01 and tf-instance-2 to subnet-02.
+
+cd ~/modules/instances/
+
+cat > instances.tf <<EOF
+resource "google_compute_instance" "tf_instance_1" {
+  name         = "tf-instance-1"
+  machine_type = "e2-standard-2"
+  zone         = "$ZONE"
+
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-12"
+    }
+  }
+
+  network_interface {
+    network = "$VPC"
+    subnetwork = "subnet-01"
+  }
+  metadata_startup_script = <<-EOT
+        #!/bin/bash
+    EOT
+  allow_stopping_for_update = true
+}
+
+resource "google_compute_instance" "tf_instance_2" {
+  name         = "tf-instance-2"
+  machine_type = "e2-standard-2"
+  zone         = "$ZONE"
+
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-12"
+    }
+  }
+
+  network_interface {
+    network = "$VPC"
+    subnetwork = "subnet-02"
+  }
+  metadata_startup_script = <<-EOT
+        #!/bin/bash
+    EOT
+  allow_stopping_for_update = true
+}
+EOF
+
+cd ~
+terraform init
+terraform apply --auto-approve
+
+cat << 'EOF'
+
+========================================================
+Task 7. Configure a firewall
+========================================================
+
+EOF
+
+cat > main.tf <<EOF
+terraform {
+  backend "gcs" {
+    bucket  = "$BUCKET"
+    prefix  = "terraform/state"
+  }
+  required_providers {
+    google = {
+      source = "hashicorp/google"
+      version = "4.53.0"
+    }
+  }
+}
+
+provider "google" {
+  project     = var.project_id
+  region      = var.region
+  zone        = var.zone
+}
+
+module "instances" {
+  source     = "./modules/instances"
+}
+
+module "storage" {
+  source     = "./modules/storage"
+}
+
+## Changed by nov05, 2026-05-15
+## network = "projects/$PROJECT_ID/global/networks/$VPC"
+## subnetwork = "subnet-01" ->
+##    network    = module.vpc.network_self_link
+##    subnetwork = module.vpc.subnets["subnet-01"].self_link
+
+module "vpc" {
+    source  = "terraform-google-modules/network/google"
+    version = "~> 6.0.0"
+
+    project_id   = "$PROJECT_ID"
+    network_name = "$VPC"
+    routing_mode = "GLOBAL"
+
+    subnets = [
+        {
+            subnet_name           = "subnet-01"
+            subnet_ip             = "10.10.10.0/24"
+            subnet_region         = "$REGION"
+            description           = "GSP345"
         },
         {
             subnet_name           = "subnet-02"
@@ -529,9 +628,9 @@ module "vpc" {
     ]
 }
 
-resource "google_compute_firewall" "tf-firewall"{
+resource "google_compute_firewall" "tf_firewall"{
   name    = "tf-firewall"
-  network = "projects/$PROJECT_ID/global/networks/$VPC"
+  network = module.vpc.network_self_link
 
   allow {
     protocol = "tcp"
@@ -546,6 +645,6 @@ EOF
 terraform init
 terraform apply --auto-approve
 
-cd~
+cd ~
 
 echo -e "\n✅  All done\n"
