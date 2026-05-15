@@ -19,3 +19,9 @@ chmod +x gsp514.sh
 ./gsp514.sh 2>&1 | tee -a logs.txt
 sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 ```
+
+* If we want to use `Gemini Code Assist` in the `Cloud Shell` IDE, in `Cloud Shell`, enable the Gemini for `Google Cloud API` with the following command:  
+  
+  ```bash
+  gcloud services enable cloudaicompanion.googleapis.com
+  ```
