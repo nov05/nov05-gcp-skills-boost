@@ -17,18 +17,31 @@ BOLD_TEXT=$'\033[1m'
 UNDERLINE_TEXT=$'\033[4m'
 
 ## Function to show spinner while commands run
+# show_spinner() {
+#     local pid=$!
+#     local delay=0.1
+#     local spinstr='|/-\'
+#     while [ "$(ps a | awk '{print $1}' | grep $pid)" ]; do
+#         local temp=${spinstr#?}
+#         printf " [%c]  " "$spinstr"
+#         local spinstr=$temp${spinstr%"$temp"}
+#         sleep $delay
+#         printf "\b\b\b\b\b\b"
+#     done
+#     printf "    \b\b\b\b"
+# }
 show_spinner() {
+    [[ -t 2 ]] || return
     local pid=$!
     local delay=0.1
-    local spinstr='|/-\'
-    while [ "$(ps a | awk '{print $1}' | grep $pid)" ]; do
-        local temp=${spinstr#?}
-        printf " [%c]  " "$spinstr"
-        local spinstr=$temp${spinstr%"$temp"}
-        sleep $delay
-        printf "\b\b\b\b\b\b"
+    local spin='|/-\'
+    while kill -0 "$pid" 2>/dev/null; do
+        for i in $(seq 0 3); do
+            printf "\r[%c] " "${spin:$i:1}" >&2
+            sleep "$delay"
+        done
     done
-    printf "    \b\b\b\b"
+    printf "\r    \r" >&2
 }
 
 # cat >> ~/.bashrc <<'EOF'
