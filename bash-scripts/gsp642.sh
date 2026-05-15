@@ -76,10 +76,10 @@ echo
 
 # Download required scripts
 echo "${YELLOW_TEXT}${BOLD_TEXT}Downloading required scripts...${RESET_FORMAT}"
-echo "${CYAN_TEXT}Downloading gsp642_import_test_data.js...${RESET_FORMAT}"
-(curl -sLO https://raw.githubusercontent.com/Itsabhishek7py/GoogleCloudSkillsboost/refs/heads/main/Importing%20Data%20to%20a%20Firestore%20Database/importTestData.js > importTestData.js) & show_spinner
 echo "${CYAN_TEXT}Downloading gsp642_create_test_data.js...${RESET_FORMAT}"
-(curl -sLO https://raw.githubusercontent.com/Itsabhishek7py/GoogleCloudSkillsboost/refs/heads/main/Importing%20Data%20to%20a%20Firestore%20Database/createTestData.js > createTestData.js) & show_spinner
+(curl -sLO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/main/javascript-scripts/gsp642_create_test_data.js) & show_spinner
+echo "${CYAN_TEXT}Downloading gsp642_import_test_data.js...${RESET_FORMAT}"
+(curl -sLO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/main/javascript-scripts/gsp642_import_test_data.js) & show_spinner
 echo "${GREEN_TEXT}✅  Scripts downloaded${RESET_FORMAT}"
 echo
 
