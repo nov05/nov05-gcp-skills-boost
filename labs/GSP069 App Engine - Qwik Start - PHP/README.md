@@ -20,3 +20,10 @@ printf '1\n' | gcloud app create
 gcloud app deploy --quiet
 gcloud app browse
 ```
+
+```bash
+rm -f gsp069.sh
+curl -LO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/main/bash-scripts/gsp069.sh
+chmod +x gsp069.sh
+./gsp069.sh
+```
