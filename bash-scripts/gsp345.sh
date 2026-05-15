@@ -1,5 +1,5 @@
 #!/bin/bash
-## Created by nov05, 2026-05-14
+## Changed by nov05, 2026-05-14
 
 # Define color variables
 BLACK=`tput setaf 0`
@@ -60,12 +60,10 @@ echo
 
 gcloud auth list
 
-instances_output=$(gcloud compute instances list --format="value(id)")
-# Read the instance IDs into variables
-IFS=$'\n' read -r -d '' instance_id_1 instance_id_2 <<< "$instances_output"
-# Output instance IDs with custom name
-export INSTANCE_ID_1=$instance_id_1
-export INSTANCE_ID_2=$instance_id_2
+## Get VM instance IDs
+instance_ids=$(gcloud compute instances list --format="value(id)")
+IFS=$'\n' read -r INSTANCE_ID_1 INSTANCE_ID_2 <<< "$instance_ids"
+export INSTANCE_ID_1 INSTANCE_ID_2
 echo "🔹  Instance ID 1: $instance_id_1"
 echo "🔹  Instance ID 2: $instance_id_2"
 
@@ -74,6 +72,18 @@ cat << 'EOF'
 ========================================================
 Task 1. Create the configuration files
 ========================================================
+
+main.tf
+variables.tf
+modules/
+└── instances/
+    ├── instances.tf
+    ├── outputs.tf
+    └── variables.tf
+└── storage/
+    ├── storage.tf
+    ├── outputs.tf
+    └── variables.tf
 
 EOF
 
