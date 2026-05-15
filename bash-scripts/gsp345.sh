@@ -139,12 +139,12 @@ Task 2. Import infrastructure
 
 EOF
 
-MACHINE_TYPE_1=$(gcloud compute instances describe tf-instance-1 \
+export MACHINE_TYPE_1=$(gcloud compute instances describe tf-instance-1 \
   --zone=$ZONE \
   --format='value(machineType.basename())')
 echo "VM instance tf-instance-1 machine type: $MACHINE_TYPE_1"
 
-MACHINE_TYPE_2=$(gcloud compute instances describe tf-instance-2 \
+export MACHINE_TYPE_2=$(gcloud compute instances describe tf-instance-2 \
   --zone=$ZONE \
   --format='value(machineType.basename())')
 echo "VM instance tf-instance-2 machine type: $MACHINE_TYPE_2"
@@ -154,7 +154,7 @@ cd ~/modules/instances/
 cat > instances.tf <<EOF
 resource "google_compute_instance" "tf_instance_1" {
   name         = "tf-instance-1"
-  machine_type = "MACHINE_TYPE_1"
+  machine_type = "$MACHINE_TYPE_1"
   zone         = "$ZONE"
 
   boot_disk {
@@ -174,7 +174,7 @@ resource "google_compute_instance" "tf_instance_1" {
 
 resource "google_compute_instance" "tf_instance_2" {
   name         = "tf-instance-2"
-  machine_type = "MACHINE_TYPE_2"
+  machine_type = "$MACHINE_TYPE_2"
   zone         = "$ZONE"
 
   boot_disk {
@@ -201,19 +201,6 @@ terraform import module.instances.google_compute_instance.tf_instance_1 $INSTANC
 terraform import module.instances.google_compute_instance.tf_instance_2 $INSTANCE_ID_2
 
 terraform plan
-
-answer=""
-echo -e "\nReady to proceed?"
-while true; do
-  printf " (y/n): "
-  read answer
-  if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
-    break
-  fi
-  ## move cursor up one line and clear it
-  echo -ne "\033[1A\033[2K"
-done
-
 terraform apply --auto-approve
 
 cat << 'EOF'
