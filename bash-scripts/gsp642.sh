@@ -125,13 +125,13 @@ echo
 # Create and import test data
 echo "${YELLOW_TEXT}${BOLD_TEXT}Generating and importing test data...${RESET_FORMAT}"
 echo "${CYAN_TEXT}Creating 1000 test records in customers_1000.csv...${RESET_FORMAT}"
-(node createTestData 1000) & show_spinner
+(node createTestData.js 1000) & show_spinner
 echo "${CYAN_TEXT}Importing 1000 records to Firestore...${RESET_FORMAT}"
-(node importTestData customers_1000.csv) & show_spinner
+(node importTestData.js customers_1000.csv) & show_spinner
 echo "${CYAN_TEXT}Creating 20000 test records in customers_20000.csv...${RESET_FORMAT}"
-(node createTestData 20000) & show_spinner
+(node createTestData.js 20000) & show_spinner
 echo "${CYAN_TEXT}Importing 20000 records to Firestore...${RESET_FORMAT}"
-(node importTestData customers_20000.csv) & show_spinner
+(node importTestData.js customers_20000.csv) & show_spinner
 echo "${GREEN_TEXT}✅  Test data generation and import completed${RESET_FORMAT}"
 echo
 
