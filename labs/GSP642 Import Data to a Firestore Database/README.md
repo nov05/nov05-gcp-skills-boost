@@ -10,7 +10,7 @@ Task 4. Import the test customer data
 Task 5. Inspect the data in Firestore
 ```
 
-### 👉 Run the following Commands in CloudShell
+## 👉 Run the following Commands in CloudShell
 
 ```bash
 rm -f gsp514.sh
