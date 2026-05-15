@@ -61,11 +61,11 @@ echo
 gcloud auth list
 
 ## Get VM instance IDs
-instance_ids=$(gcloud compute instances list --format="value(id)")
-IFS=$'\n' read -r INSTANCE_ID_1 INSTANCE_ID_2 <<< "$instance_ids"
+tmp=$(gcloud compute instances list --format="value(id)")
+IFS=$'\n' read -r -d '' INSTANCE_ID_1 INSTANCE_ID_2 <<< "$tmp"
 export INSTANCE_ID_1 INSTANCE_ID_2
-echo "🔹  Instance ID 1: $instance_id_1"
-echo "🔹  Instance ID 2: $instance_id_2"
+echo "🔹  Instance ID 1: $INSTANCE_ID_1"
+echo "🔹  Instance ID 2: $INSTANCE_ID_2"
 
 cat << 'EOF'
 
