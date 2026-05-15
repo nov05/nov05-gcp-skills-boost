@@ -13,8 +13,8 @@ Task 5. Review data quality results in BigQuery
 ## 👉 Run the commands in the Google Cloud Shell.  
 
 ```bash
-rm -f nov05_gsp1158.sh
-curl -LO https://raw.githubusercontent.com/nov05/gcp-skills-boost/refs/heads/main/GSP1158%20Assessing%20Data%20Quality%20with%20Knowledge%20Catalog/nov05_gsp1158.sh
-chmod +x nov05_gsp1158.sh
-./nov05_gsp1158.sh
-```   
+rm -f gsp1158.sh
+curl -LO https://github.com/nov05/nov05-gcp-skills-boost/raw/refs/heads/main/bash-scripts/gsp1158.sh
+chmod +x gsp1158.sh
+./gsp1158.sh
+```

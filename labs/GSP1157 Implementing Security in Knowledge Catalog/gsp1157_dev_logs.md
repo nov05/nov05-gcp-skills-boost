@@ -1,10 +1,10 @@
 ## 👉 For development
 
 ```bash
-rm -f nov05_gsp1157.sh
-curl -LO https://raw.githubusercontent.com/nov05/gcp-skills-boost/refs/heads/dev/GSP1157%20Implementing%20Security%20in%20Knowledge%20Catalog/nov05_gsp1157.sh
-chmod +x nov05_gsp1157.sh
-./nov05_gsp1157.sh
+rm -f gsp1157.sh
+curl -LO https://github.com/nov05/nov05-gcp-skills-boost/raw/refs/heads/main/bash-scripts/gsp1157.sh
+chmod +x gsp1157.sh
+./gsp1157.sh
 ```
 
 <br><br>   

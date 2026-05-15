@@ -12,8 +12,8 @@ Task 5. Define and run an auto data quality job in Knowledge Catalog
 ## 👉 Run the commands in Google Cloud Shell
 
 ```bash
-rm -f nov05_gsp514.sh
-curl -LO https://raw.githubusercontent.com/nov05/gcp-skills-boost/refs/heads/main/GSP514%20Build%20a%20Data%20Mesh%20with%20Knowledge%20Catalog%3A%20Challenge%20Lab/nov05_gsp514.sh
-chmod +x nov05_gsp514.sh
-./nov05_gsp514.sh
+rm -f gsp514.sh
+curl -LO https://github.com/nov05/nov05-gcp-skills-boost/raw/refs/heads/main/bash-scripts/gsp514.sh
+chmod +x gsp514.sh
+./gsp514.sh
 ```
