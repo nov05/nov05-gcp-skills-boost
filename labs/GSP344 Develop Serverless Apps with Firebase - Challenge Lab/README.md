@@ -16,7 +16,7 @@ Task 6. Deploy the production frontend
 
 ```bash
 rm -f gsp344.sh
-curl -LO https://github.com/nov05/nov05-gcp-skills-boost/raw/refs/heads/main/bash-scripts/gsp344.sh
+curl -LO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/main/bash-scripts/gsp344.sh
 chmod +x gsp344.sh
 ./gsp344.sh
 ```

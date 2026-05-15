@@ -8,7 +8,7 @@ https://www.skills.google/course_templates/716/labs/598755
  
 ```bash
 rm -f gsp330.sh && rm -rf sample-app
-curl -LO https://github.com/nov05/nov05-gcp-skills-boost/raw/refs/heads/main/bash-scripts/gsp330.sh
+curl -LO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/main/bash-scripts/gsp330.sh
 sudo chmod +x gsp330.sh
 ./gsp330.sh
 ```

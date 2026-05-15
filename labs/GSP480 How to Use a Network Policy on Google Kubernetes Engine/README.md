@@ -19,7 +19,7 @@ Task 9. Troubleshooting in your own environment
 
 ```bash
 rm -f gsp480.sh
-curl -LO https://github.com/nov05/nov05-gcp-skills-boost/raw/refs/heads/main/bash-scripts/gsp480.sh
+curl -LO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/main/bash-scripts/gsp480.sh
 chmod +x gsp480.sh
 ./gsp480.sh
 ```

@@ -25,7 +25,7 @@ RESET=`tput sgr0`
 
 # Get required variables from user
 read -p "${YELLOW}${BOLD}Enter your bucket name: ${RESET}" BUCKET
-read -p "${YELLOW}${BOLD}Enter your instance name: ${RESET}" INSTANCE
+read -p "${YELLOW}${BOLD}Enter your VM instance name: ${RESET}" INSTANCE
 read -p "${YELLOW}${BOLD}Enter your VPC name: ${RESET}" VPC
 
 export BUCKET
@@ -64,8 +64,8 @@ IFS=$'\n' read -r -d '' instance_id_1 instance_id_2 <<< "$instances_output"
 # Output instance IDs with custom name
 export INSTANCE_ID_1=$instance_id_1
 export INSTANCE_ID_2=$instance_id_2
-echo "$instance_id_1"
-echo "$instance_id_2"
+echo "🔹  Instance ID 1: $instance_id_1"
+echo "🔹  Instance ID 2: $instance_id_2"
 
 cd ~
 touch main.tf
@@ -87,15 +87,15 @@ cd ~
 
 cat > variables.tf <<EOF
 variable "region" {
- default = "$REGION"
+  default = "$REGION"
 }
 
 variable "zone" {
- default = "$ZONE"
+  default = "$ZONE"
 }
 
 variable "project_id" {
- default = "$PROJECT_ID"
+  default = "$PROJECT_ID"
 }
 EOF
 
@@ -124,10 +124,12 @@ terraform init
 
 cd ~/modules/instances/
 
+## Change by nov05, 2026-05-14 
+## Machine type of 3 instances: n1-standard-1 -> e2-standard-2
 cat > instances.tf <<EOF
 resource "google_compute_instance" "tf-instance-1" {
   name         = "tf-instance-1"
-  machine_type = "n1-standard-1"
+  machine_type = "e2-standard-2"
   zone         = "$ZONE"
 
   boot_disk {
@@ -137,7 +139,7 @@ resource "google_compute_instance" "tf-instance-1" {
   }
 
   network_interface {
- network = "default"
+    network = "default"
   }
   metadata_startup_script = <<-EOT
         #!/bin/bash
@@ -147,7 +149,7 @@ resource "google_compute_instance" "tf-instance-1" {
 
 resource "google_compute_instance" "tf-instance-2" {
   name         = "tf-instance-2"
-  machine_type = "n1-standard-1"
+  machine_type = "e2-standard-2"
   zone         = "$ZONE"
 
   boot_disk {
@@ -522,7 +524,7 @@ module "vpc" {
             subnet_region         = "$REGION"
             subnet_private_access = "true"
             subnet_flow_logs      = "true"
-            description           = "Subscribe to Dr. Abhishek Cloud Tutorials"
+            description           = "GSP345"
         },
     ]
 }

@@ -13,7 +13,7 @@ Task 5. Define and run an auto data quality job in Knowledge Catalog
 
 ```bash
 rm -f gsp514.sh
-curl -LO https://github.com/nov05/nov05-gcp-skills-boost/raw/refs/heads/main/bash-scripts/gsp514.sh
+curl -LO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/main/bash-scripts/gsp514.sh
 chmod +x gsp514.sh
 ./gsp514.sh
 ```

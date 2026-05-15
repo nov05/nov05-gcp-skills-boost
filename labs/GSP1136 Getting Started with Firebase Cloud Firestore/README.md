@@ -14,7 +14,7 @@ Task 6. Reading a Firestore Document
 
 ```bash
 rm -f gsp1136.sh
-curl -LO https://github.com/nov05/nov05-gcp-skills-boost/raw/refs/heads/main/bash-scripts/gsp1136.sh
+curl -LO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/main/bash-scripts/gsp1136.sh
 chmod +x gsp1136.sh
 ./gsp1136.sh
 ```

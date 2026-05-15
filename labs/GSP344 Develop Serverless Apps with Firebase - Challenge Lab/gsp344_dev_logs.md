@@ -2,7 +2,7 @@
 
 ```bash
 rm -f gsp344.sh
-curl -LO https://github.com/nov05/nov05-gcp-skills-boost/raw/refs/heads/dev/bash-scripts/gsp344.sh
+curl -LO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/dev/bash-scripts/gsp344.sh
 chmod +x gsp344.sh
 ./gsp344.sh
 ```
