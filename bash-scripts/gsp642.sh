@@ -31,6 +31,30 @@ show_spinner() {
     printf "    \b\b\b\b"
 }
 
+# cat >> ~/.bashrc <<'EOF'
+## Get project id, project number, region, zone
+export PROJECT_ID=$(gcloud config get-value project)
+export PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID \
+  --format='value(projectNumber)')
+export REGION=$(gcloud compute project-info describe \
+  --format="value(commonInstanceMetadata.items[google-compute-default-region])")
+export ZONE=$(gcloud compute project-info describe \
+  --format="value(commonInstanceMetadata.items[google-compute-default-zone])")
+# export BUCKET="$PROJECT_ID-bucket"
+# gcloud config set project $(gcloud projects list --format='value(PROJECT_ID)' --filter='qwiklabs-gcp')
+gcloud config set project $PROJECT_ID  
+gcloud config set compute/region $REGION
+echo
+echo "🔹  Project ID: $PROJECT_ID"
+echo "🔹  Project number: $PROJECT_NUMBER"
+echo "🔹  Region: $REGION"
+echo "🔹  Zone: $ZONE"
+echo "🔹  User: $USER"
+# echo "🔹  Bukect: $BUCKET"
+echo
+# EOF
+# source ~/.bashrc
+
 echo
 echo "${BLUE_TEXT}${BOLD_TEXT}╔════════════════════════════════════════════════════════╗${RESET_FORMAT}"
 echo "${BLUE_TEXT}${BOLD_TEXT}                     Begin of execution${RESET_FORMAT}"
@@ -42,8 +66,10 @@ gcloud config set project $DEVSHELL_PROJECT_ID
 
 # Create Firestore Database
 ## nam5 is the Firestore database location (region/multi-region) in North America.
-echo "${YELLOW_TEXT}${BOLD_TEXT}Creating Firestore database in nam5 region...${RESET_FORMAT}"
-(gcloud firestore databases create --location=nam5 --quiet) & show_spinner
+# echo "${YELLOW_TEXT}${BOLD_TEXT}Creating Firestore database in nam5 region...${RESET_FORMAT}"
+# (gcloud firestore databases create --location=nam5 --quiet) & show_spinner
+echo "${YELLOW_TEXT}${BOLD_TEXT}Creating Firestore database in $REGION region...${RESET_FORMAT}"
+(gcloud firestore databases create --location=$REGION --quiet) & show_spinner
 echo "${GREEN_TEXT}✅  Firestore database created${RESET_FORMAT}"
 echo
 
