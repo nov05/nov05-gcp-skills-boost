@@ -88,7 +88,7 @@ mkdir src
 # import { initializeApp } from 'firebase/app'
 # // Add your web app's Firebase configuration
 # const firebaseConfig = {
-#   apiKey: "AIzaSyDi3G_w06a-sky-C6UplmQtV5VMBWsHyxI",
+#   apiKey: "",
 #   authDomain: "qwiklabs-gcp-00-8418d4eb8bd8.firebaseapp.com",
 #   projectId: "qwiklabs-gcp-00-8418d4eb8bd8",
 #   storageBucket: "qwiklabs-gcp-00-8418d4eb8bd8.firebasestorage.app",
