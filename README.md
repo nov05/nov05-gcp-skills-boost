@@ -41,7 +41,7 @@ For more scripts, refer to https://github.com/nov05/gcp-skills-boost#-google-ski
   bash script - [nov05_gsp334.sh](https://github.com/nov05/gcp-skills-boost/blob/dev/GSP344%20Develop%20Serverless%20Apps%20with%20Firebase%3A%20Challenge%20Lab/nov05_gsp344.sh)   
 
 * Example of runtime environment variables injection with React and k8s    
-  folder - [GSP344](https://github.com/nov05/nov05-gcp-skills-boost/tree/main/labs/GSP344%20Develop%20Serverless%20Apps%20with%20Firebase%20-%20Challenge%20Lab)    
+  folder - [Develop Serverless Apps with Firebase: Challenge Lab (GSP344)](https://github.com/nov05/nov05-gcp-skills-boost/tree/main/labs/GSP344%20Develop%20Serverless%20Apps%20with%20Firebase%20-%20Challenge%20Lab)    
   bash script - [gsp344.sh](https://github.com/nov05/nov05-gcp-skills-boost/blob/main/bash-scripts/gsp344.sh)     
   javascript - [firebase-frontend](https://github.com/nov05/gcp-skills-pet-theory/tree/main/lab06/firebase-frontend)      
 

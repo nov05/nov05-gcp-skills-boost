@@ -31,7 +31,7 @@ sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
     <script src="%PUBLIC_URL%/config.js"></script>
     ```   
 
-  - In my `Server-Side Rendering` frontend app, I create variables `year` (frontend app URL path) and `restApiService` (environment variable to store the Firebase REST API service URL) in [`index.js`](https://github.com/nov05/gcp-skills-pet-theory/blob/main/lab06/firebase-frontend/index.js) of the frontend service.
+  - In my `Server-Side Rendering` frontend service, I create variables `year` (frontend service URL path) and `restApiService` (environment variable to store the Firebase REST API service URL) in [`index.js`](https://github.com/nov05/gcp-skills-pet-theory/blob/main/lab06/firebase-frontend/index.js) (server-side).
     ```javascript
     app.get('/:year', (req, res) => {
         res.render('index', {
@@ -55,7 +55,7 @@ sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
     </html>
     ```
 
-    Finally I retrieve the variables in [`public/app.js`](https://github.com/nov05/gcp-skills-pet-theory/blob/main/lab06/firebase-frontend/public/app.js) at runtime.
+    Finally I retrieve the variables in [`public/app.js`](https://github.com/nov05/gcp-skills-pet-theory/blob/main/lab06/firebase-frontend/public/app.js) (client-side) at runtime.
     ```javascript
     async function getPageInfo() {
         // Changed by nov05, 2026-05-16
