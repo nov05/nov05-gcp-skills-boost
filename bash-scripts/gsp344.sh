@@ -170,9 +170,12 @@ Task 6. Deploy the production frontend
 
 EOF
 
-cd ~/pet-theory/lab06/firebase-frontend/public
+## Changed by nov05, 2026-05-16
+## 1. $SERVICE_URL is passed as environment variable $REST_API_SERVICE during deployment to index.js
+## 2. index.js injects process.env.REST_API_SERVICE to index.hbs as window.REST_API_SERVICE
+## 3. app.js access window.REST_API_SERVICE
+# cd ~/pet-theory/lab06/firebase-frontend/public
 # sed -i "s|data/netflix.json|$SERVICE_URL/2020|g" app.js
-sed -i "s|data/netflix.json|$SERVICE_URL|g" app.js
 cd ~/pet-theory/lab06/firebase-frontend
 
 gcloud builds submit \
