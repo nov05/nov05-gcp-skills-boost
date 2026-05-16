@@ -43,7 +43,7 @@ echo
 
 cd ~
 # git clone https://github.com/rosera/pet-theory.git
-git clone https://github.com/nov05/gcp-skills-pet-theory.git
+git clone https://github.com/nov05/gcp-skills-pet-theory.git pet-theory
 
 gcloud services enable \
   artifactregistry.googleapis.com \
