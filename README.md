@@ -24,7 +24,7 @@ For more scripts, refer to https://github.com/nov05/gcp-skills-boost#-google-ski
   bash script - [nov05_gsp1145.sh](https://github.com/nov05/gcp-skills-boost/blob/main/GSP1145%20Create%20and%20Add%20Aspects%20to%20Knowledge%20Catalog%20Assets/nov05_gsp1145.sh)   
 
 * Example of migrating monolith website to microservices on K8s Engines    
-  [folder](https://github.com/nov05/gcp-skills-boost/tree/main/Migrating%20a%20Monolithic%20Website%20to%20Microservices%20on%20Google%20Kubernetes%20Engine)  
+  folder - [GSP699](https://github.com/nov05/gcp-skills-boost/tree/main/Migrating%20a%20Monolithic%20Website%20to%20Microservices%20on%20Google%20Kubernetes%20Engine)  
 
 * Example of ensuring VM running status and SSH readiness   
   bash script - [nov05_GSP004.sh](https://github.com/nov05/gcp-skills-boost/blob/main/Creating%20a%20Persistent%20Disk/nov05_GSP004.sh)
@@ -39,6 +39,11 @@ For more scripts, refer to https://github.com/nov05/gcp-skills-boost#-google-ski
 
 * Example of deploying serverless Firebase app on k8s   
   bash script - [nov05_gsp334.sh](https://github.com/nov05/gcp-skills-boost/blob/dev/GSP344%20Develop%20Serverless%20Apps%20with%20Firebase%3A%20Challenge%20Lab/nov05_gsp344.sh)   
+
+* Example of runtime environment variables injection with React and k8s    
+  folder - [GSP344](https://github.com/nov05/nov05-gcp-skills-boost/tree/main/labs/GSP344%20Develop%20Serverless%20Apps%20with%20Firebase%20-%20Challenge%20Lab)    
+  bash script - [gsp344.sh](https://github.com/nov05/nov05-gcp-skills-boost/blob/main/bash-scripts/gsp344.sh)     
+  javascript - [firebase-frontend](https://github.com/nov05/gcp-skills-pet-theory/tree/main/lab06/firebase-frontend)      
 
 <br><br><br>
 

@@ -21,3 +21,55 @@ chmod +x gsp344.sh
 ./gsp344.sh 2>&1 | tee -a logs.txt
 sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 ```
+
+## 👉 Highlights
+
+* Here is [an example](https://support.tools/react-runtime-config-k8s/#react-runtime-configuration-with-kubernetes-and-apache) of configuring React environment variables at runtime using k8s, enabling you to use the same Docker image across dev, staging, and production.
+
+  - Create a config file `config.js`. In your `public/index.html`, inject the config file using a <script> tag:  
+    `<script src="%PUBLIC_URL%/config.js"></script>`    
+
+  - In my code, I create variables `year` (frontend app URL path) and `restApiService` (environment variable to store the Firebase REST API service URL) in `index.js` of the frontend app.
+    ```javascript
+    app.get('/:year', (req, res) => {
+        res.render('index', {
+            year: req.params.year,
+            restApiService: process.env.REST_API_SERVICE
+        });
+    });
+    ```
+
+    Then in the template file `view/index.hbs`, inject the variables. 
+    ```html
+    <html>
+	    <head>
+            <script>
+                window.YEAR = "{{year}}";
+                window.REST_API_SERVICE = "{{restApiService}}";
+            </script>
+            <!-- Link to app.js with defer till HTML render -->
+            <script defer src="app.js"></script>
+	    </head>
+    </html>
+    ```
+
+    Finally I retrieve the variables in `public/app.js` at runtime.
+    ```javascript
+    async function getPageInfo() {
+        // Changed by nov05, 2026-05-16
+        // const info = await fetchLocalData(REST_API_SERVICE)
+        const api = (window.REST_API_SERVICE || "").trim();
+        const year = window.YEAR || 2020;
+        let url;
+        if (api) {
+            const base = api.replace(/\/$/, "");
+            url = `${base}/${year}`;
+        } else {
+            url = "data/netflix.json";
+        }
+        const info = await fetchLocalData(url);
+        htmlContent = document.querySelector('#info');
+        htmlContent.innerHTML = setTileData(info.content);
+    }
+    ```
+    

@@ -1,0 +1,615 @@
+Your active configuration is: [cloudshell-6332]
+[environment: untagged] Read more to tag: g.co/cloud/project-env-tag.
+Updated property [core/project].
+Updated property [compute/region].
+
+🔹  Project ID: qwiklabs-gcp-01-e43ff3214a0c
+🔹  Project number: 465501022642
+🔹  Region: us-east1
+🔹  Zone: us-east1-d
+🔹  User: student_04_d63700b26df8
+
+Cloning into 'pet-theory'...
+Operation "operations/acf.p2-465501022642-227ef19d-946c-42a0-8ef5-ffba647a8328" finished successfully.
+
+========================================================
+Task 1. Create a Firestore database
+========================================================
+
+done: true
+metadata:
+  '@type': type.googleapis.com/google.firestore.admin.v1.CreateDatabaseMetadata
+name: projects/qwiklabs-gcp-01-e43ff3214a0c/databases/(default)/operations/pV4rzS3Ed6sXTPriebpnHBAqMXRzYWUtc3UIIgUQAa2zmLAQBtCgsL8IDAosGg
+response:
+  '@type': type.googleapis.com/google.firestore.admin.v1.Database
+  appEngineIntegrationMode: DISABLED
+  concurrencyMode: PESSIMISTIC
+  createTime: '2026-05-16T07:09:51.363646Z'
+  databaseEdition: STANDARD
+  deleteProtectionState: DELETE_PROTECTION_DISABLED
+  earliestVersionTime: '2026-05-16T07:09:51.363646Z'
+  etag: IIXs85+gvZQDML6085+gvZQD
+  freeTier: true
+  keyPrefix: p
+  locationId: us-east1
+  name: projects/qwiklabs-gcp-01-e43ff3214a0c/databases/(default)
+  pointInTimeRecoveryEnablement: POINT_IN_TIME_RECOVERY_DISABLED
+  realtimeUpdatesMode: REALTIME_UPDATES_MODE_ENABLED
+  type: FIRESTORE_NATIVE
+  uid: 1c67ba79-e2fa-4c17-ab77-c42dcd2b5ea5
+  updateTime: '2026-05-16T07:09:51.363646Z'
+  versionRetentionPeriod: 3600s
+
+========================================================
+Task 2. Import the database
+========================================================
+
+npm warn deprecated google-p12-pem@3.1.4: Package is no longer maintained
+npm warn deprecated uuid@3.4.0: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
+npm warn deprecated uuid@8.3.2: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
+
+added 147 packages, and audited 148 packages in 13s
+
+16 packages are looking for funding
+  run `npm fund` for details
+
+10 vulnerabilities (3 low, 1 moderate, 5 high, 1 critical)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+Writing record 500
+Writing record 1000
+Writing record 1500
+Writing record 2000
+Writing record 2500
+Writing record 3000
+Writing record 3500
+Writing record 4000
+Writing record 4500
+Writing record 5000
+Writing record 5500
+Writing record 6000
+Wrote 6234 records
+
+========================================================
+Task 3. Create the REST API
+========================================================
+
+Create request issued for: [rest-api-repo]
+Waiting for operation [projects/qwiklabs-gcp-01-e43ff3214a0c/locations/us-east1/operations/e0287e81-4756-4b7b-87a0-ba17bf285517] to complete...
+...............done.
+Created repository [rest-api-repo].
+Creating temporary archive of 3 file(s) totalling 827 bytes before compression.
+Uploading tarball of [.] to [gs://qwiklabs-gcp-01-e43ff3214a0c_cloudbuild/source/1778915442.345044-5eb0871a0d7b465981c8c01e1378ae91.tgz]
+Created [https://cloudbuild.googleapis.com/v1/projects/qwiklabs-gcp-01-e43ff3214a0c/locations/us-east1/builds/4aae7881-4c2e-4a10-81d9-4f113bbcbed2].
+Logs are available at [ https://console.cloud.google.com/cloud-build/builds;region=us-east1/4aae7881-4c2e-4a10-81d9-4f113bbcbed2?project=465501022642 ].
+Waiting for build to complete. Polling interval: 1 second(s).
+------------------------------------------------------------------------------------- REMOTE BUILD OUTPUT -------------------------------------------------------------------------------------
+starting build "4aae7881-4c2e-4a10-81d9-4f113bbcbed2"
+
+FETCHSOURCE
+Fetching storage object: gs://qwiklabs-gcp-01-e43ff3214a0c_cloudbuild/source/1778915442.345044-5eb0871a0d7b465981c8c01e1378ae91.tgz#1778915443566498
+Copying gs://qwiklabs-gcp-01-e43ff3214a0c_cloudbuild/source/1778915442.345044-5eb0871a0d7b465981c8c01e1378ae91.tgz#1778915443566498...
+/ [0 files][    0.0 B/  733.0 B]                                                / [1 files][  733.0 B/  733.0 B]                                                
+Operation completed over 1 objects/733.0 B.                                      
+BUILD
+Already have image (with digest): gcr.io/cloud-builders/gcb-internal
+Sending build context to Docker daemon  4.096kB
+Step 1/6 : FROM node:12-slim
+12-slim: Pulling from library/node
+8bd3f5a20b90: Pulling fs layer
+3a665e454db5: Pulling fs layer
+b5b0e172ab63: Pulling fs layer
+45013ee4878f: Pulling fs layer
+42a448233138: Pulling fs layer
+42a448233138: Verifying Checksum
+42a448233138: Download complete
+3a665e454db5: Download complete
+45013ee4878f: Verifying Checksum
+45013ee4878f: Download complete
+b5b0e172ab63: Verifying Checksum
+b5b0e172ab63: Download complete
+8bd3f5a20b90: Verifying Checksum
+8bd3f5a20b90: Download complete
+8bd3f5a20b90: Pull complete
+3a665e454db5: Pull complete
+b5b0e172ab63: Pull complete
+45013ee4878f: Pull complete
+42a448233138: Pull complete
+Digest: sha256:c28ca4124ac84ff1e72ee68abfe70aa4cc86f499c1ef20408dc2d35af1058ac1
+Status: Downloaded newer image for node:12-slim
+ 9b792ac6810e
+Step 2/6 : WORKDIR /usr/src/app
+ Running in 8b3f28f4aae0
+Removing intermediate container 8b3f28f4aae0
+ c9964e0b8641
+Step 3/6 : COPY package.json package*.json ./
+ f865d6323e3f
+Step 4/6 : RUN npm install --only=production
+ Running in 864b252e39a8
+npm WARN deprecated google-p12-pem@3.1.4: Package is no longer maintained
+npm notice This endpoint is being retired. Use the bulk advisory endpoint instead. See the following docs for more info: https://api-docs.npmjs.com/#tag/Audit
+
+> protobufjs@7.5.8 postinstall /usr/src/app/node_modules/@grpc/grpc-js/node_modules/protobufjs
+> node scripts/postinstall
+
+
+> protobufjs@6.11.3 postinstall /usr/src/app/node_modules/google-gax/node_modules/protobufjs
+> node scripts/postinstall
+
+
+> protobufjs@6.11.6 postinstall /usr/src/app/node_modules/protobufjs
+> node scripts/postinstall
+npm notice created a lockfile as package-lock.json. You should commit this file.
+npm WARN firebase-rest-api@1.0.0 No description
+npm WARN firebase-rest-api@1.0.0 No repository field.
+
+added 161 packages from 122 contributors and audited 161 packages in 8.434s
+
+19 packages are looking for funding
+  run `npm fund` for details
+
+found 27 vulnerabilities (11 moderate, 12 high, 4 critical)
+  run `npm audit fix` to fix them, or `npm audit` for details
+Removing intermediate container 864b252e39a8
+ db22e56045c9
+Step 5/6 : COPY . .
+ d7e301d53fb5
+Step 6/6 : CMD [ "npm", "start" ]
+ Running in d1ce65fa7733
+Removing intermediate container d1ce65fa7733
+ e4911d2dc8e6
+Successfully built e4911d2dc8e6
+Successfully tagged us-east1-docker.pkg.dev/qwiklabs-gcp-01-e43ff3214a0c/rest-api-repo/rest-api:0.1
+PUSH
+Pushing us-east1-docker.pkg.dev/qwiklabs-gcp-01-e43ff3214a0c/rest-api-repo/rest-api:0.1
+The push refers to repository [us-east1-docker.pkg.dev/qwiklabs-gcp-01-e43ff3214a0c/rest-api-repo/rest-api]
+8c69fda82046: Preparing
+e96cbd28522f: Preparing
+a72c9c0f904e: Preparing
+19f5362472e4: Preparing
+a2300a3fbe99: Preparing
+7722feb318fa: Preparing
+56ff4c5413ca: Preparing
+3d1236fa695c: Preparing
+dc8ea258c7d2: Preparing
+a2300a3fbe99: Pushed
+a72c9c0f904e: Pushed
+19f5362472e4: Pushed
+8c69fda82046: Pushed
+3d1236fa695c: Pushed
+7722feb318fa: Pushed
+dc8ea258c7d2: Pushed
+56ff4c5413ca: Pushed
+e96cbd28522f: Pushed
+0.1: digest: sha256:46144f81365b46418e02f70854f6c5744a923258ab52bb98e1d5a8093d9651b7 size: 2200
+DONE
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ID: 4aae7881-4c2e-4a10-81d9-4f113bbcbed2
+CREATE_TIME: 2026-05-16T07:10:44+00:00
+DURATION: 36S
+SOURCE: gs://qwiklabs-gcp-01-e43ff3214a0c_cloudbuild/source/1778915442.345044-5eb0871a0d7b465981c8c01e1378ae91.tgz
+IMAGES: us-east1-docker.pkg.dev/qwiklabs-gcp-01-e43ff3214a0c/rest-api-repo/rest-api:0.1
+STATUS: SUCCESS
+Deploying container to Cloud Run service [netflix-dataset-service] in project [qwiklabs-gcp-01-e43ff3214a0c] region [us-east1]
+Deploying new service...
+Setting IAM Policy...................done
+Creating Revision.................................................................................................................................done
+Routing traffic.....done
+Done.
+Service [netflix-dataset-service] revision [netflix-dataset-service-00001-v97] has been deployed and is serving 100 percent of traffic.
+Service URL: https://netflix-dataset-service-465501022642.us-east1.run.app
+
+👉  Check netflix-dataset-service v0.1.
+  curl -X GET https://netflix-dataset-service-uvngfmtmuq-ue.a.run.app
+  It should respond with: {"status":"Netflix Dataset! Make a query."}
+
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100    43  100    43    0     0    182      0 --:--:-- --:--:-- --:--:--   183
+{"status":"Netflix Dataset! Make a query."}
+
+Ready to proceed?
+ (y/n): 
+========================================================
+Task 4. Configure Firestore API access
+========================================================
+
+Creating temporary archive of 3 file(s) totalling 1.5 KiB before compression.
+Uploading tarball of [.] to [gs://qwiklabs-gcp-01-e43ff3214a0c_cloudbuild/source/1778915510.864724-c363ba9c4328431cb14125feef408289.tgz]
+Created [https://cloudbuild.googleapis.com/v1/projects/qwiklabs-gcp-01-e43ff3214a0c/locations/us-east1/builds/05fc6cc3-0882-429c-8fd6-c1897b1678c9].
+Logs are available at [ https://console.cloud.google.com/cloud-build/builds;region=us-east1/05fc6cc3-0882-429c-8fd6-c1897b1678c9?project=465501022642 ].
+Waiting for build to complete. Polling interval: 1 second(s).
+------------------------------------------------------------------------------------- REMOTE BUILD OUTPUT -------------------------------------------------------------------------------------
+starting build "05fc6cc3-0882-429c-8fd6-c1897b1678c9"
+
+FETCHSOURCE
+Fetching storage object: gs://qwiklabs-gcp-01-e43ff3214a0c_cloudbuild/source/1778915510.864724-c363ba9c4328431cb14125feef408289.tgz#1778915511153173
+Copying gs://qwiklabs-gcp-01-e43ff3214a0c_cloudbuild/source/1778915510.864724-c363ba9c4328431cb14125feef408289.tgz#1778915511153173...
+/ [0 files][    0.0 B/   1015 B]                                                / [1 files][   1015 B/   1015 B]                                                
+Operation completed over 1 objects/1015.0 B.
+BUILD
+Already have image (with digest): gcr.io/cloud-builders/gcb-internal
+Sending build context to Docker daemon   5.12kB
+Step 1/6 : FROM node:12-slim
+12-slim: Pulling from library/node
+8bd3f5a20b90: Pulling fs layer
+3a665e454db5: Pulling fs layer
+b5b0e172ab63: Pulling fs layer
+45013ee4878f: Pulling fs layer
+42a448233138: Pulling fs layer
+42a448233138: Download complete
+3a665e454db5: Verifying Checksum
+3a665e454db5: Download complete
+45013ee4878f: Verifying Checksum
+45013ee4878f: Download complete
+b5b0e172ab63: Verifying Checksum
+b5b0e172ab63: Download complete
+8bd3f5a20b90: Verifying Checksum
+8bd3f5a20b90: Download complete
+8bd3f5a20b90: Pull complete
+3a665e454db5: Pull complete
+b5b0e172ab63: Pull complete
+45013ee4878f: Pull complete
+42a448233138: Pull complete
+Digest: sha256:c28ca4124ac84ff1e72ee68abfe70aa4cc86f499c1ef20408dc2d35af1058ac1
+Status: Downloaded newer image for node:12-slim
+ 9b792ac6810e
+Step 2/6 : WORKDIR /usr/src/app
+ Running in bfb0bc9c09e7
+Removing intermediate container bfb0bc9c09e7
+ da7845323e2f
+Step 3/6 : COPY package.json package*.json ./
+ 20be78e2c1c0
+Step 4/6 : RUN npm install --only=production
+ Running in 3c6b3cc05531
+npm WARN deprecated google-p12-pem@3.1.4: Package is no longer maintained
+npm notice This endpoint is being retired. Use the bulk advisory endpoint instead. See the following docs for more info: https://api-docs.npmjs.com/#tag/Audit
+
+> protobufjs@7.5.8 postinstall /usr/src/app/node_modules/@grpc/grpc-js/node_modules/protobufjs
+> node scripts/postinstall
+
+
+> protobufjs@6.11.3 postinstall /usr/src/app/node_modules/google-gax/node_modules/protobufjs
+> node scripts/postinstall
+
+
+> protobufjs@6.11.6 postinstall /usr/src/app/node_modules/protobufjs
+> node scripts/postinstall
+
+npm notice created a lockfile as package-lock.json. You should commit this file.
+npm WARN firebase-rest-api@1.0.0 No description
+npm WARN firebase-rest-api@1.0.0 No repository field.
+
+added 161 packages from 122 contributors and audited 161 packages in 8.223s
+
+19 packages are looking for funding
+  run `npm fund` for details
+
+found 27 vulnerabilities (11 moderate, 12 high, 4 critical)
+  run `npm audit fix` to fix them, or `npm audit` for details
+Removing intermediate container 3c6b3cc05531
+ ced66a67986f
+Step 5/6 : COPY . .
+ 8271dffb443f
+Step 6/6 : CMD [ "npm", "start" ]
+ Running in fd3636bfb54d
+Removing intermediate container fd3636bfb54d
+ b700299c5213
+Successfully built b700299c5213
+Successfully tagged us-east1-docker.pkg.dev/qwiklabs-gcp-01-e43ff3214a0c/rest-api-repo/rest-api:0.2
+PUSH
+Pushing us-east1-docker.pkg.dev/qwiklabs-gcp-01-e43ff3214a0c/rest-api-repo/rest-api:0.2
+The push refers to repository [us-east1-docker.pkg.dev/qwiklabs-gcp-01-e43ff3214a0c/rest-api-repo/rest-api]
+568c6530e958: Preparing
+39a5c789ef72: Preparing
+103bbb2d2342: Preparing
+c7b538aa55f3: Preparing
+a2300a3fbe99: Preparing
+7722feb318fa: Preparing
+56ff4c5413ca: Preparing
+3d1236fa695c: Preparing
+dc8ea258c7d2: Preparing
+56ff4c5413ca: Layer already exists
+a2300a3fbe99: Layer already exists
+7722feb318fa: Layer already exists
+dc8ea258c7d2: Layer already exists
+3d1236fa695c: Layer already exists
+568c6530e958: Pushed
+103bbb2d2342: Pushed
+c7b538aa55f3: Pushed
+39a5c789ef72: Pushed
+0.2: digest: sha256:752b25c951259f37e99967a3d2cdcdced87100cf6ef0f29a076eb4c739aba4dc size: 2200
+DONE
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ID: 05fc6cc3-0882-429c-8fd6-c1897b1678c9
+CREATE_TIME: 2026-05-16T07:11:51+00:00
+DURATION: 30S
+SOURCE: gs://qwiklabs-gcp-01-e43ff3214a0c_cloudbuild/source/1778915510.864724-c363ba9c4328431cb14125feef408289.tgz
+IMAGES: us-east1-docker.pkg.dev/qwiklabs-gcp-01-e43ff3214a0c/rest-api-repo/rest-api:0.2
+STATUS: SUCCESS
+Deploying container to Cloud Run service [netflix-dataset-service] in project [qwiklabs-gcp-01-e43ff3214a0c] region [us-east1]
+Deploying...
+Setting IAM Policy..................done
+Creating Revision.............................................................................................................................................done
+Routing traffic.....done
+Done.
+Service [netflix-dataset-service] revision [netflix-dataset-service-00002-bmp] has been deployed and is serving 100 percent of traffic.
+Service URL: https://netflix-dataset-service-465501022642.us-east1.run.app
+
+👉  Check netflix-dataset-service v0.2.
+  curl -s https://netflix-dataset-service-uvngfmtmuq-ue.a.run.app/2019 | jq '.' | head -n 20
+  It should respond with json dataset
+
+{
+  "netflix": "2019",
+  "content": [
+    {
+      "show_id": "70140358",
+      "type": "TV Show",
+      "title": "Arrested Development",
+      "director": "",
+      "cast": "Jason Bateman, Portia de Rossi, Will Arnett, Michael Cera, Alia Shawkat, Tony Hale, David Cross, Jeffrey Tambor, Jessica Walter, Ron Howard",
+      "country": "United States",
+      "date_added": " May 29, 2018",
+      "release_year": "2019",
+      "rating": "TV-14",
+      "duration": "5 Seasons",
+      "listed_in": "TV Comedies",
+      "description": "It's the Emmy-winning story of a wealthy family that lost everything, and the one son who had no choice but to keep them all together."
+    },
+    {
+      "show_id": "70143825",
+      "type": "TV Show",
+
+Ready to proceed?
+ (y/n): 
+========================================================
+Task 5. Deploy the staging frontend
+========================================================
+
+Creating temporary archive of 60 file(s) totalling 3.0 MiB before compression.
+Uploading tarball of [.] to [gs://qwiklabs-gcp-01-e43ff3214a0c_cloudbuild/source/1778915573.824367-0d2cea8d20774e56ba91c59ba95ed2cf.tgz]
+Created [https://cloudbuild.googleapis.com/v1/projects/qwiklabs-gcp-01-e43ff3214a0c/locations/us-east1/builds/5839e6c5-6c44-4a63-9577-d0081dacccbf].
+Logs are available at [ https://console.cloud.google.com/cloud-build/builds;region=us-east1/5839e6c5-6c44-4a63-9577-d0081dacccbf?project=465501022642 ].
+Waiting for build to complete. Polling interval: 1 second(s).
+------------------------------------------------------------------------------------- REMOTE BUILD OUTPUT -------------------------------------------------------------------------------------
+starting build "5839e6c5-6c44-4a63-9577-d0081dacccbf"
+
+FETCHSOURCE
+Fetching storage object: gs://qwiklabs-gcp-01-e43ff3214a0c_cloudbuild/source/1778915573.824367-0d2cea8d20774e56ba91c59ba95ed2cf.tgz#1778915574780548
+Copying gs://qwiklabs-gcp-01-e43ff3214a0c_cloudbuild/source/1778915573.824367-0d2cea8d20774e56ba91c59ba95ed2cf.tgz#1778915574780548...
+/ [0 files][    0.0 B/  1.3 MiB]                                                / [1 files][  1.3 MiB/  1.3 MiB]                                                
+Operation completed over 1 objects/1.3 MiB.
+BUILD
+Already have image (with digest): gcr.io/cloud-builders/gcb-internal
+Sending build context to Docker daemon   3.19MB
+Step 1/6 : FROM node:20-slim
+20-slim: Pulling from library/node
+ff86ea2e5edc: Pulling fs layer
+e54aec64c365: Pulling fs layer
+804d4d68057c: Pulling fs layer
+64cfb949317c: Pulling fs layer
+3c02fd806613: Pulling fs layer
+e54aec64c365: Verifying Checksum
+e54aec64c365: Download complete
+3c02fd806613: Verifying Checksum
+3c02fd806613: Download complete
+64cfb949317c: Verifying Checksum
+64cfb949317c: Download complete
+ff86ea2e5edc: Verifying Checksum
+ff86ea2e5edc: Download complete
+804d4d68057c: Verifying Checksum
+804d4d68057c: Download complete
+ff86ea2e5edc: Pull complete
+e54aec64c365: Pull complete
+804d4d68057c: Pull complete
+64cfb949317c: Pull complete
+3c02fd806613: Pull complete
+Digest: sha256:2cf067cfed83d5ea958367df9f966191a942351a2df77d6f0193e162b5febfc0
+Status: Downloaded newer image for node:20-slim
+ 9da6b4e352d0
+Step 2/6 : WORKDIR /usr/src/app
+ Running in 3619f1b99076
+Removing intermediate container 3619f1b99076
+ 1ae1a5049a9c
+Step 3/6 : COPY package.json package*.json ./
+ 6801edd680c9
+Step 4/6 : RUN npm install --only=production
+ Running in a08d2f0dae54
+npm warn config only Use `--omit=dev` to omit dev dependencies from the install.
+
+added 81 packages, and audited 82 packages in 6s
+
+16 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.14.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.14.1
+npm notice To update run: npm install -g npm@11.14.1
+npm notice
+Removing intermediate container a08d2f0dae54
+ c0ac73461236
+Step 5/6 : COPY . .
+ d03edc9f7134
+Step 6/6 : CMD [ "npm", "start" ]
+ Running in 36a3c4c3a37e
+Removing intermediate container 36a3c4c3a37e
+ 44fc3c9ed90b
+Successfully built 44fc3c9ed90b
+Successfully tagged us-east1-docker.pkg.dev/qwiklabs-gcp-01-e43ff3214a0c/rest-api-repo/frontend-staging:0.1
+PUSH
+Pushing us-east1-docker.pkg.dev/qwiklabs-gcp-01-e43ff3214a0c/rest-api-repo/frontend-staging:0.1
+The push refers to repository [us-east1-docker.pkg.dev/qwiklabs-gcp-01-e43ff3214a0c/rest-api-repo/frontend-staging]
+61f1c08507f9: Preparing
+5d49d93d607c: Preparing
+a3c5c43051bb: Preparing
+61cdd58cfdcd: Preparing
+d592f6b23cfa: Preparing
+f991bccee0f1: Preparing
+631e9f799a80: Preparing
+4337a9b79b84: Preparing
+0da811fd3ed4: Preparing
+a3c5c43051bb: Pushed
+61cdd58cfdcd: Pushed
+61f1c08507f9: Pushed
+4337a9b79b84: Pushed
+d592f6b23cfa: Pushed
+f991bccee0f1: Pushed
+5d49d93d607c: Pushed
+0da811fd3ed4: Pushed
+631e9f799a80: Pushed
+0.1: digest: sha256:a61649a7c12298d6981e89b5d1cb64074010ac445459063552a7127fc3d8dc15 size: 2203
+DONE
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ID: 5839e6c5-6c44-4a63-9577-d0081dacccbf
+CREATE_TIME: 2026-05-16T07:12:55+00:00
+DURATION: 36S
+SOURCE: gs://qwiklabs-gcp-01-e43ff3214a0c_cloudbuild/source/1778915573.824367-0d2cea8d20774e56ba91c59ba95ed2cf.tgz
+IMAGES: us-east1-docker.pkg.dev/qwiklabs-gcp-01-e43ff3214a0c/rest-api-repo/frontend-staging:0.1
+STATUS: SUCCESS
+Deploying container to Cloud Run service [frontend-staging-service] in project [qwiklabs-gcp-01-e43ff3214a0c] region [us-east1]
+Deploying new service...
+Setting IAM Policy.................done
+Creating Revision............................................................................................................................done
+Routing traffic.....done
+Done.
+Service [frontend-staging-service] revision [frontend-staging-service-00001-mdr] has been deployed and is serving 100 percent of traffic.
+Service URL: https://frontend-staging-service-465501022642.us-east1.run.app
+
+👉  Check frontend-staging-service v0.1.
+  https://frontend-staging-service-uvngfmtmuq-ue.a.run.app
+
+
+Ready to proceed?
+ (y/n): 
+========================================================
+Task 6. Deploy the production frontend
+========================================================
+
+Creating temporary archive of 60 file(s) totalling 3.0 MiB before compression.
+Uploading tarball of [.] to [gs://qwiklabs-gcp-01-e43ff3214a0c_cloudbuild/source/1778915654.261663-807dc0a9fa8c4ece98d5b90237943e4a.tgz]
+Created [https://cloudbuild.googleapis.com/v1/projects/qwiklabs-gcp-01-e43ff3214a0c/locations/us-east1/builds/09f70084-637a-4dbb-a475-29af83145843].
+Logs are available at [ https://console.cloud.google.com/cloud-build/builds;region=us-east1/09f70084-637a-4dbb-a475-29af83145843?project=465501022642 ].
+Waiting for build to complete. Polling interval: 1 second(s).
+------------------------------------------------------------------------------------- REMOTE BUILD OUTPUT -------------------------------------------------------------------------------------
+starting build "09f70084-637a-4dbb-a475-29af83145843"
+
+FETCHSOURCE
+Fetching storage object: gs://qwiklabs-gcp-01-e43ff3214a0c_cloudbuild/source/1778915654.261663-807dc0a9fa8c4ece98d5b90237943e4a.tgz#1778915655165243
+Copying gs://qwiklabs-gcp-01-e43ff3214a0c_cloudbuild/source/1778915654.261663-807dc0a9fa8c4ece98d5b90237943e4a.tgz#1778915655165243...
+/ [0 files][    0.0 B/  1.3 MiB]                                                / [1 files][  1.3 MiB/  1.3 MiB]                                                
+Operation completed over 1 objects/1.3 MiB.
+BUILD
+Already have image (with digest): gcr.io/cloud-builders/gcb-internal
+Sending build context to Docker daemon   3.19MB
+Step 1/6 : FROM node:20-slim
+20-slim: Pulling from library/node
+ff86ea2e5edc: Pulling fs layer
+e54aec64c365: Pulling fs layer
+804d4d68057c: Pulling fs layer
+64cfb949317c: Pulling fs layer
+3c02fd806613: Pulling fs layer
+3c02fd806613: Verifying Checksum
+3c02fd806613: Download complete
+64cfb949317c: Verifying Checksum
+64cfb949317c: Download complete
+e54aec64c365: Verifying Checksum
+e54aec64c365: Download complete
+ff86ea2e5edc: Verifying Checksum
+ff86ea2e5edc: Download complete
+804d4d68057c: Verifying Checksum
+804d4d68057c: Download complete
+ff86ea2e5edc: Pull complete
+e54aec64c365: Pull complete
+804d4d68057c: Pull complete
+64cfb949317c: Pull complete
+3c02fd806613: Pull complete
+Digest: sha256:2cf067cfed83d5ea958367df9f966191a942351a2df77d6f0193e162b5febfc0
+Status: Downloaded newer image for node:20-slim
+ 9da6b4e352d0
+Step 2/6 : WORKDIR /usr/src/app
+ Running in 6e2747a380d5
+Removing intermediate container 6e2747a380d5
+ 5b9710e35807
+Step 3/6 : COPY package.json package*.json ./
+ 1c324bf12b7d
+Step 4/6 : RUN npm install --only=production
+ Running in 077c8f1375b4
+npm warn config only Use `--omit=dev` to omit dev dependencies from the install.
+
+added 81 packages, and audited 82 packages in 6s
+
+16 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.14.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.14.1
+npm notice To update run: npm install -g npm@11.14.1
+npm notice
+Removing intermediate container 077c8f1375b4
+ ba03cdd879c9
+Step 5/6 : COPY . .
+ 5ba2e4fd05ba
+Step 6/6 : CMD [ "npm", "start" ]
+ Running in 3ef5fb7458ee
+Removing intermediate container 3ef5fb7458ee
+ f26cdeec8df5
+Successfully built f26cdeec8df5
+Successfully tagged us-east1-docker.pkg.dev/qwiklabs-gcp-01-e43ff3214a0c/rest-api-repo/frontend-production:0.1
+PUSH
+Pushing us-east1-docker.pkg.dev/qwiklabs-gcp-01-e43ff3214a0c/rest-api-repo/frontend-production:0.1
+The push refers to repository [us-east1-docker.pkg.dev/qwiklabs-gcp-01-e43ff3214a0c/rest-api-repo/frontend-production]
+2d4ea809ef14: Preparing
+5b208312c242: Preparing
+d74e3b66ce60: Preparing
+30394b4a7d4a: Preparing
+d592f6b23cfa: Preparing
+f991bccee0f1: Preparing
+631e9f799a80: Preparing
+4337a9b79b84: Preparing
+0da811fd3ed4: Preparing
+631e9f799a80: Layer already exists
+f991bccee0f1: Layer already exists
+4337a9b79b84: Layer already exists
+d592f6b23cfa: Layer already exists
+30394b4a7d4a: Pushed
+d74e3b66ce60: Pushed
+2d4ea809ef14: Pushed
+5b208312c242: Pushed
+0da811fd3ed4: Pushed
+0.1: digest: sha256:a716f799ca9fd3e5ad2c0e10940ec99120d2762cb650b602f2c05670e77acfe1 size: 2203
+DONE
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ID: 09f70084-637a-4dbb-a475-29af83145843
+CREATE_TIME: 2026-05-16T07:14:15+00:00
+DURATION: 27S
+SOURCE: gs://qwiklabs-gcp-01-e43ff3214a0c_cloudbuild/source/1778915654.261663-807dc0a9fa8c4ece98d5b90237943e4a.tgz
+IMAGES: us-east1-docker.pkg.dev/qwiklabs-gcp-01-e43ff3214a0c/rest-api-repo/frontend-production:0.1
+STATUS: SUCCESS
+Deploying container to Cloud Run service [frontend-production-service] in project [qwiklabs-gcp-01-e43ff3214a0c] region [us-east1]
+Deploying new service...
+Setting IAM Policy..................done
+Creating Revision..................................................................................done
+Routing traffic.....done
+Done.
+Service [frontend-production-service] revision [frontend-production-service-00001-ldp] has been deployed and is serving 100 percent of traffic.
+Service URL: https://frontend-production-service-465501022642.us-east1.run.app
+
+👉  Check frontend-production-service v0.1.
+  https://frontend-production-service-uvngfmtmuq-ue.a.run.app
+
+
+Ready to proceed?
+ (y/n): 
+✅  All done
+
