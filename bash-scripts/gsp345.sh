@@ -206,6 +206,7 @@ EOF
 
 cd ~
 
+## Bug fix, by nov05, 2026-05-14
 # terraform import module.instances.google_compute_instance.tf-instance-1 $INSTANCE_ID_1
 # terraform import module.instances.google_compute_instance.tf-instance-2 $INSTANCE_ID_2
 terraform import module.instances.google_compute_instance.tf_instance_1 $INSTANCE_ID_1
@@ -264,7 +265,8 @@ module "storage" {
 }
 EOF
 
-## The backend bucket must already exist before Terraform can use it as a remote backend.
+## The backend bucket must already exist before 
+## Terraform can use it as a remote backend.
 terraform init
 terraform apply --auto-approve
 

@@ -1,7 +1,7 @@
 # 🟢 Build Infrastructure with Terraform on Google Cloud: Challenge Lab (GSP345)
-
-https://www.skills.google/focuses/42740
-https://www.skills.google/course_templates/636/labs/592700
+  
+https://www.skills.google/course_templates/636/labs/592700    
+https://www.skills.google/focuses/42740    
 
 ```text
 Task 1. Create the configuration files
@@ -23,5 +23,5 @@ chmod +x gsp345.sh
 sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 ```
 
-* Check [the YouTube video demo](https://www.youtube.com/watch?v=yzIAZQlkk1U).  
+* Check [the YouTube video demo](https://www.youtube.com/watch?v=yzIAZQlkk1U).    
 * Check [the example Google Cloud terminal output logs](https://github.com/nov05/nov05-gcp-skills-boost/blob/main/labs/GSP345%20Build%20Infrastructure%20with%20Terraform%20on%20Google%20Cloud%20-%20Challenge%20Lab/clean_logs.txt).  
