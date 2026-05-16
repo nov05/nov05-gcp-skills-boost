@@ -13,6 +13,7 @@ ask_to_proceed() {
     # move cursor up one line and clear it
     echo -ne "\033[1A\033[2K"
   done
+  echo
 }
 
 # cat >> ~/.bashrc <<'EOF'

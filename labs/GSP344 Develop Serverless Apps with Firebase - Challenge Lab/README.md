@@ -31,7 +31,7 @@ sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
     <script src="%PUBLIC_URL%/config.js"></script>
     ```   
 
-  - In my code, I create variables `year` (frontend app URL path) and `restApiService` (environment variable to store the Firebase REST API service URL) in `index.js` of the frontend app.
+  - In my `Server-Side Rendering` frontend app, I create variables `year` (frontend app URL path) and `restApiService` (environment variable to store the Firebase REST API service URL) in [`index.js`](https://github.com/nov05/gcp-skills-pet-theory/blob/main/lab06/firebase-frontend/index.js) of the frontend service.
     ```javascript
     app.get('/:year', (req, res) => {
         res.render('index', {
@@ -41,7 +41,7 @@ sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
     });
     ```
 
-    Then in the template file `view/index.hbs`, inject the variables. 
+    Then in the template file [`view/index.hbs`](https://github.com/nov05/gcp-skills-pet-theory/blob/main/lab06/firebase-frontend/views/index.hbs), inject the variables. 
     ```html
     <html>
 	    <head>
@@ -55,7 +55,7 @@ sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
     </html>
     ```
 
-    Finally I retrieve the variables in `public/app.js` at runtime.
+    Finally I retrieve the variables in [`public/app.js`](https://github.com/nov05/gcp-skills-pet-theory/blob/main/lab06/firebase-frontend/public/app.js) at runtime.
     ```javascript
     async function getPageInfo() {
         // Changed by nov05, 2026-05-16
@@ -74,4 +74,3 @@ sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
         htmlContent.innerHTML = setTileData(info.content);
     }
     ```
-    
