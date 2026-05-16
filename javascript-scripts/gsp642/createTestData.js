@@ -14,15 +14,15 @@ const logging = new Logging();
 const log = logging.log(logName);
 
 const resource = {
-	// This example targets the "global" resource for simplicity
-	type: "global",
+  // This example targets the "global" resource for simplicity
+  type: "global",
 };
 
 async function createTestData(recordCount) {
   const fileName = `customers_${recordCount}.csv`;
   var f = fs.createWriteStream(fileName);
   f.write('id,name,email,phone\n')
-  for (let i=0; i<recordCount; i++) {
+  for (let i = 0; i < recordCount; i++) {
     const id = faker.datatype.number();
     const firstName = faker.name.firstName();
     const lastName = faker.name.lastName();
