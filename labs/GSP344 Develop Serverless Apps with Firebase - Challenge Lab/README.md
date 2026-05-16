@@ -27,7 +27,9 @@ sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 * Here is [an example](https://support.tools/react-runtime-config-k8s/#react-runtime-configuration-with-kubernetes-and-apache) of configuring React environment variables at runtime using k8s, enabling you to use the same Docker image across dev, staging, and production.
 
   - Create a config file `config.js`. In your `public/index.html`, inject the config file using a <script> tag:  
-    `<script src="%PUBLIC_URL%/config.js"></script>`    
+    ```html
+    <script src="%PUBLIC_URL%/config.js"></script>
+    ```   
 
   - In my code, I create variables `year` (frontend app URL path) and `restApiService` (environment variable to store the Firebase REST API service URL) in `index.js` of the frontend app.
     ```javascript
