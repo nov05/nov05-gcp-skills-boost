@@ -1,6 +1,20 @@
 #!/bin/bash
 ## Created by nov05, 2026-05-12  
 
+ask_to_proceed() {
+  local answer=""
+  echo -e "\nReady to proceed?"
+  while true; do
+    printf " (y/n): "
+    read -r answer
+    if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
+      break
+    fi
+    # move cursor up one line and clear it
+    echo -ne "\033[1A\033[2K"
+  done
+}
+
 # cat >> ~/.bashrc <<'EOF'
 ## Get project id, project number, region, zone
 export PROJECT_ID=$(gcloud projects list \
@@ -28,7 +42,8 @@ echo
 # source ~/.bashrc
 
 cd ~
-git clone https://github.com/rosera/pet-theory.git
+# git clone https://github.com/rosera/pet-theory.git
+git clone https://github.com/nov05/gcp-skills-pet-theory.git
 
 gcloud services enable \
   artifactregistry.googleapis.com \
@@ -91,18 +106,7 @@ echo "  curl -X GET $SERVICE_URL"
 echo -e "  It should respond with: {\"status\":\"Netflix Dataset! Make a query.\"}\n"
 curl -X GET $SERVICE_URL
 echo
-
-answer=""
-echo -e "\nReady to proceed?"
-while true; do
-  printf " (y/n): "
-  read answer
-  if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
-    break
-  fi
-  ## move cursor up one line and clear it
-  echo -ne "\033[1A\033[2K"
-done
+ask_to_proceed
 
 cat << 'EOF'
 
@@ -129,18 +133,7 @@ echo -e "\n👉  Check netflix-dataset-service v0.2."
 echo "  curl -s $SERVICE_URL/2019 | jq '.' | head -n 20"
 echo -e "  It should respond with json dataset\n"
 curl -s $SERVICE_URL/2019 | jq '.' | head -n 20
-
-answer=""
-echo -e "\nReady to proceed?"
-while true; do
-  printf " (y/n): "
-  read answer
-  if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
-    break
-  fi
-  ## move cursor up one line and clear it
-  echo -ne "\033[1A\033[2K"
-done
+ask_to_proceed
 
 cat << 'EOF'
 
@@ -167,18 +160,7 @@ export URL=$(gcloud run services describe frontend-staging-service \
   --format="value(status.url)")
 echo -e "\n👉  Check frontend-staging-service v0.1."
 echo -e "  $URL\n"
-
-answer=""
-echo -e "\nReady to proceed?"
-while true; do
-  printf " (y/n): "
-  read answer
-  if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
-    break
-  fi
-  ## move cursor up one line and clear it
-  echo -ne "\033[1A\033[2K"
-done
+ask_to_proceed
 
 cat << 'EOF'
 
@@ -207,18 +189,7 @@ export URL=$(gcloud run services describe frontend-production-service \
   --format="value(status.url)")
 echo -e "\n👉  Check frontend-production-service v0.1."
 echo -e "  $URL\n"
-
-answer=""
-echo -e "\nReady to proceed?"
-while true; do
-  printf " (y/n): "
-  read answer
-  if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
-    break
-  fi
-  ## move cursor up one line and clear it
-  echo -ne "\033[1A\033[2K"
-done
+ask_to_proceed
 
 cd ~
 echo -e "\n✅  All done\n"

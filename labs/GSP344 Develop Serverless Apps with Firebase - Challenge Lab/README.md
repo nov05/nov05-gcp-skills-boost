@@ -10,7 +10,7 @@ Task 5. Deploy the staging frontend
 Task 6. Deploy the production frontend
 ```
 
-* Examples: https://github.com/rosera/pet-theory
+* Examples: https://github.com/rosera/pet-theory/lab06  
 
 ## 👉 Run the commands in Google Cloud shell
 
@@ -18,5 +18,6 @@ Task 6. Deploy the production frontend
 rm -f gsp344.sh
 curl -LO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/main/bash-scripts/gsp344.sh
 chmod +x gsp344.sh
-./gsp344.sh
+./gsp344.sh 2>&1 | tee -a logs.txt
+sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 ```

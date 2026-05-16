@@ -1,10 +1,11 @@
 ## 👉 For development
 
 ```bash
-rm -f gsp344.sh
+rm -rf *
 curl -LO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/dev/bash-scripts/gsp344.sh
 chmod +x gsp344.sh
-./gsp344.sh
+./gsp344.sh 2>&1 | tee -a logs.txt
+sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 ```
 
 * Code folder - https://github.com/rosera/pet-theory/tree/main/lab06
