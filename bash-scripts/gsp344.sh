@@ -171,7 +171,8 @@ Task 6. Deploy the production frontend
 EOF
 
 cd ~/pet-theory/lab06/firebase-frontend/public
-sed -i "s|data/netflix.json|$SERVICE_URL/2020|g" app.js
+# sed -i "s|data/netflix.json|$SERVICE_URL/2020|g" app.js
+sed -i "s|data/netflix.json|$SERVICE_URL|g" app.js
 cd ~/pet-theory/lab06/firebase-frontend
 
 gcloud builds submit \
