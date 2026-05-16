@@ -148,13 +148,15 @@ cd ~/pet-theory/lab06/firebase-frontend
 gcloud builds submit \
   --tag $REGION-docker.pkg.dev/$PROJECT_ID/rest-api-repo/frontend-staging:0.1 \
   --region $REGION
+## Do not set value for REST_API_SERVICE. 
+## Or it will use the Firebase rather than local data file.
 gcloud run deploy frontend-staging-service \
   --image $REGION-docker.pkg.dev/$PROJECT_ID/rest-api-repo/frontend-staging:0.1 \
   --platform managed \
   --region $REGION \
   --allow-unauthenticated \
   --max-instances 1 \
-  --set-env-vars="REST_API_SERVICE=${SERVICE_URL}"
+  # --set-env-vars="REST_API_SERVICE=${SERVICE_URL}"
 export URL=$(gcloud run services describe frontend-staging-service \
   --region $REGION \
   --format="value(status.url)")
