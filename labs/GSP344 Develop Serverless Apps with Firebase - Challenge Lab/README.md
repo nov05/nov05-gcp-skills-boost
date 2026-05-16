@@ -22,6 +22,8 @@ chmod +x gsp344.sh
 sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 ```
 
+* Check [the example terminal logs](https://github.com/nov05/nov05-gcp-skills-boost/blob/main/labs/GSP344%20Develop%20Serverless%20Apps%20with%20Firebase%20-%20Challenge%20Lab/clean_logs.txt).
+
 ## 👉 Highlights
 
 * Here is [an example](https://support.tools/react-runtime-config-k8s/#react-runtime-configuration-with-kubernetes-and-apache) of configuring React environment variables at runtime using k8s, enabling you to use the same Docker image across dev, staging, and production.
