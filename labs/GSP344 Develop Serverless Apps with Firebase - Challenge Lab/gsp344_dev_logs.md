@@ -29,4 +29,4 @@ sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 
     Left a comment asking for help on this issue.    
     https://discuss.google.dev/t/what-s-changing-in-the-google-skills-arcade-from-april-2026/345557/24  
-    - PharminG proposed a [solution](https://discuss.google.dev/t/what-s-changing-in-the-google-skills-arcade-from-april-2026/345557/27).    
+    - PharminG proposed a [solution](https://discuss.google.dev/t/what-s-changing-in-the-google-skills-arcade-from-april-2026/345557/27). ✅      

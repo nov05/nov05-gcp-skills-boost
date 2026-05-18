@@ -200,6 +200,8 @@ export URL=$(gcloud run services describe frontend-production-service \
   --region $REGION \
   --format="value(status.url)")
 echo -e "\n👉  Check frontend-production-service v0.1."
+echo "    The endpoint returns data for the year 2020 by default."  
+echo "    If \1960 is added, it returns data for the year 1960."
 echo -e "  $URL\n"
 ask_to_proceed
 
