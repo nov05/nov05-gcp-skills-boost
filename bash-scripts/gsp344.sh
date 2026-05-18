@@ -144,15 +144,20 @@ Task 5. Deploy the staging frontend
 
 EOF
 
-cd ~/pet-theory/lab06/firebase-frontend
+## Added by nov05, 2026-05-18
+gcloud artifacts repositories create frontend-repo \
+  --repository-format=docker \
+  --location=$REGION \
+  --description="GSP344 Firebase frontend container repository"
 
+cd ~/pet-theory/lab06/firebase-frontend
 gcloud builds submit \
-  --tag $REGION-docker.pkg.dev/$PROJECT_ID/rest-api-repo/frontend-staging:0.1 \
+  --tag $REGION-docker.pkg.dev/$PROJECT_ID/frontend-repo/frontend-staging:0.1 \
   --region $REGION
 ## Do not set value for REST_API_SERVICE. 
 ## Or it will use the Firebase rather than local data file.
 gcloud run deploy frontend-staging-service \
-  --image $REGION-docker.pkg.dev/$PROJECT_ID/rest-api-repo/frontend-staging:0.1 \
+  --image $REGION-docker.pkg.dev/$PROJECT_ID/frontend-repo/frontend-staging:0.1 \
   --platform managed \
   --region $REGION \
   --allow-unauthenticated \
@@ -182,10 +187,10 @@ EOF
 cd ~/pet-theory/lab06/firebase-frontend
 
 gcloud builds submit \
-  --tag $REGION-docker.pkg.dev/$PROJECT_ID/rest-api-repo/frontend-production:0.1 \
+  --tag $REGION-docker.pkg.dev/$PROJECT_ID/frontend-repo/frontend-production:0.1 \
   --region $REGION
 gcloud run deploy frontend-production-service \
-  --image $REGION-docker.pkg.dev/$PROJECT_ID/rest-api-repo/frontend-production:0.1 \
+  --image $REGION-docker.pkg.dev/$PROJECT_ID/frontend-repo/frontend-production:0.1 \
   --platform managed \
   --region $REGION \
   --allow-unauthenticated \
