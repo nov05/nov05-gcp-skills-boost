@@ -1,7 +1,7 @@
 # 🟢 Google Skills Labs Automation  
 
 This repository contains Google Cloud Shell Bash scripts and related materials for automating Google Skills Labs.
-For more scripts, refer to https://github.com/nov05/gcp-skills-boost#-google-skills-labs-automation.
+For more scripts, refer to [`gcp-skills-boost`](https://github.com/nov05/gcp-skills-boost#-google-skills-labs-automation).
 
 * [**Script templates**](https://github.com/nov05/gcp-skills-boost/tree/dev/templates)
 
@@ -58,8 +58,9 @@ For more scripts, refer to https://github.com/nov05/gcp-skills-boost#-google-ski
 * [Google Skills Arcade](https://go.cloudskillsboost.google/arcade)   
   - [Google Skills Arcade information](https://docs.google.com/document/d/17iMpVCALHSoYOevKprBKqasOMGgkyA5Mwk2hxtJmxmo)  
 
-* To make change to this repo in `VS Code`, download the following 2 repos.  
+* To make change to this repo in `VS Code`, download the following repos.  
   In `VS Code`, `File -> Open Workspace from file...`, select `vscode-workspaces\gcp-skills-boost.code-workspace`.  
 
   - https://github.com/nov05/vscode-workspaces
   - https://github.com/nov05/nov05-gcp-skills-boost  
+  - https://github.com/nov05/gcp-skills-pet-theory
