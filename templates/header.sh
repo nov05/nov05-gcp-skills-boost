@@ -25,6 +25,7 @@ export REGION=$(gcloud compute project-info describe \
   --format="value(commonInstanceMetadata.items[google-compute-default-region])")
 export ZONE=$(gcloud compute project-info describe \
   --format="value(commonInstanceMetadata.items[google-compute-default-zone])")
+# export USER_EMAIL=$(gcloud auth list --format="value(account)" --filter="status:ACTIVE")
 # export BUCKET="$PROJECT_ID-bucket"
 # gcloud config set project $(gcloud projects list --format='value(PROJECT_ID)' --filter='qwiklabs-gcp')
 gcloud config set project $PROJECT_ID  
@@ -35,6 +36,7 @@ echo "🔹  Project number: $PROJECT_NUMBER"
 echo "🔹  Region: $REGION"
 echo "🔹  Zone: $ZONE"
 echo "🔹  User: $USER"
+# echo "🔹  User email: $USER_EMAIL"
 # echo "🔹  Bukect: $BUCKET"
 echo
 # EOF

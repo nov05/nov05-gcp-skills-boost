@@ -7,6 +7,7 @@ Task 1. Create the cloud VPC
 Task 2. Create the on-prem VPC    
 Task 3. Create VPN gateways
 Task 4. Create a route-based VPN tunnel between local and Google Cloud networks  
+Task 5. Test throughput over VPN
 ```
 
 ## 👉 Run the following commands in Google Cloud Shell
