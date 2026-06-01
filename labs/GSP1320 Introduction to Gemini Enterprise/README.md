@@ -1,6 +1,6 @@
 # 🟢 GSP1320 Introduction to Gemini Enterprise
 
-https://www.skills.google/focuses/124709
+https://www.skills.google/focuses/124709?parent=catalog   
 
 ```text
 Task 1. Prepare data for Gemini Enterprise, NotebookLM, and Calendar

@@ -1,4 +1,5 @@
-# 🟢 Build a Data Mesh with Knowledge Catalog: Challenge Lab (GSP514)
+# 🟢 Build a Data Mesh with Knowledge Catalog: Challenge Lab (GSP514)  
+
 https://www.skills.google/games/7172/labs/44418
 
 ```text

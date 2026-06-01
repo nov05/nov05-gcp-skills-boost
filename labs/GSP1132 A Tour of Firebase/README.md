@@ -1,4 +1,5 @@
-# 🟢 A Tour of Firebase (GSP1132)  
+# 🟢 A Tour of Firebase (GSP1132)   
+
 https://www.skills.google/games/7172/labs/44419
 
 ```text

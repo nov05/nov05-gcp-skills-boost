@@ -1,7 +1,7 @@
 # 🟢 Build Infrastructure with Terraform on Google Cloud: Challenge Lab (GSP345)
   
 https://www.skills.google/course_templates/636/labs/592700    
-https://www.skills.google/focuses/42740    
+https://www.skills.google/focuses/42740?parent=catalog    
 
 ```text
 Task 1. Create the configuration files
