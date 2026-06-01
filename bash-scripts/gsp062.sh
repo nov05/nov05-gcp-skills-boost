@@ -16,6 +16,7 @@ export REGION=$(gcloud compute project-info describe \
   --format="value(commonInstanceMetadata.items[google-compute-default-region])")
 export ZONE=$(gcloud compute project-info describe \
   --format="value(commonInstanceMetadata.items[google-compute-default-zone])")
+# export USER_EMAIL=$(gcloud auth list --format="value(account)" --filter="status:ACTIVE")
 # export BUCKET="$PROJECT_ID-bucket"
 # gcloud config set project $(gcloud projects list --format='value(PROJECT_ID)' --filter='qwiklabs-gcp')
 gcloud config set project $PROJECT_ID  
@@ -28,13 +29,16 @@ echo "🔹  Zone: $ZONE"
 echo "🔹  Region: $REGION2"
 echo "🔹  Zone: $ZONE2"
 echo "🔹  User: $USER"
+# echo "🔹  User email: $USER_EMAIL"
 # echo "🔹  Bukect: $BUCKET"
 echo
+
 
 ## Create a screte 
 gcloud services enable secretmanager.googleapis.com
 export MY_SECRET=$(openssl rand -base64 32)
-yes | gcloud secrets delete vpn-secret
+# yes | gcloud secrets delete vpn-secret
+gcloud secrets describe vpn-secret >/dev/null 2>&1 && yes | gcloud secrets delete vpn-secret
 gcloud secrets create vpn-secret --replication-policy="automatic"
 echo -n "$MY_SECRET" | gcloud secrets versions add vpn-secret --data-file=-
 # export MY_SECRET=$(gcloud secrets versions access latest --secret=vpn-secret)
@@ -148,6 +152,15 @@ gcloud compute instances create "on-prem-loadtest" --zone $ZONE \
     --machine-type "e2-standard-4" --subnet "on-prem-central" \
     --image-family "debian-11" --image-project "debian-cloud" --boot-disk-size "10" \
     --boot-disk-type "pd-standard" --boot-disk-device-name "on-prem-loadtest"
+
+## OS Login replaces SSH keys with IAM-based authentication; missing `roles/compute.osLogin` 
+## causes SSH key rejection at login stage, and disabling it restores metadata-based SSH access.
+gcloud compute instances add-metadata "cloud-loadtest" \
+  --zone=$ZONE2 \
+  --metadata enable-oslogin=FALSE
+gcloud compute instances add-metadata "on-prem-loadtest" \
+  --zone=$ZONE \
+  --metadata enable-oslogin=FALSE
 
 ## Install a copy of iperf for each VM.
 gcloud compute ssh on-prem-loadtest \
