@@ -9,4 +9,6 @@ Task 3. Generate text from an n-gram model
 Task 4. Prepare the dataset for training
 ```
 
+👉 Refer to the [notebook](https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/main/notebooks/gsp531_gdm_challenge_lab.ipynb).
+
 * 2026-05-31 The lab was completed successfully. 
