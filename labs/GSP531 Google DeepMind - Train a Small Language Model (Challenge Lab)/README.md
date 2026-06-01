@@ -10,5 +10,6 @@ Task 4. Prepare the dataset for training
 ```
 
 👉 Refer to the [notebook](https://github.com/nov05/nov05-gcp-skills-boost/blob/dev/notebooks/gsp531_gdm_challenge_lab.ipynb).
+  Or view it in [Google Colab](https://drive.google.com/file/d/1ey0nz4enivYT8SKSg1RFoTCNsXM1p6Y6).
 
 * 2026-05-31 The lab was completed successfully. 
