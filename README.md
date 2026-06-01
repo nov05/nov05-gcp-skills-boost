@@ -1,4 +1,4 @@
-# 🟢 Google Skills Labs Automation  
+# 🟢 Google Skills Lab Automation  
 
 This repository contains Google Cloud Shell Bash scripts and related materials for automating Google Skills Labs.
 For more scripts, refer to [`gcp-skills-boost`](https://github.com/nov05/gcp-skills-boost#-google-skills-labs-automation).
