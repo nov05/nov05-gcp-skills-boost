@@ -7,9 +7,6 @@ read -p "👉  Enter zone 2: " ZONE2
 export ZONE2  
 export REGION2=$(gcloud compute zones describe "$ZONE2" \
     --format="value(region.basename())")
-echo
-read -p "👉  Enter my secret: " MY_SECRET
-export MY_SECRET 
 
 ## Get project id, project number, region, zone
 export PROJECT_ID=$(gcloud config get-value project)
@@ -28,9 +25,20 @@ echo "🔹  Project ID: $PROJECT_ID"
 echo "🔹  Project number: $PROJECT_NUMBER"
 echo "🔹  Region: $REGION"
 echo "🔹  Zone: $ZONE"
+echo "🔹  Region: $REGION2"
+echo "🔹  Zone: $ZONE2"
 echo "🔹  User: $USER"
 # echo "🔹  Bukect: $BUCKET"
 echo
+
+## Create a screte 
+gcloud services enable secretmanager.googleapis.com
+export MY_SECRET=$(openssl rand -base64 32)
+yes | gcloud secrets delete vpn-secret
+gcloud secrets create vpn-secret --replication-policy="automatic"
+echo -n "$MY_SECRET" | gcloud secrets versions add vpn-secret --data-file=-
+# export MY_SECRET=$(gcloud secrets versions access latest --secret=vpn-secret)
+echo "🔹  My secret: $MY_SECRET"
 
 cat << 'EOF'
 
