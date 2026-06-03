@@ -4,6 +4,7 @@
 ## User inputs
 echo
 read -p "👉  Enter zone 2: " ZONE2
+echo
 export ZONE2  
 export REGION2=$(gcloud compute zones describe "$ZONE2" \
     --format="value(region.basename())")

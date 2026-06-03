@@ -10,3 +10,5 @@ Task 4. Interact with your Gemini Enterprise agents
 Task 5. Use the Deep Research agent
 Task 6. Focused analysis with NotebookLM
 ```
+
+* There is no Bash script for this lab.  

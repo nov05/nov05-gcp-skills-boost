@@ -1,0 +1,345 @@
+
+👉  Enter zone 2: Your active configuration is: [cloudshell-4489]
+
+[environment: untagged] Read more to tag: g.co/cloud/project-env-tag.
+Updated property [core/project].
+Updated property [compute/region].
+
+🔹  Project ID: qwiklabs-gcp-02-2e75fcc82426
+🔹  Project number: 418394767704
+🔹  Region: europe-west1
+🔹  Zone: europe-west1-b
+🔹  Region: us-east4
+🔹  Zone: us-east4-b
+🔹  User: student_04_59cced2b7a27
+
+Operation "operations/acat.p2-418394767704-73f95532-aa89-4956-be48-de125f40979d" finished successfully.
+Created secret [vpn-secret].
+Created version [1] of the secret [vpn-secret].
+🔹  My secret: 5BYwfNx1Fh6iUUw777psC+Yayr73f43yfT86pNBIPHQ=
+
+========================================================
+Task 1. Create the cloud VPC
+========================================================
+
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-2e75fcc82426/global/networks/cloud].
+NAME: cloud
+SUBNET_MODE: CUSTOM
+BGP_ROUTING_MODE: REGIONAL
+IPV4_RANGE: 
+GATEWAY_IPV4: 
+INTERNAL_IPV6_RANGE: 
+
+Instances on this network will not be reachable until firewall rules
+are created. As an example, you can allow all internal traffic between
+instances as well as SSH, RDP, and ICMP by running:
+
+$ gcloud compute firewall-rules create <FIREWALL_NAME> --network cloud --allow tcp,udp,icmp --source-ranges <IP_RANGE>
+$ gcloud compute firewall-rules create <FIREWALL_NAME> --network cloud --allow tcp:22,tcp:3389,icmp
+
+Creating firewall...
+..Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-2e75fcc82426/global/firewalls/cloud-fw].
+done.
+NAME: cloud-fw
+NETWORK: cloud
+DIRECTION: INGRESS
+PRIORITY: 1000
+ALLOW: tcp:22,tcp:5001,udp:5001,icmp
+DENY: 
+DISABLED: False
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-2e75fcc82426/regions/us-east4/subnetworks/cloud-east].
+NAME: cloud-east
+REGION: us-east4
+NETWORK: cloud
+RANGE: 10.0.1.0/24
+STACK_TYPE: IPV4_ONLY
+IPV6_ACCESS_TYPE: 
+INTERNAL_IPV6_PREFIX: 
+EXTERNAL_IPV6_PREFIX: 
+
+========================================================
+Task 2. Create the on-prem VPC
+========================================================
+
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-2e75fcc82426/global/networks/on-prem].
+NAME: on-prem
+SUBNET_MODE: CUSTOM
+BGP_ROUTING_MODE: REGIONAL
+IPV4_RANGE: 
+GATEWAY_IPV4: 
+INTERNAL_IPV6_RANGE: 
+
+Instances on this network will not be reachable until firewall rules
+are created. As an example, you can allow all internal traffic between
+instances as well as SSH, RDP, and ICMP by running:
+
+$ gcloud compute firewall-rules create <FIREWALL_NAME> --network on-prem --allow tcp,udp,icmp --source-ranges <IP_RANGE>
+$ gcloud compute firewall-rules create <FIREWALL_NAME> --network on-prem --allow tcp:22,tcp:3389,icmp
+
+Creating firewall...
+..Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-2e75fcc82426/global/firewalls/on-prem-fw].
+done.
+NAME: on-prem-fw
+NETWORK: on-prem
+DIRECTION: INGRESS
+PRIORITY: 1000
+ALLOW: tcp:22,tcp:5001,udp:5001,icmp
+DENY: 
+DISABLED: False
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-2e75fcc82426/regions/europe-west1/subnetworks/on-prem-central].
+NAME: on-prem-central
+REGION: europe-west1
+NETWORK: on-prem
+RANGE: 192.168.1.0/24
+STACK_TYPE: IPV4_ONLY
+IPV6_ACCESS_TYPE: 
+INTERNAL_IPV6_PREFIX: 
+EXTERNAL_IPV6_PREFIX: 
+
+========================================================
+Task 3. Create VPN gateways
+========================================================
+
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-2e75fcc82426/regions/europe-west1/targetVpnGateways/on-prem-gw1].
+NAME: on-prem-gw1
+NETWORK: on-prem
+REGION: europe-west1
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-2e75fcc82426/regions/us-east4/targetVpnGateways/cloud-gw1].
+NAME: cloud-gw1
+NETWORK: cloud
+REGION: us-east4
+
+========================================================
+Task 4. Create a route-based VPN tunnel between local and Google Cloud networks
+========================================================
+
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-2e75fcc82426/regions/us-east4/addresses/cloud-gw1].
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-2e75fcc82426/regions/europe-west1/addresses/on-prem-gw1].
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-2e75fcc82426/regions/us-east4/forwardingRules/cloud-1-fr-esp].
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-2e75fcc82426/regions/us-east4/forwardingRules/cloud-1-fr-udp500].
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-2e75fcc82426/regions/us-east4/forwardingRules/cloud-fr-1-udp4500].
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-2e75fcc82426/regions/europe-west1/forwardingRules/on-prem-fr-esp].
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-2e75fcc82426/regions/europe-west1/forwardingRules/on-prem-fr-udp500].
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-2e75fcc82426/regions/europe-west1/forwardingRules/on-prem-fr-udp4500].
+Creating VPN tunnel...
+.............done.
+NAME: on-prem-tunnel1
+REGION: europe-west1
+GATEWAY: on-prem-gw1
+VPN_INTERFACE: 
+PEER_ADDRESS: 35.245.138.67
+Creating VPN tunnel...
+............done.
+NAME: cloud-tunnel1
+REGION: us-east4
+GATEWAY: cloud-gw1
+VPN_INTERFACE: 
+PEER_ADDRESS: 34.140.13.21
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-2e75fcc82426/global/routes/on-prem-route1].
+NAME: on-prem-route1
+NETWORK: on-prem
+DEST_RANGE: 10.0.1.0/24
+NEXT_HOP: europe-west1/vpnTunnels/on-prem-tunnel1
+PRIORITY: 1000
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-2e75fcc82426/global/routes/cloud-route1].
+NAME: cloud-route1
+NETWORK: cloud
+DEST_RANGE: 192.168.1.0/24
+NEXT_HOP: us-east4/vpnTunnels/cloud-tunnel1
+PRIORITY: 1000
+
+========================================================
+Task 5. Test throughput over VPN
+========================================================
+
+WARNING: You have selected a disk size of under [200GB]. This may result in poor I/O performance. For more information, see: https://developers.google.com/compute/docs/disks#performance.
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-2e75fcc82426/zones/us-east4-b/instances/cloud-loadtest].
+NAME: cloud-loadtest
+ZONE: us-east4-b
+MACHINE_TYPE: e2-standard-4
+PREEMPTIBLE: 
+INTERNAL_IP: 10.0.1.2
+EXTERNAL_IP: 136.107.38.146
+STATUS: RUNNING
+WARNING: You have selected a disk size of under [200GB]. This may result in poor I/O performance. For more information, see: https://developers.google.com/compute/docs/disks#performance.
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-2e75fcc82426/zones/europe-west1-b/instances/on-prem-loadtest].
+NAME: on-prem-loadtest
+ZONE: europe-west1-b
+MACHINE_TYPE: e2-standard-4
+PREEMPTIBLE: 
+INTERNAL_IP: 192.168.1.2
+EXTERNAL_IP: 130.211.70.181
+STATUS: RUNNING
+Updated [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-2e75fcc82426/zones/us-east4-b/instances/cloud-loadtest].
+Updated [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-2e75fcc82426/zones/europe-west1-b/instances/on-prem-loadtest].
+WARNING: The private SSH key file for gcloud does not exist.
+WARNING: The public SSH key file for gcloud does not exist.
+WARNING: You do not have an SSH key for gcloud.
+WARNING: SSH keygen will be executed to generate a key.
+This tool needs to create the directory [/home/student_04_59cced2b7a27/.ssh] before being able to generate SSH keys.
+
+Do you want to continue (Y/n)?  
+Generating public/private rsa key pair.
+Your identification has been saved in /home/student_04_59cced2b7a27/.ssh/google_compute_engine
+Your public key has been saved in /home/student_04_59cced2b7a27/.ssh/google_compute_engine.pub
+The key fingerprint is:
+SHA256:jTaLZDaYxfdcNh/Gvv/4CW5wNOp6eJm4Wt4I72OqfD8 student_04_59cced2b7a27@cs-977920870179-default
+The key's randomart image is:
++---[RSA 3072]----+
+|                 |
+|     .       .   |
+|      o .   + +  |
+|     + . = o B . |
+|    o = S + o +  |
+|     + + o o . . |
+|      ....+ =..  |
+|    .  .=Eo*...o.|
+|     ooo*OB....o=|
++----[SHA256]-----+
+Updating project ssh metadata...
+...........Updated [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-2e75fcc82426].
+done.
+Waiting for SSH key to propagate.
+Warning: Permanently added 'compute.4591125364472999758' (ED25519) to the list of known hosts.
+Hit:1 https://deb.debian.org/debian bullseye InRelease
+Get:2 https://deb.debian.org/debian-security bullseye-security InRelease [27.2 kB]
+Hit:3 https://deb.debian.org/debian bullseye-updates InRelease
+Get:4 https://packages.cloud.google.com/apt google-compute-engine-bullseye-stable InRelease [1321 B]
+Get:5 https://packages.cloud.google.com/apt cloud-sdk-bullseye InRelease [1606 B]
+Get:6 https://deb.debian.org/debian-security bullseye-security/main Sources [295 kB]
+Get:7 https://deb.debian.org/debian-security bullseye-security/main amd64 Packages [453 kB]
+Get:8 https://deb.debian.org/debian-security bullseye-security/main Translation-en [304 kB]
+Get:9 https://packages.cloud.google.com/apt cloud-sdk-bullseye/main amd64 Packages [4845 kB]
+Get:10 https://packages.cloud.google.com/apt cloud-sdk-bullseye/main all Packages [2052 kB]
+Fetched 7979 kB in 1s (8739 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following NEW packages will be installed:
+  iperf
+0 upgraded, 1 newly installed, 0 to remove and 2 not upgraded.
+Need to get 102 kB of archives.
+After this operation, 269 kB of additional disk space will be used.
+Get:1 https://deb.debian.org/debian bullseye/main amd64 iperf amd64 2.0.14a+dfsg1-1 [102 kB]
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.32.1 /usr/local/share/perl/5.32.1 /usr/lib/x86_64-linux-gnu/perl5/5.32 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.32 /usr/share/perl/5.32 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7, <> line 1.)
+debconf: falling back to frontend: Teletype
+dpkg-preconfigure: unable to re-open stdin: 
+Fetched 102 kB in 0s (2271 kB/s)
+Selecting previously unselected package iperf.
+(Reading database ... 
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 57636 files and directories currently installed.)
+Preparing to unpack .../iperf_2.0.14a+dfsg1-1_amd64.deb ...
+Unpacking iperf (2.0.14a+dfsg1-1) ...
+Setting up iperf (2.0.14a+dfsg1-1) ...
+Processing triggers for man-db (2.9.4-2) ...
+Warning: Permanently added 'compute.2003099593708072828' (ED25519) to the list of known hosts.
+Hit:1 https://deb.debian.org/debian bullseye InRelease
+Get:2 https://deb.debian.org/debian-security bullseye-security InRelease [27.2 kB]
+Hit:3 https://deb.debian.org/debian bullseye-updates InRelease
+Get:4 https://packages.cloud.google.com/apt google-compute-engine-bullseye-stable InRelease [1321 B]
+Get:5 https://packages.cloud.google.com/apt cloud-sdk-bullseye InRelease [1606 B]
+Get:6 https://deb.debian.org/debian-security bullseye-security/main Sources [295 kB]
+Get:7 https://deb.debian.org/debian-security bullseye-security/main amd64 Packages [453 kB]
+Get:8 https://deb.debian.org/debian-security bullseye-security/main Translation-en [304 kB]
+Get:9 https://packages.cloud.google.com/apt cloud-sdk-bullseye/main amd64 Packages [4845 kB]
+Get:10 https://packages.cloud.google.com/apt cloud-sdk-bullseye/main all Packages [2052 kB]
+Fetched 7979 kB in 1s (5365 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following NEW packages will be installed:
+  iperf
+0 upgraded, 1 newly installed, 0 to remove and 2 not upgraded.
+Need to get 102 kB of archives.
+After this operation, 269 kB of additional disk space will be used.
+Get:1 https://deb.debian.org/debian bullseye/main amd64 iperf amd64 2.0.14a+dfsg1-1 [102 kB]
+debconf: unable to initialize frontend: Dialog
+debconf: (Dialog frontend will not work on a dumb terminal, an emacs shell buffer, or without a controlling terminal.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.32.1 /usr/local/share/perl/5.32.1 /usr/lib/x86_64-linux-gnu/perl5/5.32 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.32 /usr/share/perl/5.32 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7, <> line 1.)
+debconf: falling back to frontend: Teletype
+dpkg-preconfigure: unable to re-open stdin: 
+Fetched 102 kB in 0s (1693 kB/s)
+Selecting previously unselected package iperf.
+(Reading database ... 
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 57636 files and directories currently installed.)
+Preparing to unpack .../iperf_2.0.14a+dfsg1-1_amd64.deb ...
+Unpacking iperf (2.0.14a+dfsg1-1) ...
+Setting up iperf (2.0.14a+dfsg1-1) ...
+Processing triggers for man-db (2.9.4-2) ...
+------------------------------------------------------------
+Client connecting to 192.168.1.2, TCP port 5001
+TCP window size: 45.0 KByte (default)
+------------------------------------------------------------
+[ ID] Interval       Transfer     Bandwidth
+[ 11] 0.0000-10.0083 sec   315 MBytes   264 Mbits/sec
+[  7] 0.0000-10.0162 sec   269 MBytes   225 Mbits/sec
+[  9] 0.0000-10.0073 sec   169 MBytes   141 Mbits/sec
+[ 16] 0.0000-10.0382 sec   205 MBytes   171 Mbits/sec
+[  5] 0.0000-10.0366 sec   161 MBytes   135 Mbits/sec
+[ 14] 0.0000-10.0188 sec   156 MBytes   131 Mbits/sec
+[ 15] 0.0000-10.0375 sec   157 MBytes   131 Mbits/sec
+[  8] 0.0000-10.0231 sec   195 MBytes   163 Mbits/sec
+[ 10] 0.0000-10.0261 sec   129 MBytes   108 Mbits/sec
+[ 13] 0.0000-10.0601 sec   165 MBytes   137 Mbits/sec
+[ 17] 0.0000-10.0562 sec   183 MBytes   153 Mbits/sec
+[  6] 0.0000-10.0639 sec   136 MBytes   113 Mbits/sec
+[ 18] 0.0000-10.0772 sec   131 MBytes   109 Mbits/sec
+[ 19] 0.0000-10.0903 sec   160 MBytes   133 Mbits/sec
+[ 12] 0.0000-10.0681 sec   129 MBytes   107 Mbits/sec
+[ 20] 0.0000-10.0319 sec  91.6 MBytes  76.6 Mbits/sec
+[  4] 0.0000-10.0924 sec   123 MBytes   102 Mbits/sec
+[ 21] 0.0000-10.0602 sec  83.9 MBytes  69.9 Mbits/sec
+[  3] 0.0000-10.1500 sec  75.6 MBytes  62.5 Mbits/sec
+[ 22] 0.0000-10.0488 sec  61.4 MBytes  51.2 Mbits/sec
+[SUM] 0.0000-10.0503 sec  3.02 GBytes  2.58 Gbits/sec
+
+✅  All done
+

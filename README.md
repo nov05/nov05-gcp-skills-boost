@@ -58,7 +58,7 @@ For more scripts, refer to [`gcp-skills-boost`](https://github.com/nov05/gcp-ski
 * [Google Skills Arcade](https://go.cloudskillsboost.google/arcade)   
   - [Google Skills Arcade information](https://docs.google.com/document/d/17iMpVCALHSoYOevKprBKqasOMGgkyA5Mwk2hxtJmxmo)  
 
-* To make change to this repo in `VS Code`, download the following repos.  
+* To make changes to this repo in `VS Code`, download the following repositories.   
   In `VS Code`, `File -> Open Workspace from file...`, select `vscode-workspaces\gcp-skills-boost.code-workspace`.  
 
   - https://github.com/nov05/vscode-workspaces
