@@ -1,0 +1,29 @@
+view: user_pii_challenge_37so {
+
+  extension: required
+
+  dimension: id {
+    primary_key: yes
+    sql: ${TABLE}.id ;;
+  }
+
+  dimension: first_name {
+    sql: ${TABLE}.first_name ;;
+  }
+
+  dimension: last_name {
+    sql: ${TABLE}.last_name ;;
+  }
+
+  dimension: email {
+    sql: ${TABLE}.email ;;
+  }
+
+  dimension: latitude {
+    sql: ${TABLE}.latitude ;;
+  }
+
+  dimension: longitude {
+    sql: ${TABLE}.longitude ;;
+  }
+}
