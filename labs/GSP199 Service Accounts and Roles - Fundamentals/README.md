@@ -12,3 +12,4 @@ yes y | ./gsp199.sh 2>&1 | tee -a logs.txt
 sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 ```
 
+* Check the sample terminal output in `gsp199_clean_logs.txt`.
