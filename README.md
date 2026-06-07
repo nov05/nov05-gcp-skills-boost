@@ -17,6 +17,9 @@ For more scripts, refer to [`gcp-skills-boost`](https://github.com/nov05/gcp-ski
 * **Example of building data mesh, creating and adding Dataplex aspect to zone**    
   Bash script - [nov05_gsp514.sh](https://github.com/nov05/gcp-skills-boost/blob/dev/GSP514%20Build%20a%20Data%20Mesh%20with%20Knowledge%20Catalog:%20Challenge%20Lab/nov05_gsp514.sh)
   
+* Exmaple of using a service account, a VM, and the client libraries to access BigQuery  
+  lab - GSP199 Service Accounts and Roles: Fundamentals  
+
 * Example of BigQuery and Data Quality operations    
   Bash script - [nov05_gsp1158.sh](https://github.com/nov05/gcp-skills-boost/blob/main/GSP1158%20Assessing%20Data%20Quality%20with%20Knowledge%20Catalog/nov05_gsp1158.sh)
 

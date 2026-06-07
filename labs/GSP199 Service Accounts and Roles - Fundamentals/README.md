@@ -2,6 +2,11 @@
 
 https://www.skills.google/games/7223/labs/44684
 
+```text
+Task 1. Create and manage service accounts  
+Task 2. Use the client libraries to access BigQuery using a service account  
+```
+
 ## 👉 Run the following commands in Cloud Shell.
 
 ```bash

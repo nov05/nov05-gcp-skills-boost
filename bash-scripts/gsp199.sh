@@ -92,7 +92,7 @@ sudo apt-get update -qq
 sudo apt-get install -y -qq git python3-pip python3-venv
 
 ## Upgrade pip and install Python libraries
-## On Debian 12, some images enforce PEP 668, which protect the system Python from being modified by pip.
+## On Debian 12, some images enforce PEP 668, which protects the system Python from being modified by pip.
 ## Without setting --break-system-packages or using a virtual environment, you may see an "externally-managed-environment" error.
 # pip3 install --quiet --upgrade pip
 # pip3 install --quiet google-cloud-bigquery pyarrow pandas db-dtypes
