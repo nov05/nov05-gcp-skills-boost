@@ -91,8 +91,11 @@ sudo apt-get update -qq
 sudo apt-get install -y -qq git python3-pip
 
 ## Upgrade pip and install Python libraries
-pip3 install --quiet --upgrade pip
-pip3 install --quiet google-cloud-bigquery pyarrow pandas db-dtypes
+## On Debian 12, some images enforce PEP 668. You may see an "externally-managed-environment" error.
+# pip3 install --quiet --upgrade pip
+# pip3 install --quiet google-cloud-bigquery pyarrow pandas db-dtypes
+python3 -m pip install --user --quiet --upgrade pip
+python3 -m pip install --user --quiet google-cloud-bigquery pyarrow pandas db-dtypes
 
 ## Create Python script
 cat > query.py <<'EOF_PY'
