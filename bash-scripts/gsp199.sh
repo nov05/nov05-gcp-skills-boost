@@ -96,7 +96,7 @@ source ~/bq-env/bin/activate
 
 ## Upgrade pip and install Python libraries
 ## On Debian 12, some images enforce PEP 668, which protect the system Python from being modified by pip.
-## Without using virtual environment, you may see an "externally-managed-environment" error.
+## Without using --break-system-packages or virtual environment, you may see an "externally-managed-environment" error.
 pip3 install --quiet --upgrade pip
 pip3 install --quiet google-cloud-bigquery pyarrow pandas db-dtypes
 
