@@ -89,16 +89,19 @@ cat > bigquery.sh <<'EOF'
 
 ## Install required packages
 sudo apt-get update -qq
-sudo apt-get install -y -qq git python3-pip
-
-python3 -m venv ~/bq-env
-source ~/bq-env/bin/activate
+sudo apt-get install -y -qq git python3-pip python3-venv
 
 ## Upgrade pip and install Python libraries
 ## On Debian 12, some images enforce PEP 668, which protect the system Python from being modified by pip.
 ## Without setting --break-system-packages or using a virtual environment, you may see an "externally-managed-environment" error.
-pip3 install --quiet --upgrade pip
-pip3 install --quiet google-cloud-bigquery pyarrow pandas db-dtypes
+# pip3 install --quiet --upgrade pip
+# pip3 install --quiet google-cloud-bigquery pyarrow pandas db-dtypes
+
+python3 -m venv ~/bq-env
+source ~/bq-env/bin/activate
+~/bq-env/bin/pip install --quiet --upgrade pip
+~/bq-env/bin/pip install --quiet \
+    google-cloud-bigquery pyarrow pandas db-dtypes
 
 ## Create Python script
 cat > query.py <<'EOF_PY'
@@ -143,7 +146,8 @@ sed -i -e "s/PROJECT_ID/$(gcloud config get-value project)/g" query.py
 sed -i -e "s/YOUR_SERVICE_ACCOUNT/bigquery-qwiklab@$(gcloud config get-value project).iam.gserviceaccount.com/g" query.py
 
 ## Execute the script
-python3 query.py
+# python3 query.py
+~/bq-env/bin/python query.py
 EOF
 
 gcloud compute scp bigquery.sh bigquery-instance:/tmp \
