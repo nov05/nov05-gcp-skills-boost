@@ -19,6 +19,7 @@ read -p "👉  Enter Zone 2: " ZONE2
 export USERID USERID2 PROJECTID2 ZONE ZONE2
 export PROJECTID=$(gcloud config get-value project)
 # export REGION=$(echo "$ZONE" | sed 's/-[^-]*$//')
+## The default zone is also where VM instance "centos-clean" is and the same with Zone1 in the lab.
 export REGION=$(gcloud compute project-info describe \
   --format="value(commonInstanceMetadata.items[google-compute-default-region])")
 export ZONE=$(gcloud compute project-info describe \
