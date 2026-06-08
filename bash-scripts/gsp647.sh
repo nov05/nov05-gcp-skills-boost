@@ -9,17 +9,21 @@ ask_to_proceed() {
 }
 
 echo
-read -p "👉  Enter Username: " USERID
+echo "Tips: Finc Zone 1 in Task 1 'gcloud config set compute/zone Zone1'."
+echo "Tips: Find Zone 2 in Task 4 'gcloud compute instances create lab-2 --zone Zone2 --machine-type=e2-standard-2'."
+read -p "👉  Enter Username 1: " USERID
 read -p "👉  Enter Username 2: " USERID2
 read -p "👉  Enter Project ID 2: " PROJECTID2
+read -p "👉  Enter Zone 1: " ZONE
 read -p "👉  Enter Zone 2: " ZONE2
-export USERID USERID2 PROJECTID2 ZONE2
+export USERID USERID2 PROJECTID2 ZONE ZONE2
 
 export PROJECTID=$(gcloud config get-value project)
-export REGION=$(gcloud compute project-info describe \
-  --format="value(commonInstanceMetadata.items[google-compute-default-region])")
-export ZONE=$(gcloud compute project-info describe \
-  --format="value(commonInstanceMetadata.items[google-compute-default-zone])")
+export REGION=$(echo "$ZONE" | sed 's/-[^-]*$//')
+# export REGION=$(gcloud compute project-info describe \
+#   --format="value(commonInstanceMetadata.items[google-compute-default-region])")
+# export ZONE=$(gcloud compute project-info describe \
+#   --format="value(commonInstanceMetadata.items[google-compute-default-zone])")
 export NEWZONE=$(gcloud compute zones list \
   --filter="region:$REGION" \
   --format="value(name)" | grep -v "$ZONE" | head -n 1)
@@ -30,7 +34,7 @@ echo "🔹  Username 2: $USERID2"
 echo "🔹  Project ID 1: $PROJECTID"
 echo "🔹  Project ID 2: $PROJECTID2"
 echo "🔹  Region: $REGION"
-echo "🔹  Zone: $ZONE"
+echo "🔹  Zone 1: $ZONE"
 echo "🔹  Zone 2: $ZONE2"
 echo "🔹  New zone: $NEWZONE"
 echo
@@ -55,11 +59,9 @@ gcloud compute instances create lab-1 \
 
 echo -e "\n👉  Switching to a new zone 2 $NEWZONE..."
 gcloud config set compute/zone $NEWZONE
-sleep 10
 # gcloud config list 
 # cat ~/.config/gcloud/configurations/config_default
-
-echo -e "\n👉 Check the progress for Task 1 - Update the default zone."
+echo -e "\n👉  Check the progress for 'Task 1 - Update the default zone'."
 ask_to_proceed
 
 cat << 'EOF'
@@ -84,6 +86,8 @@ gcloud config set compute/region "$REGION" \
 gcloud config set compute/zone "$ZONE" \
     --configuration=user2
 
+echo "export ZONE2=$ZONE2" >> ~/.bashrc
+. ~/.bashrc
 echo -e "\n👉  User 2 $USERID2 cannot create an instance in the first project, as the assigned role is basic viewer."
 gcloud compute instances create lab-2 \
     --zone "$ZONE2" \
@@ -108,6 +112,8 @@ EOF
 # gcloud iam roles describe roles/compute.instanceAdmin
 
 gcloud config configurations activate user2
+echo "export PROJECTID2=$PROJECTID2" >> ~/.bashrc
+. ~/.bashrc
 echo -e "\n👉  User 2 $USERID2 doesn't have access to Project ID 2 $PROJECTID2"
 printf 'n\n' | script -qec "gcloud config set project $PROJECTID2" /dev/null
 echo "🟢  Warning is expected. Did't set Project ID 2."
@@ -115,6 +121,8 @@ echo "🟢  Warning is expected. Did't set Project ID 2."
 gcloud config configurations activate default
 sudo yum -y install epel-release
 sudo yum -y install jq
+echo "export USERID2=$USERID2" >> ~/.bashrc
+. ~/.bashrc
 gcloud projects add-iam-policy-binding "$PROJECTID2" \
     --member="user:$USERID2" \
     --role="roles/viewer"
@@ -181,7 +189,9 @@ gcloud config set project $PROJECTID2
 gcloud iam service-accounts create devops --display-name devops
 
 # gcloud iam service-accounts list --filter "displayName=devops"
-SA=$(gcloud iam service-accounts list --format="value(email)" --filter "displayName=devops")
+SA=$(gcloud iam service-accounts list \
+    --format="value(email)" \
+    --filter "displayName=devops")
 gcloud projects add-iam-policy-binding "$PROJECTID2" \
     --member="serviceAccount:$SA" \
     --role="roles/iam.serviceAccountUser"
