@@ -9,20 +9,20 @@ ask_to_proceed() {
 }
 
 echo
-echo "Tips: Finc Zone 1 in Task 1 'gcloud config set compute/zone Zone1'."
+# echo "Tips: Finc Zone 1 in Task 1 'gcloud config set compute/zone Zone1'."
 echo "Tips: Find Zone 2 in Task 4 'gcloud compute instances create lab-2 --zone Zone2 --machine-type=e2-standard-2'."
 read -p "👉  Enter Username 1: " USERID
 read -p "👉  Enter Username 2: " USERID2
 read -p "👉  Enter Project ID 2: " PROJECTID2
-read -p "👉  Enter Zone 1: " ZONE
+# read -p "👉  Enter Zone 1: " ZONE
 read -p "👉  Enter Zone 2: " ZONE2
 export USERID USERID2 PROJECTID2 ZONE ZONE2
 export PROJECTID=$(gcloud config get-value project)
-export REGION=$(echo "$ZONE" | sed 's/-[^-]*$//')
-# export REGION=$(gcloud compute project-info describe \
-#   --format="value(commonInstanceMetadata.items[google-compute-default-region])")
-# export ZONE=$(gcloud compute project-info describe \
-#   --format="value(commonInstanceMetadata.items[google-compute-default-zone])")
+# export REGION=$(echo "$ZONE" | sed 's/-[^-]*$//')
+export REGION=$(gcloud compute project-info describe \
+  --format="value(commonInstanceMetadata.items[google-compute-default-region])")
+export ZONE=$(gcloud compute project-info describe \
+  --format="value(commonInstanceMetadata.items[google-compute-default-zone])")
 echo
 echo "🔹  Username 1: $USERID"
 echo "🔹  Username 2: $USERID2"
@@ -43,22 +43,24 @@ EOF
 
 echo -e "\n👉  Login as Username $USERID"
 gcloud auth login --no-launch-browser --quiet
-gcloud --version 
+# gcloud --version 
 gcloud config set compute/region $REGION 
 gcloud config set compute/zone $ZONE 
 gcloud compute instances create lab-1 \
   --zone $ZONE \
   --machine-type=e2-standard-2
-sleep 10
 
+# export NEWZONE=$(gcloud compute zones list \
+#   --filter="region:$REGION" \
+#   --format="value(name)" | grep -v "$ZONE" | head -n 1)
 export NEWZONE=$(gcloud compute zones list \
-  --filter="region:$REGION" \
-  --format="value(name)" | grep -v "$ZONE" | head -n 1)
-echo -e "\n👉  Switching to a new zone 2 $NEWZONE..."
+    --filter="name~'^$REGION'" \
+    --format="value(name)" | grep -v "^$ZONE$" | head -n 1)
+echo -e "\n👉  Switching to a new zone $NEWZONE..."
 gcloud config set compute/zone $NEWZONE
 # gcloud config list 
 # cat ~/.config/gcloud/configurations/config_default
-echo -e "\n👉  Check the progress for 'Task 1 - Update the default zone'."
+echo -e "\n👉  Check the progress for 'Task 1 - Update the default zone' in the lab."
 ask_to_proceed
 
 cat << 'EOF'

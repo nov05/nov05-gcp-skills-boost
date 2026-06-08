@@ -3,8 +3,6 @@
 ```bash
 export ZONE=$(gcloud compute project-info describe \
   --format="value(commonInstanceMetadata.items[google-compute-default-zone])")
-gcloud compute instances add-metadata "centos-clean" \
-  --zone=$ZONE
 gcloud compute ssh "centos-clean" \
   --zone=$ZONE \
   --quiet
@@ -20,7 +18,7 @@ sudo chmod +x gsp647.sh
 sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 ```
 
-Run the following commands, then download `clean_logs.txt`.
+Run the following commands to log out the SSH session and download `clean_logs.txt`.
 
 ```bash
 exit

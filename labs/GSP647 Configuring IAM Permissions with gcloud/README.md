@@ -12,12 +12,11 @@ Task 7. Test the service account
 
 ## 👉 Run the following commands in Google Cloud Shell. 
 
+SSH to the VM instance `centos-clean`.  
+
 ```bash
 export ZONE=$(gcloud compute project-info describe \
   --format="value(commonInstanceMetadata.items[google-compute-default-zone])")
-gcloud compute instances add-metadata "centos-clean" \
-  --zone=$ZONE \
-  --metadata enable-oslogin=FALSE
 gcloud compute ssh "centos-clean" \
   --zone=$ZONE \
   --quiet
@@ -31,6 +30,16 @@ curl -LO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/hea
 sudo chmod +x gsp647.sh
 ./gsp647.sh 2>&1 | tee -a logs.txt
 sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
+```
+
+Run the following commands to log out the SSH session and download `clean_logs.txt`.
+
+```bash
+exit
+gcloud compute scp \
+  --zone=$ZONE \
+  centos-clean:~/clean_logs.txt \
+  ~/clean_logs.txt
 ```
 
 * The final landscape  
