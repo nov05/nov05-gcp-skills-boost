@@ -47,7 +47,7 @@ sudo yum -y install jq
 
 read -p "Enter Project ID 2: " PROJECTID2
 read -p "Enter Username2: " USERID2
-export PROJECTID2 USERID2 ZONE2
+export PROJECTID2 USERID2
 echo "export PROJECTID2=$PROJECTID2" >> ~/.bashrc
 echo "export USERID2=$USERID2" >> ~/.bashrc
 . ~/.bashrc
