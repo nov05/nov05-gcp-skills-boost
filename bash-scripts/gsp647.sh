@@ -133,7 +133,7 @@ EOF
 gcloud config configurations activate user2
 gcloud config set project $PROJECT_ID2
 
-echo -e "\n👉 Project ID 2 $PROJECT_ID2 VM instances:"
+echo -e "\n👉  Project ID 2 $PROJECT_ID2 VM instances:"
 gcloud compute instances list
 
 gcloud config configurations activate default
