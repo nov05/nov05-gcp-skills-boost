@@ -151,12 +151,12 @@ sed -i -e "s/YOUR_SERVICE_ACCOUNT/bigquery-qwiklab@$(gcloud config get-value pro
 EOF
 
 gcloud compute scp bigquery.sh bigquery-instance:/tmp \
-  --project=$DEVSHELL_PROJECT_ID \
+  --project=$PROJECT_ID \
   --zone=$ZONE \
   --quiet
 
 gcloud compute ssh bigquery-instance \
-  --project=$DEVSHELL_PROJECT_ID \
+  --project=$PROJECT_ID \
   --zone=$ZONE \
   --quiet \
   --command="chmod +x /tmp/bigquery.sh && /tmp/bigquery.sh"
