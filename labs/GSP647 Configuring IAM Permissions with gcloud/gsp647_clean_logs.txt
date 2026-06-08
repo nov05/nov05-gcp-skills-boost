@@ -1,0 +1,493 @@
+
+Tips: Finc Zone 1 in Task 1 'gcloud config set compute/zone Zone1'.
+Tips: Find Zone 2 in Task 4 'gcloud compute instances create lab-2 --zone Zone2 --machine-type=e2-standard-2'.
+👉  Enter Username 1: 👉  Enter Username 2: 👉  Enter Project ID 2: 👉  Enter Zone 1: 👉  Enter Zone 2: 
+🔹  Username 1: student-00-6895e7075525@qwiklabs.net
+🔹  Username 2: student-03-9ab3acad28ee@qwiklabs.net
+🔹  Project ID 1: qwiklabs-gcp-04-63c22a620cf6
+🔹  Project ID 2: qwiklabs-gcp-02-fc44ac794f23
+🔹  Region: us-central1
+🔹  Zone 1: us-central1-a
+🔹  Zone 2: us-east4-a
+🔹  New zone: us-central1-c
+
+
+========================================================
+Task 1. Configure the gcloud environment
+========================================================
+
+
+👉  Login as Username student-00-6895e7075525@qwiklabs.net
+Go to the following link in your browser, and complete the sign-in prompts:
+
+    https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=32555940559.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Fsdk.cloud.google.com%2Fauthcode.html&scope=openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fappengine.admin+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fsqlservice.login+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcompute+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Faccounts.reauth&state=kipPFC6x5yWRq1R9LW4fvP2X3dzbju&prompt=consent&token_usage=remote&access_type=offline&code_challenge=3Ox6ca9ABnSpPhICkoT8to0jQwStcfk3ALPowMBdFks&code_challenge_method=S256
+
+Once finished, enter the verification code provided in your browser: 
+You are now logged in as [student-00-6895e7075525@qwiklabs.net].
+Your current project is [qwiklabs-gcp-04-63c22a620cf6].  You can change this setting by running:
+  $ gcloud config set project PROJECT_ID
+Google Cloud SDK 570.0.0
+alpha 2026.05.22
+beta 2026.05.22
+bq 2.1.32
+bundled-python3-unix 3.14.5
+core 2026.05.22
+gcloud-crc32c 1.0.0
+gsutil 5.37
+preview 2026.05.22
+Updated property [compute/region].
+Updated property [compute/zone].
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-04-63c22a620cf6/zones/us-central1-a/instances/lab-1].
+NAME   ZONE           MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP   STATUS
+lab-1  us-central1-a  e2-standard-2               10.128.0.3   34.10.69.198  RUNNING
+
+👉  Switching to a new zone 2 us-central1-c...
+Updated property [compute/zone].
+
+👉  Check the progress for 'Task 1 - Update the default zone'.
+Ready to proceed? (y): 
+========================================================
+Task 2. Create and switch between multiple IAM configurations
+========================================================
+
+Created [user2].
+Activated [user2].
+[environment: untagged] Read more to tag: g.co/cloud/project-env-tag.
+Activated [user2].
+[environment: untagged] Read more to tag: g.co/cloud/project-env-tag.
+
+👉  Login as Username 2 student-03-9ab3acad28ee@qwiklabs.net
+Go to the following link in your browser, and complete the sign-in prompts:
+
+    https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=32555940559.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Fsdk.cloud.google.com%2Fauthcode.html&scope=openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fappengine.admin+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fsqlservice.login+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcompute+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Faccounts.reauth&state=AsBQtVerimjy3v54GtJSiMUujU0IWm&prompt=consent&token_usage=remote&access_type=offline&code_challenge=98V7FhFbblpCv580KKPDKCpajd5oJgU0T-LORTAwWs8&code_challenge_method=S256
+
+Once finished, enter the verification code provided in your browser: 
+You are now logged in as [student-03-9ab3acad28ee@qwiklabs.net].
+Your current project is [qwiklabs-gcp-04-63c22a620cf6].  You can change this setting by running:
+  $ gcloud config set project PROJECT_ID
+[environment: untagged] Read more to tag: g.co/cloud/project-env-tag.
+Updated property [core/project].
+Updated property [compute/region].
+Updated property [compute/zone].
+
+👉  User 2 student-03-9ab3acad28ee@qwiklabs.net cannot create an instance in the first project, as the assigned role is basic viewer.
+ERROR: (gcloud.compute.instances.create) Could not fetch resource:
+ - Required 'compute.instances.create' permission for 'projects/qwiklabs-gcp-04-63c22a620cf6/zones/us-east4-a/instances/lab-2'
+
+🟢  Error is expected.
+Activated [default].
+[environment: untagged] Read more to tag: g.co/cloud/project-env-tag.
+
+========================================================
+Task 3. Identify and assign correct IAM permissions
+========================================================
+
+Activated [user2].
+
+👉  User 2 student-03-9ab3acad28ee@qwiklabs.net doesn't have access to Project ID 2 qwiklabs-gcp-02-fc44ac794f23
+n
+WARNING: [student-03-9ab3acad28ee@qwiklabs.net] does not have permission to access projects instance [qwiklabs-gcp-02-fc44ac794f23] (or it may not exist): The caller does not have permission. This command is authenticated as student-03-9ab3acad28ee@qwiklabs.net which is the active account specified by the [core/account] property
+Are you sure you wish to set property [core/project] to 
+qwiklabs-gcp-02-fc44ac794f23?
+
+Do you want to continue (Y/n)?  
+🟢  Warning is expected. Did't set Project ID 2.
+Activated [default].
+[environment: untagged] Read more to tag: g.co/cloud/project-env-tag.
+Last metadata expiration check: 0:19:39 ago on Mon 08 Jun 2026 09:45:13 AM UTC.
+Dependencies resolved.
+================================================================================
+ Package                 Architecture Version         Repository           Size
+================================================================================
+Installing:
+ epel-release            noarch       9-7.el9         extras-common        19 k
+Installing weak dependencies:
+ epel-next-release       noarch       9-7.el9         extras-common       8.1 k
+
+Transaction Summary
+================================================================================
+Install  2 Packages
+
+Total download size: 27 k
+Installed size: 29 k
+Downloading Packages:
+(1/2): epel-next-release-9-7.el9.noarch.rpm      24 kB/s | 8.1 kB     00:00    
+(2/2): epel-release-9-7.el9.noarch.rpm           46 kB/s |  19 kB     00:00    
+--------------------------------------------------------------------------------
+Total                                            45 kB/s |  27 kB     00:00     
+CentOS Stream 9 - Extras packages               1.5 MB/s | 2.1 kB     00:00    
+Importing GPG key 0x1D997668:
+ Userid     : "CentOS Extras SIG (https://wiki.centos.org/SpecialInterestGroup) <security@centos.org>"
+ Fingerprint: 363F C097 2F64 B699 AED3 968E 1FF6 A217 1D99 7668
+ From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Extras-SHA512
+Key imported successfully
+Running transaction check
+Transaction check succeeded.
+Running transaction test
+Transaction test succeeded.
+Running transaction
+  Preparing        :                                                        1/1 
+  Installing       : epel-release-9-7.el9.noarch                            1/2 
+  Running scriptlet: epel-release-9-7.el9.noarch                            1/2 
+Many EPEL packages require the CodeReady Builder (CRB) repository.
+It is recommended that you run /usr/bin/crb enable to enable the CRB repository.
+
+  Installing       : epel-next-release-9-7.el9.noarch                       2/2 
+  Running scriptlet: epel-next-release-9-7.el9.noarch                       2/2 
+  Verifying        : epel-next-release-9-7.el9.noarch                       1/2 
+  Verifying        : epel-release-9-7.el9.noarch                            2/2 
+
+Installed:
+  epel-next-release-9-7.el9.noarch          epel-release-9-7.el9.noarch         
+
+Complete!
+Extra Packages for Enterprise Linux 9 - x86_64   21 MB/s |  21 MB     00:00    
+Extra Packages for Enterprise Linux 9 openh264  4.4 kB/s | 2.5 kB     00:00    
+Extra Packages for Enterprise Linux 9 - Next -  506 kB/s | 265 kB     00:00    
+Package jq-1.6-21.el9.x86_64 is already installed.
+Dependencies resolved.
+Nothing to do.
+Complete!
+Updated IAM policy for project [qwiklabs-gcp-02-fc44ac794f23].
+bindings:
+- members:
+  - serviceAccount:qwiklabs-gcp-02-fc44ac794f23@qwiklabs-gcp-02-fc44ac794f23.iam.gserviceaccount.com
+  role: roles/bigquery.admin
+- members:
+  - serviceAccount:793967347580@cloudbuild.gserviceaccount.com
+  role: roles/cloudbuild.builds.builder
+- members:
+  - serviceAccount:service-793967347580@gcp-sa-cloudbuild.iam.gserviceaccount.com
+  role: roles/cloudbuild.serviceAgent
+- members:
+  - serviceAccount:793967347580@cloudservices.gserviceaccount.com
+  role: roles/compute.instanceGroupManagerServiceAgent
+- members:
+  - serviceAccount:service-793967347580@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:793967347580-compute@developer.gserviceaccount.com
+  - serviceAccount:793967347580@cloudservices.gserviceaccount.com
+  role: roles/editor
+- members:
+  - user:student-00-6895e7075525@qwiklabs.net
+  role: roles/iam.serviceAccountAdmin
+- members:
+  - serviceAccount:admiral@qwiklabs-services-prod.iam.gserviceaccount.com
+  - serviceAccount:qwiklabs-gcp-02-fc44ac794f23@qwiklabs-gcp-02-fc44ac794f23.iam.gserviceaccount.com
+  - user:student-00-6895e7075525@qwiklabs.net
+  role: roles/owner
+- members:
+  - user:student-00-6895e7075525@qwiklabs.net
+  role: roles/resourcemanager.projectIamAdmin
+- members:
+  - serviceAccount:qwiklabs-gcp-02-fc44ac794f23@qwiklabs-gcp-02-fc44ac794f23.iam.gserviceaccount.com
+  role: roles/storage.admin
+- members:
+  - user:student-00-6895e7075525@qwiklabs.net
+  - user:student-03-9ab3acad28ee@qwiklabs.net
+  role: roles/viewer
+etag: BwZTuyU6r64=
+version: 1
+
+========================================================
+Task 4. Test that user2 has access
+========================================================
+
+Activated [user2].
+[environment: untagged] Read more to tag: g.co/cloud/project-env-tag.
+Updated property [core/project].
+
+👉  Project ID 2 qwiklabs-gcp-02-fc44ac794f23 VM instances:
+Listed 0 items.
+
+👉  User 2 student-03-9ab3acad28ee@qwiklabs.net cannot create an instance in the 2nd project, as the assigned role is basic viewer.
+ERROR: (gcloud.compute.instances.create) Could not fetch resource:
+ - Required 'compute.instances.create' permission for 'projects/qwiklabs-gcp-02-fc44ac794f23/zones/us-east4-a/instances/lab-2'
+
+🟢  Error is expected.
+Activated [default].
+[environment: untagged] Read more to tag: g.co/cloud/project-env-tag.
+Created role [devops].
+etag: BwZTuyY-xQ4=
+includedPermissions:
+- compute.disks.create
+- compute.instances.create
+- compute.instances.delete
+- compute.instances.setMetadata
+- compute.instances.setServiceAccount
+- compute.instances.start
+- compute.instances.stop
+- compute.instances.update
+- compute.subnetworks.use
+- compute.subnetworks.useExternalIp
+name: projects/qwiklabs-gcp-02-fc44ac794f23/roles/devops
+stage: ALPHA
+title: devops
+Updated IAM policy for project [qwiklabs-gcp-02-fc44ac794f23].
+bindings:
+- members:
+  - serviceAccount:qwiklabs-gcp-02-fc44ac794f23@qwiklabs-gcp-02-fc44ac794f23.iam.gserviceaccount.com
+  role: roles/bigquery.admin
+- members:
+  - serviceAccount:793967347580@cloudbuild.gserviceaccount.com
+  role: roles/cloudbuild.builds.builder
+- members:
+  - serviceAccount:service-793967347580@gcp-sa-cloudbuild.iam.gserviceaccount.com
+  role: roles/cloudbuild.serviceAgent
+- members:
+  - serviceAccount:793967347580@cloudservices.gserviceaccount.com
+  role: roles/compute.instanceGroupManagerServiceAgent
+- members:
+  - serviceAccount:service-793967347580@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:793967347580-compute@developer.gserviceaccount.com
+  - serviceAccount:793967347580@cloudservices.gserviceaccount.com
+  role: roles/editor
+- members:
+  - user:student-00-6895e7075525@qwiklabs.net
+  role: roles/iam.serviceAccountAdmin
+- members:
+  - user:student-03-9ab3acad28ee@qwiklabs.net
+  role: roles/iam.serviceAccountUser
+- members:
+  - serviceAccount:admiral@qwiklabs-services-prod.iam.gserviceaccount.com
+  - serviceAccount:qwiklabs-gcp-02-fc44ac794f23@qwiklabs-gcp-02-fc44ac794f23.iam.gserviceaccount.com
+  - user:student-00-6895e7075525@qwiklabs.net
+  role: roles/owner
+- members:
+  - user:student-00-6895e7075525@qwiklabs.net
+  role: roles/resourcemanager.projectIamAdmin
+- members:
+  - serviceAccount:qwiklabs-gcp-02-fc44ac794f23@qwiklabs-gcp-02-fc44ac794f23.iam.gserviceaccount.com
+  role: roles/storage.admin
+- members:
+  - user:student-00-6895e7075525@qwiklabs.net
+  - user:student-03-9ab3acad28ee@qwiklabs.net
+  role: roles/viewer
+etag: BwZTuyZdsvk=
+version: 1
+Updated IAM policy for project [qwiklabs-gcp-02-fc44ac794f23].
+bindings:
+- members:
+  - user:student-03-9ab3acad28ee@qwiklabs.net
+  role: projects/qwiklabs-gcp-02-fc44ac794f23/roles/devops
+- members:
+  - serviceAccount:qwiklabs-gcp-02-fc44ac794f23@qwiklabs-gcp-02-fc44ac794f23.iam.gserviceaccount.com
+  role: roles/bigquery.admin
+- members:
+  - serviceAccount:793967347580@cloudbuild.gserviceaccount.com
+  role: roles/cloudbuild.builds.builder
+- members:
+  - serviceAccount:service-793967347580@gcp-sa-cloudbuild.iam.gserviceaccount.com
+  role: roles/cloudbuild.serviceAgent
+- members:
+  - serviceAccount:793967347580@cloudservices.gserviceaccount.com
+  role: roles/compute.instanceGroupManagerServiceAgent
+- members:
+  - serviceAccount:service-793967347580@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:793967347580-compute@developer.gserviceaccount.com
+  - serviceAccount:793967347580@cloudservices.gserviceaccount.com
+  role: roles/editor
+- members:
+  - user:student-00-6895e7075525@qwiklabs.net
+  role: roles/iam.serviceAccountAdmin
+- members:
+  - user:student-03-9ab3acad28ee@qwiklabs.net
+  role: roles/iam.serviceAccountUser
+- members:
+  - serviceAccount:admiral@qwiklabs-services-prod.iam.gserviceaccount.com
+  - serviceAccount:qwiklabs-gcp-02-fc44ac794f23@qwiklabs-gcp-02-fc44ac794f23.iam.gserviceaccount.com
+  - user:student-00-6895e7075525@qwiklabs.net
+  role: roles/owner
+- members:
+  - user:student-00-6895e7075525@qwiklabs.net
+  role: roles/resourcemanager.projectIamAdmin
+- members:
+  - serviceAccount:qwiklabs-gcp-02-fc44ac794f23@qwiklabs-gcp-02-fc44ac794f23.iam.gserviceaccount.com
+  role: roles/storage.admin
+- members:
+  - user:student-00-6895e7075525@qwiklabs.net
+  - user:student-03-9ab3acad28ee@qwiklabs.net
+  role: roles/viewer
+etag: BwZTuyZ47SU=
+version: 1
+Activated [user2].
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-fc44ac794f23/zones/us-east4-a/instances/lab-2].
+NAME   ZONE        MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP    STATUS
+lab-2  us-east4-a  e2-standard-2               10.150.0.2   35.243.44.255  RUNNING
+NAME   ZONE        MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP    STATUS
+lab-2  us-east4-a  e2-standard-2               10.150.0.2   35.243.44.255  RUNNING
+
+========================================================
+Task 5. Using a service account
+========================================================
+
+Activated [default].
+[environment: untagged] Read more to tag: g.co/cloud/project-env-tag.
+[environment: untagged] Read more to tag: g.co/cloud/project-env-tag.
+Updated property [core/project].
+Created service account [devops].
+Updated IAM policy for project [qwiklabs-gcp-02-fc44ac794f23].
+bindings:
+- members:
+  - user:student-03-9ab3acad28ee@qwiklabs.net
+  role: projects/qwiklabs-gcp-02-fc44ac794f23/roles/devops
+- members:
+  - serviceAccount:qwiklabs-gcp-02-fc44ac794f23@qwiklabs-gcp-02-fc44ac794f23.iam.gserviceaccount.com
+  role: roles/bigquery.admin
+- members:
+  - serviceAccount:793967347580@cloudbuild.gserviceaccount.com
+  role: roles/cloudbuild.builds.builder
+- members:
+  - serviceAccount:service-793967347580@gcp-sa-cloudbuild.iam.gserviceaccount.com
+  role: roles/cloudbuild.serviceAgent
+- members:
+  - serviceAccount:793967347580@cloudservices.gserviceaccount.com
+  role: roles/compute.instanceGroupManagerServiceAgent
+- members:
+  - serviceAccount:service-793967347580@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:793967347580-compute@developer.gserviceaccount.com
+  - serviceAccount:793967347580@cloudservices.gserviceaccount.com
+  role: roles/editor
+- members:
+  - user:student-00-6895e7075525@qwiklabs.net
+  role: roles/iam.serviceAccountAdmin
+- members:
+  - serviceAccount:devops@qwiklabs-gcp-02-fc44ac794f23.iam.gserviceaccount.com
+  - user:student-03-9ab3acad28ee@qwiklabs.net
+  role: roles/iam.serviceAccountUser
+- members:
+  - serviceAccount:admiral@qwiklabs-services-prod.iam.gserviceaccount.com
+  - serviceAccount:qwiklabs-gcp-02-fc44ac794f23@qwiklabs-gcp-02-fc44ac794f23.iam.gserviceaccount.com
+  - user:student-00-6895e7075525@qwiklabs.net
+  role: roles/owner
+- members:
+  - user:student-00-6895e7075525@qwiklabs.net
+  role: roles/resourcemanager.projectIamAdmin
+- members:
+  - serviceAccount:qwiklabs-gcp-02-fc44ac794f23@qwiklabs-gcp-02-fc44ac794f23.iam.gserviceaccount.com
+  role: roles/storage.admin
+- members:
+  - user:student-00-6895e7075525@qwiklabs.net
+  - user:student-03-9ab3acad28ee@qwiklabs.net
+  role: roles/viewer
+etag: BwZTuyftzJE=
+version: 1
+
+========================================================
+Task 6. Using the service account with a compute instance
+========================================================
+
+Updated IAM policy for project [qwiklabs-gcp-02-fc44ac794f23].
+bindings:
+- members:
+  - user:student-03-9ab3acad28ee@qwiklabs.net
+  role: projects/qwiklabs-gcp-02-fc44ac794f23/roles/devops
+- members:
+  - serviceAccount:qwiklabs-gcp-02-fc44ac794f23@qwiklabs-gcp-02-fc44ac794f23.iam.gserviceaccount.com
+  role: roles/bigquery.admin
+- members:
+  - serviceAccount:793967347580@cloudbuild.gserviceaccount.com
+  role: roles/cloudbuild.builds.builder
+- members:
+  - serviceAccount:service-793967347580@gcp-sa-cloudbuild.iam.gserviceaccount.com
+  role: roles/cloudbuild.serviceAgent
+- members:
+  - serviceAccount:devops@qwiklabs-gcp-02-fc44ac794f23.iam.gserviceaccount.com
+  role: roles/compute.instanceAdmin
+- members:
+  - serviceAccount:793967347580@cloudservices.gserviceaccount.com
+  role: roles/compute.instanceGroupManagerServiceAgent
+- members:
+  - serviceAccount:service-793967347580@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:793967347580-compute@developer.gserviceaccount.com
+  - serviceAccount:793967347580@cloudservices.gserviceaccount.com
+  role: roles/editor
+- members:
+  - user:student-00-6895e7075525@qwiklabs.net
+  role: roles/iam.serviceAccountAdmin
+- members:
+  - serviceAccount:devops@qwiklabs-gcp-02-fc44ac794f23.iam.gserviceaccount.com
+  - user:student-03-9ab3acad28ee@qwiklabs.net
+  role: roles/iam.serviceAccountUser
+- members:
+  - serviceAccount:admiral@qwiklabs-services-prod.iam.gserviceaccount.com
+  - serviceAccount:qwiklabs-gcp-02-fc44ac794f23@qwiklabs-gcp-02-fc44ac794f23.iam.gserviceaccount.com
+  - user:student-00-6895e7075525@qwiklabs.net
+  role: roles/owner
+- members:
+  - user:student-00-6895e7075525@qwiklabs.net
+  role: roles/resourcemanager.projectIamAdmin
+- members:
+  - serviceAccount:qwiklabs-gcp-02-fc44ac794f23@qwiklabs-gcp-02-fc44ac794f23.iam.gserviceaccount.com
+  role: roles/storage.admin
+- members:
+  - user:student-00-6895e7075525@qwiklabs.net
+  - user:student-03-9ab3acad28ee@qwiklabs.net
+  role: roles/viewer
+etag: BwZTuygGRoQ=
+version: 1
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-fc44ac794f23/zones/us-east4-a/instances/lab-3].
+NAME   ZONE        MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP     STATUS
+lab-3  us-east4-a  e2-standard-2               10.150.0.3   35.245.246.225  RUNNING
+
+========================================================
+Task 7. Test the service account
+========================================================
+
+WARNING: The private SSH key file for gcloud does not exist.
+WARNING: The public SSH key file for gcloud does not exist.
+WARNING: You do not have an SSH key for gcloud.
+WARNING: SSH keygen will be executed to generate a key.
+Generating public/private rsa key pair.
+Your identification has been saved in /home/student_00_6895e7075525/.ssh/google_compute_engine
+Your public key has been saved in /home/student_00_6895e7075525/.ssh/google_compute_engine.pub
+The key fingerprint is:
+SHA256:q2w4Q9Pz1eHgn7fUmbBoTz7SBEsFNeIhqyAJuL8LXEI student_00_6895e7075525@centos-clean
+The key's randomart image is:
++---[RSA 3072]----+
+|..       . +oo   |
+|. . .     + o..  |
+| E o .   . ..    |
+|o   . . . .o.    |
+| o . . .S..+oo   |
+|. + o o  .o.+.o.o|
+|.. o o o.. +o+.o.|
+| .. +.... ..*+.  |
+|  .. +o     .+o. |
++----[SHA256]-----+
+Updating project ssh metadata...
+............................................Updated [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-fc44ac794f23].
+.done.
+Waiting for SSH key to propagate.
+ssh: connect to host 35.245.246.225 port 22: Connection refused
+ssh: connect to host 35.245.246.225 port 22: Connection refused
+ssh: connect to host 35.245.246.225 port 22: Connection refused
+Warning: Permanently added 'compute.726232024495106793' (ED25519) to the list of known hosts.
+[core]
+account = devops@qwiklabs-gcp-02-fc44ac794f23.iam.gserviceaccount.com
+disable_usage_reporting = True
+project = qwiklabs-gcp-02-fc44ac794f23
+universe_domain = googleapis.com
+
+Your active configuration is: [default]
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-fc44ac794f23/zones/us-east4-a/instances/lab-4].
+NAME   ZONE        MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP     STATUS
+lab-4  us-east4-a  e2-standard-2               10.150.0.4   136.107.41.201  RUNNING
+
+👉  Project ID 2 qwiklabs-gcp-02-fc44ac794f23 VM instances:
+NAME   ZONE        MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP     STATUS
+lab-2  us-east4-a  e2-standard-2               10.150.0.2   35.243.44.255   RUNNING
+lab-3  us-east4-a  e2-standard-2               10.150.0.3   35.245.246.225  RUNNING
+lab-4  us-east4-a  e2-standard-2               10.150.0.4   136.107.41.201  RUNNING
+
+✅  All done
+

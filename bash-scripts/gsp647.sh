@@ -24,9 +24,6 @@ export REGION=$(echo "$ZONE" | sed 's/-[^-]*$//')
 #   --format="value(commonInstanceMetadata.items[google-compute-default-region])")
 # export ZONE=$(gcloud compute project-info describe \
 #   --format="value(commonInstanceMetadata.items[google-compute-default-zone])")
-export NEWZONE=$(gcloud compute zones list \
-  --filter="region:$REGION" \
-  --format="value(name)" | grep -v "$ZONE" | head -n 1)
 
 echo
 echo "🔹  Username 1: $USERID"
@@ -36,7 +33,6 @@ echo "🔹  Project ID 2: $PROJECTID2"
 echo "🔹  Region: $REGION"
 echo "🔹  Zone 1: $ZONE"
 echo "🔹  Zone 2: $ZONE2"
-echo "🔹  New zone: $NEWZONE"
 echo
 
 cat << 'EOF'
@@ -56,7 +52,11 @@ gcloud compute instances create lab-1 \
   --zone $ZONE \
   --machine-type=e2-standard-2 \
   --metadata enable-oslogin=FALSE
+sleep 10
 
+export NEWZONE=$(gcloud compute zones list \
+  --filter="region:$REGION" \
+  --format="value(name)" | grep -v "$ZONE" | head -n 1)
 echo -e "\n👉  Switching to a new zone 2 $NEWZONE..."
 gcloud config set compute/zone $NEWZONE
 # gcloud config list 
@@ -79,18 +79,18 @@ echo -e "\n👉  Login as Username 2 $USERID2"
 gcloud auth login --no-launch-browser --quiet
 # gcloud config set account "$USERID2" \
 #     --configuration=user2
-gcloud config set project "$PROJECTID" \
+gcloud config set project $PROJECTID \
     --configuration=user2
-gcloud config set compute/region "$REGION" \
+gcloud config set compute/region $REGION \
     --configuration=user2
-gcloud config set compute/zone "$ZONE" \
+gcloud config set compute/zone $ZONE \
     --configuration=user2
 
 echo "export ZONE2=$ZONE2" >> ~/.bashrc
 . ~/.bashrc
 echo -e "\n👉  User 2 $USERID2 cannot create an instance in the first project, as the assigned role is basic viewer."
 gcloud compute instances create lab-2 \
-    --zone "$ZONE2" \
+    --zone $ZONE2 \
     --machine-type=e2-standard-2 || true
 echo "🟢  Error is expected."
 
@@ -123,10 +123,10 @@ sudo yum -y install epel-release
 sudo yum -y install jq
 echo "export USERID2=$USERID2" >> ~/.bashrc
 . ~/.bashrc
-gcloud projects add-iam-policy-binding "$PROJECTID2" \
-    --member="user:$USERID2" \
-    --role="roles/viewer"
-
+gcloud projects add-iam-policy-binding $PROJECTID2 \
+    --member user:$USERID2 \
+    --role=roles/viewer
+sleep 10
 
 cat << 'EOF'
 
@@ -144,13 +144,13 @@ gcloud compute instances list
 
 echo -e "\n👉  User 2 $USERID2 cannot create an instance in the 2nd project, as the assigned role is basic viewer."
 gcloud compute instances create lab-2 \
-    --zone "$ZONE2" \
+    --zone $ZONE2 \
     --machine-type=e2-standard-2 || true
 echo "🟢  Error is expected."
 
 gcloud config configurations activate default
 gcloud iam roles create devops \
-    --project "$PROJECTID2" \
+    --project $PROJECTID2 \
     --permissions \
     "compute.instances.create,\
 compute.instances.delete,\
@@ -162,16 +162,16 @@ compute.subnetworks.use,\
 compute.subnetworks.useExternalIp,\
 compute.instances.setMetadata,\
 compute.instances.setServiceAccount"
-gcloud projects add-iam-policy-binding "$PROJECTID2" \
-    --member="user:$USERID2" \
-    --role="roles/iam.serviceAccountUser"
-gcloud projects add-iam-policy-binding "$PROJECTID2" \
-    --member="user:$USERID2" \
-    --role="projects/$PROJECTID2/roles/devops"
+gcloud projects add-iam-policy-binding $PROJECTID2 \
+    --member=user:$USERID2 \
+    --role=roles/iam.serviceAccountUser
+gcloud projects add-iam-policy-binding $PROJECTID2 \
+    --member=user:$USERID2 \
+    --role=projects/$PROJECTID2/roles/devops
 
 gcloud config configurations activate user2
 gcloud compute instances create lab-2 \
-    --zone "$ZONE2" \
+    --zone $ZONE2 \
     --machine-type=e2-standard-2 \
     --metadata enable-oslogin=FALSE
 gcloud compute instances list
@@ -192,9 +192,9 @@ gcloud iam service-accounts create devops --display-name devops
 SA=$(gcloud iam service-accounts list \
     --format="value(email)" \
     --filter "displayName=devops")
-gcloud projects add-iam-policy-binding "$PROJECTID2" \
-    --member="serviceAccount:$SA" \
-    --role="roles/iam.serviceAccountUser"
+gcloud projects add-iam-policy-binding $PROJECTID2 \
+    --member serviceAccount:$SA \
+    --role=roles/iam.serviceAccountUser
 
 
 cat << 'EOF'
@@ -205,14 +205,14 @@ Task 6. Using the service account with a compute instance
 
 EOF
 
-gcloud projects add-iam-policy-binding "$PROJECTID2" \
-    --member="serviceAccount:$SA" \
-    --role="roles/compute.instanceAdmin"
+gcloud projects add-iam-policy-binding $PROJECTID2 \
+    --member serviceAccount:$SA \
+    --role=roles/compute.instanceAdmin
 
 gcloud compute instances create lab-3 \
-    --zone "$ZONE2" \
+    --zone $ZONE2 \
     --machine-type=e2-standard-2 \
-    --service-account "$SA" \
+    --service-account $SA \
     --scopes="https://www.googleapis.com/auth/compute" \
     --metadata enable-oslogin=FALSE
 
@@ -233,6 +233,7 @@ gcloud compute instances create lab-4 \
     --zone $ZONE2 \
     --machine-type=e2-standard-2 \
     --metadata enable-oslogin=FALSE &&
+echo -e '\n👉  Project ID 2 $PROJECTID2 VM instances:' &&
 gcloud compute instances list
 "
 

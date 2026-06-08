@@ -20,3 +20,13 @@ sudo chmod +x gsp647.sh
 ./gsp647.sh 2>&1 | tee -a logs.txt
 sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 ```
+
+Run the following commands, then download `clean_logs.txt`.
+
+```bash
+exit
+gcloud compute scp \
+  --zone=$ZONE \
+  centos-clean:~/clean_logs.txt \
+  ~/clean_logs.txt
+```
