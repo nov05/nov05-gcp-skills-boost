@@ -4,8 +4,7 @@
 export ZONE=$(gcloud compute project-info describe \
   --format="value(commonInstanceMetadata.items[google-compute-default-zone])")
 gcloud compute instances add-metadata "centos-clean" \
-  --zone=$ZONE \
-  --metadata enable-oslogin=FALSE
+  --zone=$ZONE
 gcloud compute ssh "centos-clean" \
   --zone=$ZONE \
   --quiet

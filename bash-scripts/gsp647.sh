@@ -17,14 +17,12 @@ read -p "👉  Enter Project ID 2: " PROJECTID2
 read -p "👉  Enter Zone 1: " ZONE
 read -p "👉  Enter Zone 2: " ZONE2
 export USERID USERID2 PROJECTID2 ZONE ZONE2
-
 export PROJECTID=$(gcloud config get-value project)
 export REGION=$(echo "$ZONE" | sed 's/-[^-]*$//')
 # export REGION=$(gcloud compute project-info describe \
 #   --format="value(commonInstanceMetadata.items[google-compute-default-region])")
 # export ZONE=$(gcloud compute project-info describe \
 #   --format="value(commonInstanceMetadata.items[google-compute-default-zone])")
-
 echo
 echo "🔹  Username 1: $USERID"
 echo "🔹  Username 2: $USERID2"
@@ -50,8 +48,7 @@ gcloud config set compute/region $REGION
 gcloud config set compute/zone $ZONE 
 gcloud compute instances create lab-1 \
   --zone $ZONE \
-  --machine-type=e2-standard-2 \
-  --metadata enable-oslogin=FALSE
+  --machine-type=e2-standard-2
 sleep 10
 
 export NEWZONE=$(gcloud compute zones list \
@@ -126,7 +123,7 @@ echo "export USERID2=$USERID2" >> ~/.bashrc
 gcloud projects add-iam-policy-binding $PROJECTID2 \
     --member user:$USERID2 \
     --role=roles/viewer
-sleep 10
+
 
 cat << 'EOF'
 
@@ -162,18 +159,32 @@ compute.subnetworks.use,\
 compute.subnetworks.useExternalIp,\
 compute.instances.setMetadata,\
 compute.instances.setServiceAccount"
+until gcloud iam roles describe devops --project $PROJECTID2 >/dev/null 2>&1
+do sleep 5; done
+
 gcloud projects add-iam-policy-binding $PROJECTID2 \
     --member=user:$USERID2 \
     --role=roles/iam.serviceAccountUser
+until gcloud projects get-iam-policy $PROJECTID2 \
+  --flatten="bindings[].members" \
+  --format="value(bindings.role, bindings.members)" 2>/dev/null \
+  | grep -q "roles/iam.serviceAccountUser.*$USERID2"
+do sleep 5; done
+
 gcloud projects add-iam-policy-binding $PROJECTID2 \
     --member=user:$USERID2 \
     --role=projects/$PROJECTID2/roles/devops
+until gcloud projects get-iam-policy $PROJECTID2 \
+  --flatten="bindings[].members" \
+  --format="value(bindings.role, bindings.members)" 2>/dev/null \
+  | grep -q "projects/$PROJECTID2/roles/devops.*$USERID2"
+do sleep 5; done
 
 gcloud config configurations activate user2
 gcloud compute instances create lab-2 \
     --zone $ZONE2 \
-    --machine-type=e2-standard-2 \
-    --metadata enable-oslogin=FALSE
+    --machine-type=e2-standard-2 
+echo -e '\n👉  Project ID 2 $PROJECTID2 VM instances:'
 gcloud compute instances list
 
 cat << 'EOF'
@@ -187,9 +198,12 @@ EOF
 gcloud config configurations activate default
 gcloud config set project $PROJECTID2
 gcloud iam service-accounts create devops --display-name devops
+until gcloud iam service-accounts describe \
+  "devops@$PROJECTID2.iam.gserviceaccount.com" >/dev/null 2>&1
+do sleep 5; done
 
 # gcloud iam service-accounts list --filter "displayName=devops"
-SA=$(gcloud iam service-accounts list \
+export SA=$(gcloud iam service-accounts list \
     --format="value(email)" \
     --filter "displayName=devops")
 gcloud projects add-iam-policy-binding $PROJECTID2 \
@@ -208,13 +222,17 @@ EOF
 gcloud projects add-iam-policy-binding $PROJECTID2 \
     --member serviceAccount:$SA \
     --role=roles/compute.instanceAdmin
+until gcloud projects get-iam-policy "$PROJECTID2" \
+  --flatten="bindings[].members" \
+  --filter="bindings.members:serviceAccount:$SA AND bindings.role:roles/compute.instanceAdmin" \
+  --format="value(bindings.role)" | grep -q .
+do sleep 5; done
 
 gcloud compute instances create lab-3 \
     --zone $ZONE2 \
     --machine-type=e2-standard-2 \
     --service-account $SA \
-    --scopes="https://www.googleapis.com/auth/compute" \
-    --metadata enable-oslogin=FALSE
+    --scopes="https://www.googleapis.com/auth/compute"
 
 
 cat << 'EOF'
@@ -231,8 +249,7 @@ gcloud compute ssh lab-3 \
 gcloud config list &&
 gcloud compute instances create lab-4 \
     --zone $ZONE2 \
-    --machine-type=e2-standard-2 \
-    --metadata enable-oslogin=FALSE &&
+    --machine-type=e2-standard-2 &&
 echo -e '\n👉  Project ID 2 $PROJECTID2 VM instances:' &&
 gcloud compute instances list
 "
