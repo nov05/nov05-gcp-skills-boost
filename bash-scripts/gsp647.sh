@@ -1,52 +1,39 @@
 #!/bin/bash
 ## Created by nov05, 2026-06-07  
 
+ask_to_proceed() {
+    while true; do
+        read -rp "Ready to proceed? (y): " answer
+        [[ "$answer" =~ ^[Yy]$ ]] && break
+    done
+}
+
 echo
-read -p "👉  Enter Username 1: " USERID
+read -p "👉  Enter Username: " USERID
 read -p "👉  Enter Username 2: " USERID2
 read -p "👉  Enter Project ID 2: " PROJECTID2
-cat >> ~/.bashrc << EOF
-export USERID="$USERID"
-export USERID2="$USERID2"
-export PROJECTID2="$PROJECTID2"
-EOF
+read -p "👉  Enter Zone 2: " ZONE2
+export USERID USERID2 PROJECTID2 ZONE2
 
-cat >> ~/.bashrc << 'EOF'
-## Get project id, project number, region, zone
 export PROJECTID=$(gcloud config get-value project)
-# export PROJECT_ID=$(gcloud projects list \
-#   --format='value(PROJECTID)' \
-#   --filter='qwiklabs-gcp')
-# export PROJECT_NUMBER=$(gcloud projects describe $PROJECTID \
-#   --format='value(projectNumber)')
 export REGION=$(gcloud compute project-info describe \
   --format="value(commonInstanceMetadata.items[google-compute-default-region])")
 export ZONE=$(gcloud compute project-info describe \
   --format="value(commonInstanceMetadata.items[google-compute-default-zone])")
-# export USERID=$(gcloud auth list --format="value(account)" --filter="status:ACTIVE")
-export ZONE2=$(gcloud compute zones list \
+export NEWZONE=$(gcloud compute zones list \
   --filter="region:$REGION" \
   --format="value(name)" | grep -v "$ZONE" | head -n 1)
-# export BUCKET="$PROJECTID-bucket"
-
-# gcloud config set project $PROJECTID  
-# gcloud config set compute/region $REGION
-# gcloud config set compute/zone $ZONE
 
 echo
+echo "🔹  Username 1: $USERID"
+echo "🔹  Username 2: $USERID2"
 echo "🔹  Project ID 1: $PROJECTID"
 echo "🔹  Project ID 2: $PROJECTID2"
-# echo "🔹  Project number: $PROJECT_NUMBER"
 echo "🔹  Region: $REGION"
 echo "🔹  Zone: $ZONE"
 echo "🔹  Zone 2: $ZONE2"
-# echo "🔹  User: $USER"
-echo "🔹  Username 1: $USERID"
-echo "🔹  Username 2: $USERID2"
-# echo "🔹  Bukect: $BUCKET"
+echo "🔹  New zone: $NEWZONE"
 echo
-EOF
-source ~/.bashrc
 
 cat << 'EOF'
 
@@ -66,11 +53,14 @@ gcloud compute instances create lab-1 \
   --machine-type=e2-standard-2 \
   --metadata enable-oslogin=FALSE
 
-echo -e "\n👉  Switching to zone 2 $ZONE2..."
-gcloud config set compute/zone $ZONE2
+echo -e "\n👉  Switching to a new zone 2 $NEWZONE..."
+gcloud config set compute/zone $NEWZONE
+sleep 10
 # gcloud config list 
 # cat ~/.config/gcloud/configurations/config_default
 
+echo -e "\n👉 Check the progress for Task 1 - Update the default zone."
+ask_to_proceed
 
 cat << 'EOF'
 
@@ -85,7 +75,8 @@ gcloud config configurations activate user2
 
 echo -e "\n👉  Login as Username 2 $USERID2"
 gcloud auth login --no-launch-browser --quiet
-
+# gcloud config set account "$USERID2" \
+#     --configuration=user2
 gcloud config set project "$PROJECTID" \
     --configuration=user2
 gcloud config set compute/region "$REGION" \
@@ -95,7 +86,7 @@ gcloud config set compute/zone "$ZONE" \
 
 echo -e "\n👉  User 2 $USERID2 cannot create an instance in the first project, as the assigned role is basic viewer."
 gcloud compute instances create lab-2 \
-    --zone "$ZONE" \
+    --zone "$ZONE2" \
     --machine-type=e2-standard-2 || true
 echo "🟢  Error is expected."
 
@@ -143,6 +134,12 @@ gcloud config set project $PROJECTID2
 echo -e "\n👉  Project ID 2 $PROJECTID2 VM instances:"
 gcloud compute instances list
 
+echo -e "\n👉  User 2 $USERID2 cannot create an instance in the 2nd project, as the assigned role is basic viewer."
+gcloud compute instances create lab-2 \
+    --zone "$ZONE2" \
+    --machine-type=e2-standard-2 || true
+echo "🟢  Error is expected."
+
 gcloud config configurations activate default
 gcloud iam roles create devops \
     --project "$PROJECTID2" \
@@ -166,10 +163,10 @@ gcloud projects add-iam-policy-binding "$PROJECTID2" \
 
 gcloud config configurations activate user2
 gcloud compute instances create lab-2 \
-    --zone "$ZONE" \
+    --zone "$ZONE2" \
     --machine-type=e2-standard-2 \
     --metadata enable-oslogin=FALSE
-
+gcloud compute instances list
 
 cat << 'EOF'
 
@@ -184,7 +181,6 @@ gcloud config set project $PROJECTID2
 gcloud iam service-accounts create devops --display-name devops
 
 # gcloud iam service-accounts list --filter "displayName=devops"
-
 SA=$(gcloud iam service-accounts list --format="value(email)" --filter "displayName=devops")
 gcloud projects add-iam-policy-binding "$PROJECTID2" \
     --member="serviceAccount:$SA" \
@@ -204,7 +200,7 @@ gcloud projects add-iam-policy-binding "$PROJECTID2" \
     --role="roles/compute.instanceAdmin"
 
 gcloud compute instances create lab-3 \
-    --zone "$ZONE" \
+    --zone "$ZONE2" \
     --machine-type=e2-standard-2 \
     --service-account "$SA" \
     --scopes="https://www.googleapis.com/auth/compute" \
@@ -220,13 +216,13 @@ Task 7. Test the service account
 EOF
 
 gcloud compute ssh lab-3 \
-    --zone us-central1-c \
+    --zone $ZONE2 \
     --command "
-gcloud config list
+gcloud config list &&
 gcloud compute instances create lab-4 \
-    --zone $ZONE \
+    --zone $ZONE2 \
     --machine-type=e2-standard-2 \
-    --metadata enable-oslogin=FALSE
+    --metadata enable-oslogin=FALSE &&
 gcloud compute instances list
 "
 

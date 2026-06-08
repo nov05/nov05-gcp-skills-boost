@@ -2,6 +2,14 @@
 ## Created by nov05, 2026-05-12  
 
 ask_to_proceed() {
+    while true; do
+        read -rp "Ready to proceed? (y): " answer
+        [[ "$answer" =~ ^[Yy]$ ]] && break
+    done
+}
+
+## Cursor trick
+ask_to_proceed() {
   local answer=""
   echo -e "\nReady to proceed?"
   while true; do
