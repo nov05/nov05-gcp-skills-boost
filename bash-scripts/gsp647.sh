@@ -2,16 +2,12 @@
 ## Created by nov05, 2026-06-07  
 
 echo
-echo "Find Zone 2 in Task 2 '\$ gcloud compute instances create lab-2 --zone \"Zone2\" --machine-type=e2-standard-2'"
 read -p "👉  Enter Username 2: " USERNAME2
 read -p "👉  Enter Project ID 2: " PROJECT_ID2
-read -p "👉  Enter Zone 2: " ZONE2
-
 
 cat >> ~/.bashrc <<'EOF'
 export USERNAME2
 export PROJECT_ID2
-export ZONE2
 
 ## Get project id, project number, region, zone
 export PROJECT_ID=$(gcloud config get-value project)
@@ -22,9 +18,9 @@ export REGION=$(gcloud compute project-info describe \
 export ZONE=$(gcloud compute project-info describe \
   --format="value(commonInstanceMetadata.items[google-compute-default-zone])")
 export USERNAME=$(gcloud auth list --format="value(account)" --filter="status:ACTIVE")
-# export ZONE2=$(gcloud compute zones list \
-#   --filter="region:$REGION" \
-#   --format="value(name)" | grep -v "$ZONE" | head -n 1)
+export ZONE2=$(gcloud compute zones list \
+  --filter="region:$REGION" \
+  --format="value(name)" | grep -v "$ZONE" | head -n 1)
 # export BUCKET="$PROJECT_ID-bucket"
 
 # gcloud config set project $(gcloud projects list --format='value(PROJECT_ID)' --filter='qwiklabs-gcp')
@@ -88,13 +84,14 @@ gcloud config set project "$PROJECT_ID" \
     --configuration=user2
 gcloud config set compute/region "$REGION" \
     --configuration=user2
-gcloud config set compute/zone "$ZONE2" \
+gcloud config set compute/zone "$ZONE" \
     --configuration=user2
 
 echo -e "\n👉  User 2 $USERNAME2 cannot create an instance in the first project, as the assigned role is basic viewer."
 gcloud compute instances create lab-2 \
-    --zone "$ZONE2" \
+    --zone "$ZONE" \
     --machine-type=e2-standard-2 || true
+echo "🟢  Error is expected."
 
 gcloud config configurations activate default
 
@@ -162,7 +159,7 @@ gcloud projects add-iam-policy-binding "$PROJECT_ID2" \
 
 gcloud config configurations activate user2
 gcloud compute instances create lab-2 \
-    --zone "$ZONE2" \
+    --zone "$ZONE" \
     --machine-type=e2-standard-2 \
     --metadata enable-oslogin=FALSE
 
@@ -200,7 +197,7 @@ gcloud projects add-iam-policy-binding "$PROJECT_ID2" \
     --role="roles/compute.instanceAdmin"
 
 gcloud compute instances create lab-3 \
-    --zone "$ZONE2" \
+    --zone "$ZONE" \
     --machine-type=e2-standard-2 \
     --service-account "$SA" \
     --scopes="https://www.googleapis.com/auth/compute" \
@@ -220,7 +217,7 @@ gcloud compute ssh lab-3 \
     --command "
 gcloud config list
 gcloud compute instances create lab-4 \
-    --zone $ZONE2 \
+    --zone $ZONE \
     --machine-type=e2-standard-2 \
     --metadata enable-oslogin=FALSE
 gcloud compute instances list
