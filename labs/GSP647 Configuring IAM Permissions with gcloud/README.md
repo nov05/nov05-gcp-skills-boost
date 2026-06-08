@@ -32,15 +32,15 @@ sudo chmod +x gsp647.sh
 sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 ```
 
-Run the following commands to log out the SSH session and download `clean_logs.txt`.
+Run `exit` to log out the SSH session and then the following command to copy `clean_logs.txt` to the Cloud Shell.
 
 ```bash
-exit
 gcloud compute scp \
   --zone=$ZONE \
   centos-clean:~/clean_logs.txt \
   ~/clean_logs.txt
 ```
 
+* You can find a sample log file in this folder.  
 * The final landscape  
   <img src="https://raw.githubusercontent.com/nov05/pictures/refs/heads/master/gcp-skills-boost%20/gsp647/gsp647_landscape.jpg" width=500>

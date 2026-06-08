@@ -1,6 +1,20 @@
 #!/bin/bash
 ## Created by nov05, 2026-06-07  
 
+: <<'COMMENT'
+Critical lab instructions:
+1. The grader relies on specific environment variables stored in ~/.bashrc on the VM instance "centos-clean":
+   These variable names must be used exactly as shown. Do not modify them.
+   Also, do NOT disable OS Login for the VM instance "centos-clean".
+   Required commands:
+       echo "export ZONE2=$ZONE2" >> ~/.bashrc
+       echo "export PROJECTID2=$PROJECTID2" >> ~/.bashrc
+       echo "export USERID2=$USERID2" >> ~/.bashrc
+       . ~/.bashrc
+2. After creating or binding a role, or creating a VM instance,
+   allow some time for changes to propagate before continuing.
+COMMENT
+
 ask_to_proceed() {
     while true; do
         read -rp "Ready to proceed? (y): " answer
@@ -51,9 +65,6 @@ gcloud compute instances create lab-1 \
   --zone $ZONE \
   --machine-type=e2-standard-2
 
-## For the lab grader only
-# echo "export ZONE1=$ZONE" >> ~/.bashrc
-# . ~/.bashrc
 # export NEWZONE=$(gcloud compute zones list \
 #   --filter="region:$REGION" \
 #   --format="value(name)" | grep -v "$ZONE" | head -n 1)
@@ -251,6 +262,7 @@ EOF
 
 gcloud compute ssh lab-3 \
     --zone $ZONE2 \
+    --quiet \
     --command "
 gcloud config list &&
 gcloud compute instances create lab-4 \
