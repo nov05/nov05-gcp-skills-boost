@@ -51,6 +51,9 @@ gcloud compute instances create lab-1 \
   --zone $ZONE \
   --machine-type=e2-standard-2
 
+## For the lab grader only
+# echo "export ZONE1=$ZONE" >> ~/.bashrc
+# . ~/.bashrc
 # export NEWZONE=$(gcloud compute zones list \
 #   --filter="region:$REGION" \
 #   --format="value(name)" | grep -v "$ZONE" | head -n 1)
