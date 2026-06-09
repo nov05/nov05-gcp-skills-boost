@@ -210,28 +210,30 @@ cat > query.py <<'EOF_PY'
 from google.auth import compute_engine
 from google.cloud import bigquery
 
-## Compute Engine metadata server already supplies credentials.
-## However, we'll leave the code unchanged to match the lab instructions.
-print("👉  Initializing BigQuery client...")
-credentials = compute_engine.Credentials(
-    service_account_email='YOUR_SERVICE_ACCOUNT')
-
 query = '''
 SELECT name, SUM(number) as total_people
 FROM `bigquery-public-data.usa_names.usa_1910_2013`
-WHERE state = `TX`
+WHERE state = 'TX'
 GROUP BY name, state
 ORDER BY total_people DESC
 LIMIT 20
 '''
+
+## Compute Engine metadata server already supplies credentials.
+## However, we'll leave the code unchanged to match the lab instructions.
+print("\n👉  Initializing BigQuery client...\n")
+credentials = compute_engine.Credentials(
+    service_account_email='YOUR_SERVICE_ACCOUNT')
 client = bigquery.Client(
     project='YOUR_PROJECT_ID',
     credentials=credentials)
+# client = bigquery.Client()
+
 print(client.query(query).to_dataframe())
 EOF_PY
 
 ## Replace placeholders
-sed -i -e "s/PROJECT_ID/$(gcloud config get-value project)/g" query.py
+sed -i -e "s/YOUR_PROJECT_ID/$(gcloud config get-value project)/g" query.py
 sed -i -e "s/YOUR_SERVICE_ACCOUNT/bigquery-qwiklab@$(gcloud config get-value project).iam.gserviceaccount.com/g" query.py
 
 ## Execute the script
