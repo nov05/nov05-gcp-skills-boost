@@ -83,7 +83,7 @@ Task 4: Get a list of available voices
 EOF
 
 unset GOOGLE_APPLICATION_CREDENTIALS
-# gcloud auth application-default revoke -q
+gcloud auth application-default revoke -q
 export TOKEN=$(gcloud auth print-access-token)
 
 echo -e "\n👉  List the voices available when you use the Text-to-Speech API to create synthetic speech.\n"
