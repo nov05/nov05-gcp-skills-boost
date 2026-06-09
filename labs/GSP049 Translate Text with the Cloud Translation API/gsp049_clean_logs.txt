@@ -1,0 +1,65 @@
+
+========================================================
+Task 1. Create an API key
+========================================================
+
+Operation "operations/acat.p2-184327873308-c73ed525-c4f3-4498-a15a-6bb2e06cdf01" finished successfully.
+Operation [operations/akmf.p7-184327873308-22200658-1228-481d-b33e-503f6a91c836] complete. Result: {
+    "@type":"type.googleapis.com/google.api.apikeys.v2.Key",
+    "createTime":"2026-06-09T22:26:12.839188Z",
+    "displayName":"gsp049-api-key",
+    "etag":"W/\"2zTN6vD5npt8nQG/XUnBMA==\"",
+    "keyString":"AIzaSyCDNu8WcIOPydMiVVgCNfIGdpBV_DmuobQ",
+    "name":"projects/184327873308/locations/global/keys/b895ab8f-c164-40ca-b7d8-ed1f4c59fd2b",
+    "uid":"b895ab8f-c164-40ca-b7d8-ed1f4c59fd2b",
+    "updateTime":"2026-06-09T22:26:12.918821Z"
+}
+
+========================================================
+Task 2. Translate text
+========================================================
+
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   151    0   151    0     0    973      0 --:--:-- --:--:-- --:--:--   980
+{
+  "data": {
+    "translations": [
+      {
+        "translatedText": "Mi nombre es Steve",
+        "detectedSourceLanguage": "en"
+      }
+    ]
+  }
+}
+
+========================================================
+Task 3. Detect the language
+========================================================
+
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   402    0   289  100   113   1818    711 --:--:-- --:--:-- --:--:--  2544
+{
+  "data": {
+    "detections": [
+      [
+        {
+          "language": "pt",
+          "isReliable": false,
+          "confidence": 1
+        }
+      ],
+      [
+        {
+          "language": "ja",
+          "isReliable": false,
+          "confidence": 1
+        }
+      ]
+    ]
+  }
+}
+
+✅  All done
+
