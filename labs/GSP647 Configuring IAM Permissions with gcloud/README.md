@@ -25,7 +25,7 @@ gcloud compute ssh "centos-clean" \
 Inside the SSH session, run the following commands.
 
 ```bash
-rm -f gsp647.sh clean_logs.txt
+rm -rf *
 curl -LO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/main/bash-scripts/gsp647.sh
 sudo chmod +x gsp647.sh
 ./gsp647.sh 2>&1 | tee -a logs.txt

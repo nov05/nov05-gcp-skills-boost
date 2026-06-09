@@ -30,6 +30,7 @@ export ZONE=$(gcloud compute project-info describe \
 # gcloud config set project $(gcloud projects list --format='value(PROJECT_ID)' --filter='qwiklabs-gcp')
 gcloud config set project $PROJECT_ID  
 gcloud config set compute/region $REGION
+gcloud config set compute/zone $ZONE
 echo
 echo "🔹  Project ID: $PROJECT_ID"
 echo "🔹  Project number: $PROJECT_NUMBER"
