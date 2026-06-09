@@ -80,9 +80,7 @@ Task 4: Get a list of available voices
 
 EOF
 
-gcloud auth activate-service-account "$SA" \
-    --key-file=tts-qwiklab.json
-gcloud config set account "$SA"
+gcloud auth activate-service-account --key-file=tts-qwiklab.json
 export TOKEN=$(gcloud auth print-access-token)
 
 echo -e "\n👉  List the voices available when you use the Text-to-Speech API to create synthetic speech.\n"
