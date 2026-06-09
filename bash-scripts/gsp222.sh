@@ -82,6 +82,7 @@ Task 4: Get a list of available voices
 
 EOF
 
+## ⚠️ After activate the service account, you have to set it as the current account. 
 gcloud auth activate-service-account --key-file=tts-qwiklab.json
 gcloud config set account $SA
 export TOKEN=$(gcloud auth print-access-token)
