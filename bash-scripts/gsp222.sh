@@ -59,13 +59,12 @@ EOF
 export SA="tts-qwiklab@$PROJECT_ID.iam.gserviceaccount.com"
 gcloud iam service-accounts describe "$SA" >/dev/null 2>&1 || \
 gcloud iam service-accounts create tts-qwiklab
-until gcloud iam service-accounts describe \
-  "tts-qwiklab@$PROJECT_ID.iam.gserviceaccount.com" >/dev/null 2>&1
+until gcloud iam service-accounts describe "$SA" >/dev/null 2>&1
 do sleep 5; done
 
 ## Authenticating by using local Application Default Credentials
 gcloud iam service-accounts keys create tts-qwiklab.json \
-    --iam-account tts-qwiklab@$PROJECT_ID.iam.gserviceaccount.com
+    --iam-account "$SA"
 echo -e "\n👉  Check the key file tts-qwiklab.json\n"
 cat tts-qwiklab.json
 echo
@@ -83,6 +82,7 @@ EOF
 
 gcloud auth activate-service-account "$SA" \
     --key-file=tts-qwiklab.json
+gcloud config set account "$SA"
 export TOKEN=$(gcloud auth print-access-token)
 
 echo -e "\n👉  List the voices available when you use the Text-to-Speech API to create synthetic speech.\n"
