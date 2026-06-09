@@ -1,4 +1,5 @@
 #!/bin/bash
+## Created by nov05, 2026-06-09
 
 cat << 'EOF'
 
@@ -8,8 +9,7 @@ Task 1. Create an API key
 
 EOF
 
-gcloud services enable apikeys.googleapis.com
-sleep 10
+gcloud services enable apikeys.googleapis.com; sleep 10
 gcloud alpha services api-keys create \
     --display-name="gsp049-api-key" 
 export KEY_NAME=$(

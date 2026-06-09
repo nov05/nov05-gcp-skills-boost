@@ -17,7 +17,7 @@ until gcloud compute my-instance \
   sleep 5
 done
 
-cat > my-query.sh <<'EOF'
+cat > my-query.sh << 'EOF'
 #!/bin/bash
 ## Install required packages
 sudo apt-get update -qq
