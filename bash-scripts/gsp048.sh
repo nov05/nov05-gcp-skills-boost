@@ -61,6 +61,7 @@ cat << 'EOF' > request.json
   }
 }
 EOF
+cat request.json
 
 
 cat << 'EOF'
@@ -113,6 +114,7 @@ cat << 'EOF' > request.json
   }
 }
 EOF
+cat request.json
 
 gcloud compute scp task.sh request.json linux-instance \
   --project=$PROJECT_ID \
