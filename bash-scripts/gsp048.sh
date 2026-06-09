@@ -86,7 +86,7 @@ gcloud compute scp task.sh request.json linux-instance \
   --zone=$ZONE \
   --quiet
 
-gcloud compute ssh my-instance \
+gcloud compute ssh linux-instance \
   --project=$PROJECT_ID \
   --zone=$ZONE \
   --quiet \
@@ -119,7 +119,7 @@ gcloud compute scp task.sh request.json linux-instance \
   --zone=$ZONE \
   --quiet
 
-gcloud compute ssh my-instance \
+gcloud compute ssh linux-instance \
   --project=$PROJECT_ID \
   --zone=$ZONE \
   --quiet \
