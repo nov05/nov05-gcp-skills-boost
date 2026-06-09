@@ -1,0 +1,26 @@
+#!/bin/bash
+## Created by nov05, 2026-06-09  
+
+cat << 'EOF' > filename
+EOF
+
+## GSP122
+cat << 'EOF' > synthesize-text.json
+{
+    'input':{
+        'text':'Cloud Text-to-Speech API allows developers to include
+           natural-sounding, synthetic human speech as playable audio in
+           their applications. The Text-to-Speech API converts text or
+           Speech Synthesis Markup Language (SSML) input into audio data
+           like MP3 or LINEAR16 (the encoding used in WAV files).'
+    },
+    'voice':{
+        'languageCode':'en-gb',
+        'name':'en-GB-Standard-A',
+        'ssmlGender':'FEMALE'
+    },
+    'audioConfig':{
+        'audioEncoding':'MP3'
+    }
+}
+EOF

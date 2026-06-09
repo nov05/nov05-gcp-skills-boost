@@ -8,7 +8,8 @@ ask_to_proceed() {
     done
 }
 
-## Cursor trick
+
+## With cursor trick
 ask_to_proceed() {
   local answer=""
   echo -e "\nReady to proceed?"
