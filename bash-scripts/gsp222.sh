@@ -71,8 +71,7 @@ cat tts-qwiklab.json
 echo
 
 export GOOGLE_APPLICATION_CREDENTIALS=tts-qwiklab.json
-# gcloud auth application-default login --quiet
-# gcloud auth application-default set-quota-project $PROJECT_ID --quiet
+
 
 cat << 'EOF'
 
@@ -82,8 +81,8 @@ Task 4: Get a list of available voices
 
 EOF
 
-unset GOOGLE_APPLICATION_CREDENTIALS
-gcloud auth application-default revoke -q
+gcloud auth activate-service-account "$SA" \
+    --key-file=tts-qwiklab.json
 export TOKEN=$(gcloud auth print-access-token)
 
 echo -e "\n👉  List the voices available when you use the Text-to-Speech API to create synthetic speech.\n"
