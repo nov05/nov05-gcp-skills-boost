@@ -9,6 +9,8 @@ sudo chmod +x gsp642.sh
 yes y | ./gsp642.sh 2>&1 | tee -a logs.txt
 sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 
+
+
 ## If you are using the spinner function in the script...
 ./gsp642.sh 2>&1 | tee -a logs.txt
 perl -pe '
