@@ -56,14 +56,19 @@ Task 3: Create a service account
 
 EOF
 
+export SA="tts-qwiklab@$PROJECT_ID.iam.gserviceaccount.com"
+gcloud iam service-accounts describe "$SA" >/dev/null 2>&1 || \
 gcloud iam service-accounts create tts-qwiklab
 until gcloud iam service-accounts describe \
   "tts-qwiklab@$PROJECT_ID.iam.gserviceaccount.com" >/dev/null 2>&1
 do sleep 5; done
 
+## Authenticating by using local Application Default Credentials
 gcloud iam service-accounts keys create tts-qwiklab.json \
     --iam-account tts-qwiklab@$PROJECT_ID.iam.gserviceaccount.com
 export GOOGLE_APPLICATION_CREDENTIALS=tts-qwiklab.json
+gcloud auth application-default login
+gcloud auth application-default set-quota-project $PROJECT_ID
 
 cat << 'EOF'
 
@@ -75,12 +80,12 @@ EOF
 
 export TOKEN=$(gcloud auth print-access-token)
 
-echo -e "👉  List the voices available when you use the Text-to-Speech API to create synthetic speech.\n"
+echo -e "\n👉  List the voices available when you use the Text-to-Speech API to create synthetic speech.\n"
 curl -H "Authorization: Bearer $TOKEN" \
     -H "Content-Type: application/json; charset=utf-8" \
     "https://texttospeech.googleapis.com/v1/voices"
 
-echo -e "👉  Scope the results returned from the API to just a single language code."
+echo -e "\n👉  Scope the results returned from the API to just a single language code."
 curl -H "Authorization: Bearer $TOKEN" \
     -H "Content-Type: application/json; charset=utf-8" \
     "https://texttospeech.googleapis.com/v1/voices?language_code=en"
@@ -98,10 +103,10 @@ cat << 'EOF' > synthesize-text.json
 {
     'input':{
         'text':'Cloud Text-to-Speech API allows developers to include
-           natural-sounding, synthetic human speech as playable audio in
-           their applications. The Text-to-Speech API converts text or
-           Speech Synthesis Markup Language (SSML) input into audio data
-           like MP3 or LINEAR16 (the encoding used in WAV files).'
+            natural-sounding, synthetic human speech as playable audio in
+            their applications. The Text-to-Speech API converts text or
+            Speech Synthesis Markup Language (SSML) input into audio data
+            like MP3 or LINEAR16 (the encoding used in WAV files).'
     },
     'voice':{
         'languageCode':'en-gb',
@@ -152,11 +157,11 @@ if __name__ == '__main__':
         description="Decode output from Cloud Text-to-Speech",
         formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('--input',
-                       help='The response from the Text-to-Speech API.',
-                       required=True)
+                        help='The response from the Text-to-Speech API.',
+                        required=True)
     parser.add_argument('--output',
-                       help='The name of the audio file to create',
-                       required=True)
+                        help='The name of the audio file to create',
+                        required=True)
 
     args = parser.parse_args()
     decode_tts_output(args.input, args.output)

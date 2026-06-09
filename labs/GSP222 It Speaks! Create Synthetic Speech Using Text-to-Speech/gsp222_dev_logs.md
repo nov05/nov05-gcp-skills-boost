@@ -8,6 +8,8 @@ sudo chmod +x gsp222.sh
 sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 ```
 
+* Check [the issues](https://gist.github.com/nov05/58523f8651a52f3a0cafa52d65e41476).  
+
 ## 👉 Logs
 
 * 2026-06-09 Script `gsp222.sh` created
