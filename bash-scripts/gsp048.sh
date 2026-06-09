@@ -1,6 +1,25 @@
 #!/bin/bash
 ## Created by nov05, 2026-06-09
 
+## Get project id, project number, region, zone
+export PROJECT_ID=$(gcloud config get-value project)
+export PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID \
+  --format='value(projectNumber)')
+export REGION=$(gcloud compute project-info describe \
+  --format="value(commonInstanceMetadata.items[google-compute-default-region])")
+export ZONE=$(gcloud compute project-info describe \
+  --format="value(commonInstanceMetadata.items[google-compute-default-zone])")
+gcloud config set project $PROJECT_ID  
+gcloud config set compute/region $REGION
+gcloud config set compute/zone $ZONE
+echo
+echo "🔹  User: $USER"
+echo "🔹  Project ID: $PROJECT_ID"
+echo "🔹  Region: $REGION"
+echo "🔹  Zone: $ZONE"
+echo
+gcloud auth list
+
 cat << 'EOF'
 
 ========================================================
