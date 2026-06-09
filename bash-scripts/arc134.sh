@@ -28,24 +28,16 @@ Task 1. Enable and Explore Gemini (optional)
 
 EOF
 
-export MODEL="gemini-1.5-flash"
+## https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-versions
+export LOCATION=us-central1
+export MODEL="gemini-2.5-flash-lite"
 export TOKEN=$(gcloud auth print-access-token)
-curl -s -X POST \
-  -H "Authorization: Bearer $TOKEN" \
-  -H "Content-Type: application/json" \
-  "https://${REGION}-aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/${REGION}/publishers/google/models/${MODEL}:generateContent" \
-  -d '{
-    "contents": [
-      {
-        "role": "user",
-        "parts": [
-          {
-            "text": "What is a service account?"
-          }
-        ]
-      }
-    ]
-  }'
+gcloud services enable aiplatform.googleapis.com \
+  --project=$PROJECT_ID
+until gcloud services list --enabled \
+  --project=$PROJECT_ID | grep -q aiplatform.googleapis.com
+do sleep 5; done
+
 curl -s -X POST \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
@@ -62,22 +54,11 @@ Task 2. Create a service account using the gcloud CLI
 ========================================================
 
 EOF
-
 ## Refer to GSP647
-gcloud iam roles create devops \
-    --project $PROJECT_ID \
-    --permissions \
-    "compute.instances.create,\
-compute.instances.delete,\
-compute.instances.start,\
-compute.instances.stop,\
-compute.instances.update,\
-compute.disks.create,\
-compute.subnetworks.use,\
-compute.subnetworks.useExternalIp,\
-compute.instances.setMetadata,\
-compute.instances.setServiceAccount"
-until gcloud iam roles describe devops --project $PROJECT_ID >/dev/null 2>&1
+
+gcloud iam service-accounts create devops --display-name devops
+until gcloud iam service-accounts describe \
+  "devops@$PROJECT_ID.iam.gserviceaccount.com" >/dev/null 2>&1
 do sleep 5; done
 
 cat << 'EOF'
@@ -87,8 +68,9 @@ Task 3. Grant IAM permissions to a service account using the gcloud CLI
 ========================================================
 
 EOF
-
 ## Refer to GSP647
+
+gcloud auth login --quiet
 export SA=$(gcloud iam service-accounts list \
     --format="value(email)" \
     --filter "displayName=devops")
@@ -117,7 +99,12 @@ gcloud compute instances create vm-2 \
     --zone $ZONE \
     --machine-type=e2-standard-2 \
     --service-account $SA \
-    --scopes="https://www.googleapis.com/auth/compute"
+    --scopes="https://www.googleapis.com/auth/compute" \
+    --metadata=enable-oslogin=FALSE
+until gcloud compute instances describe vm-2 \
+    --zone=$ZONE \
+    --format="value(status)" | grep -q RUNNING
+do sleep 5; done
 
 ## SSH into the vm-2 VM instance. Try to create and list an instance 
 ## from vm-2 to verify you have the necessary permissions via the service account.
@@ -149,7 +136,7 @@ includedPermissions:
 - cloudsql.instances.connect
 - cloudsql.instances.get' > role-definition.yaml
 
-gcloud iam roles create role-arc134 \
+gcloud iam roles create role_arc134 \
     --project $PROJECT_ID \
     --file role-definition.yaml
 
@@ -231,8 +218,8 @@ credentials = compute_engine.Credentials(
 
 query = '''
 SELECT name, SUM(number) as total_people
-FROM "bigquery-public-data.usa_names.usa_1910_2013"
-WHERE state = 'TX'
+FROM `bigquery-public-data.usa_names.usa_1910_2013`
+WHERE state = `TX`
 GROUP BY name, state
 ORDER BY total_people DESC
 LIMIT 20

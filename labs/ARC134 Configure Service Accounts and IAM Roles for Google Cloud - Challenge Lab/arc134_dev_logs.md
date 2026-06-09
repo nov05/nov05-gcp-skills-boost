@@ -17,7 +17,7 @@ Inside the SSH session, run the following commands.
 rm -rf *
 curl -LO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/dev/bash-scripts/arc134.sh
 sudo chmod +x arc134.sh
-./gsp647.sh 2>&1 | tee -a logs.txt
+./arc134.sh 2>&1 | tee -a logs.txt
 sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 ```
 

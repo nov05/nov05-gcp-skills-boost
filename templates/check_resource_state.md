@@ -62,3 +62,37 @@ until gcloud iam service-accounts describe \
   "devops@$PROJECTID2.iam.gserviceaccount.com" >/dev/null 2>&1
 do sleep 5; done
 ```
+
+👉 Refer to ARC134  
+
+* Make sure an API is enabled.
+
+```bash
+gcloud services enable aiplatform.googleapis.com \
+  --project=$PROJECT_ID
+until gcloud services list --enabled \
+  --project=$PROJECT_ID | grep -q aiplatform.googleapis.com
+do sleep 5; done
+```
+
+* Make sure a VM instance is running.
+
+```bash
+gcloud compute instances create bigquery-instance \
+  --project="$PROJECT_ID" \
+  --zone="$ZONE" \
+  --machine-type="e2-medium" \
+  --subnet="default" \
+  --service-account="bigquery-qwiklab@$PROJECT_ID.iam.gserviceaccount.com" \
+  --scopes="https://www.googleapis.com/auth/cloud-platform" \
+  --image-family="debian-12" \
+  --image-project="debian-cloud" \
+  --boot-disk-size="10GB" \
+  --boot-disk-type="pd-standard" \
+  --metadata=enable-oslogin=FALSE
+until gcloud compute ssh bigquery-instance \
+    --zone=$ZONE \
+    --command="echo ready" >/dev/null 2>&1; do
+  sleep 5
+done
+```
