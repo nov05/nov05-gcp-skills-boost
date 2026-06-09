@@ -92,7 +92,7 @@ curl -H "Authorization: Bearer $TOKEN" \
     -H "Content-Type: application/json; charset=utf-8" \
     "https://texttospeech.googleapis.com/v1/voices"
 
-echo -e "\n👉  Scope the results returned from the API to just a single language code."
+echo -e "\n👉  Scope the results returned from the API to just a single language code.\n"
 curl -H "Authorization: Bearer $TOKEN" \
     -H "Content-Type: application/json; charset=utf-8" \
     "https://texttospeech.googleapis.com/v1/voices?language_code=en"
