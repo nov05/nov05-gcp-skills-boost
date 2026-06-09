@@ -1,0 +1,36 @@
+view: user_details {
+  derived_table: {
+    explore_source: order_items {
+      column: user_id {}
+      column: order_id {}
+      column: state { field: users.state }
+      column: city { field: users.city }
+      column: age { field: users.age }
+      column: total_revenue {}
+    }
+    datagroup_trigger: training_ecommerce_default_datagroup
+  }
+  dimension: user_id {
+    description: ""
+    type: number
+  }
+  dimension: order_id {
+    description: ""
+    type: number
+  }
+  dimension: state {
+    description: ""
+  }
+  dimension: city {
+    description: ""
+  }
+  dimension: age {
+    description: ""
+    type: number
+  }
+  dimension: total_revenue {
+    description: ""
+    value_format: "$#,##0.00"
+    type: number
+  }
+}
