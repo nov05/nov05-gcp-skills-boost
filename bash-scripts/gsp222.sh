@@ -66,6 +66,10 @@ do sleep 5; done
 ## Authenticating by using local Application Default Credentials
 gcloud iam service-accounts keys create tts-qwiklab.json \
     --iam-account tts-qwiklab@$PROJECT_ID.iam.gserviceaccount.com
+echo -e "\n👉  Check the key file tts-qwiklab.json\n"
+cat tts-qwiklab.json
+echo
+
 export GOOGLE_APPLICATION_CREDENTIALS=tts-qwiklab.json
 gcloud auth application-default login --quiet
 gcloud auth application-default set-quota-project $PROJECT_ID --quiet
