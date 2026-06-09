@@ -1,6 +1,8 @@
 #!/bin/bash
 ## Created by nov05, 2026-06-09  
 
+set -e
+
 ## Get project id, project number, region, zone
 export PROJECT_ID=$(gcloud config get-value project)
 export PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID \
@@ -81,6 +83,7 @@ Task 4: Get a list of available voices
 EOF
 
 gcloud auth activate-service-account --key-file=tts-qwiklab.json
+gcloud config set account $SA
 export TOKEN=$(gcloud auth print-access-token)
 
 echo -e "\n👉  List the voices available when you use the Text-to-Speech API to create synthetic speech.\n"
