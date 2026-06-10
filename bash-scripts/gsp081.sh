@@ -33,10 +33,17 @@ EOF
 gcloud services enable run.googleapis.com \
     artifactregistry.googleapis.com \
     cloudbuild.googleapis.com \
+    cloudfunctions.googleapis.com \
     --project=$PROJECT_ID
 until gcloud services list --enabled \
     --project=$PROJECT_ID | grep -q run.googleapis.com
 do sleep 5; done
+
+gcloud artifacts repositories create cloud-run-source-deploy \
+  --repository-format=docker \
+  --location=$REGION \
+  --description="GSP081 Cloud Run" \
+  || true
 
 gcloud run deploy gcfunction \
     --source=. \
