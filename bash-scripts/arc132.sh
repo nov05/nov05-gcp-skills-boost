@@ -3,24 +3,32 @@
 
 set -e
 
+ask_to_proceed() {
+    while true; do
+        read -rp "Ready to proceed? (y): " answer
+        [[ "$answer" =~ ^[Yy]$ ]] && break
+    done
+}
+
 # read -p "👉  Enter Task 2 VM instance name: " VM_NAME
-# read -p "👉  Enter Task 2 result file name: " TASK2_RESULT
-# read -p "👉  Enter Task 3 request file name: " TASK3_REQUEST
+read -p "👉  Enter Task 2 result file name: " TASK2_RESULT
+read -p "👉  Enter Task 3 request file name: " TASK3_REQUEST
 # read -p "👉  Enter Task 3 result file name: " TASK3_RESULT
 # read -p "👉  Enter Task 4 text: " TASK4_TEXT
-# read -p "👉  Enter Task 4 result file name: " TASK4_RESULT
+read -p "👉  Enter Task 4 result file name: " TASK4_RESULT
 # read -p "👉  Enter Task 5 text: " TASK5_TEXT
-# read -p "👉  Enter Task 5 result file name: " TASK5_RESULT
+read -p "👉  Enter Task 5 result file name: " TASK5_RESULT
 # export VM_NAME TASK2_RESULT TASK3_REQUEST TASK3_RESULT TASK4_TEXT TASK4_RESULT TASK5_TEXT TASK5_RESULT
+export TASK3_REQUEST TASK3_RESULT TASK4_RESULT TASK5_RESULT
 # echo
 export VM_NAME="lab-vm"
 export TASK2_RESULT="synthesize-text.txt"
-export TASK3_REQUEST="speech_request.json"
-export TASK3_RESULT="speech_response_fr.json"
+# export TASK3_REQUEST="speech_request.json"
+# export TASK3_RESULT="speech_response_fr.json"
 export TASK4_TEXT="これは日本語です。"
-export TASK4_RESULT="translated_response.txt"
+# export TASK4_RESULT="translated_response.txt"
 export TASK5_TEXT="Este%é%japonês."
-export TASK5_RESULT="detected_response.txt"
+# export TASK5_RESULT="detected_response.txt"
 
 ## Get project id, project number, region, zone
 export PROJECT_ID=$(gcloud config get-value project)
@@ -77,6 +85,9 @@ export KEY_ID=$(
 export API_KEY=$(
     gcloud alpha services api-keys get-key-string $KEY_ID \
         --format="value(keyString)")
+
+echo -e "\n👉  Check the progress in the lab.\n"
+ask_to_proceed
 
 cat << 'EOF'
 
@@ -189,13 +200,13 @@ Task 3. Perform speech to text transcription with the Cloud Speech API
 ========================================================
 
 EOF
-## Refer to GSP048
+## Refer to GSP048, Task 4
 
 cat << 'EOF' > $TASK3_REQUEST
 {
   "config": {
       "encoding":"FLAC",
-      "languageCode": "en-US"
+      "languageCode": "fr"
   },
   "audio": {
       "uri":"gs://cloud-samples-data/speech/corbeau_renard.flac"
