@@ -167,6 +167,8 @@ curl -s -X POST \
   -d @synthesize-text.json \
   "https://texttospeech.googleapis.com/v1/text:synthesize?key=${API_KEY}" \
   > $TASK2_RESULT
+echo -e "\n👉  Check ${TASK2_RESULT}\n"
+cat $TASK2_RESULT
 source venv/bin/activate
 python tts_decode.py --input "$TASK2_RESULT" --output "synthesize-text-audio.mp3"
 EOF
