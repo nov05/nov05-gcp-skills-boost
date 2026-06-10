@@ -81,7 +81,7 @@ rm -f task.sh request.json result.json
 EOF
 
 ## Copy files to the VM instance
-gcloud compute scp task.sh request.json linux-instance \
+gcloud compute scp task.sh request.json linux-instance:~ \
   --project=$PROJECT_ID \
   --zone=$ZONE \
   --quiet
@@ -90,7 +90,7 @@ gcloud compute ssh linux-instance \
   --project=$PROJECT_ID \
   --zone=$ZONE \
   --quiet \
-  --command="chmod +x task.sh && ./task.sh"
+  --command="chmod +x ~/task.sh && ~/task.sh"
 
 cat << 'EOF'
 
@@ -114,7 +114,7 @@ cat << 'EOF' > request.json
 EOF
 cat request.json
 
-gcloud compute scp task.sh request.json linux-instance \
+gcloud compute scp task.sh request.json linux-instance:~ \
   --project=$PROJECT_ID \
   --zone=$ZONE \
   --quiet
@@ -123,6 +123,6 @@ gcloud compute ssh linux-instance \
   --project=$PROJECT_ID \
   --zone=$ZONE \
   --quiet \
-  --command="chmod +x task.sh && ./task.sh"
+  --command="chmod +x ~/task.sh && ~/task.sh"
 
 echo -e "\n✅  All done\n"
