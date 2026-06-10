@@ -15,7 +15,7 @@ set -e
 # echo
 export VM_NAME="lab-vm"
 export TASK2_RESULT="synthesize-text.txt"
-export TASK3_REQUEST="request.json"
+export TASK3_REQUEST="speech_request.json"
 export TASK3_RESULT="speech_response_fr.json"
 export TASK4_TEXT="これは日本語です。"
 export TASK4_RESULT="translated_response.txt"
@@ -78,10 +78,10 @@ export API_KEY_ID=$(
     gcloud alpha services api-keys list \
         --format="value(name)" \
         --filter "displayName=$API_DISPLAY_NAME")
-gcloud services api-keys update $API_KEY_ID \
-    --api-target=service=speech.googleapis.com \
-    --api-target=service=texttospeech.googleapis.com \
-    --api-target=service=translate.googleapis.com
+# gcloud services api-keys update $API_KEY_ID \
+#     --api-target=service=speech.googleapis.com \
+#     --api-target=service=texttospeech.googleapis.com \
+#     --api-target=service=translate.googleapis.com
 export API_KEY=$(
     gcloud alpha services api-keys get-key-string $API_KEY_ID \
         --format="value(keyString)")
@@ -254,7 +254,7 @@ echo "export TASK4_TEXT=$TASK4_TEXT" >> task4.sh
 echo "export TASK4_RESULT=$TASK4_RESULT" >> task4.sh
 cat << 'EOF' >> task4.sh
 rm -f $TASK4_RESULT
-curl "https://translation.googleapis.com/language/translate/v2?target=es&key=${API_KEY}&q=${TASK4_TEXT}" \
+curl "https://translation.googleapis.com/language/translate/v2?target=en&key=${API_KEY}&q=${TASK4_TEXT}" \
     > "${TASK4_RESULT}"
 echo -e "\n👉  Check ${TASK4_RESULT}\n"
 cat $TASK4_RESULT
