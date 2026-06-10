@@ -1,6 +1,13 @@
 #!/bin/bash
 ## Created by nov05, 2026-06-09
 
+ask_to_proceed() {
+    while true; do
+        read -rp "Ready to proceed? (y): " answer
+        [[ "$answer" =~ ^[Yy]$ ]] && break
+    done
+}
+
 ## Get project id, project number, region, zone
 export PROJECT_ID=$(gcloud config get-value project)
 export REGION=$(gcloud compute project-info describe \
@@ -27,7 +34,11 @@ Task 1. Create an API key
 EOF
 ## Refer to GSP049
 
-gcloud services enable apikeys.googleapis.com; sleep 10
+gcloud services enable apikeys.googleapis.com
+until gcloud services list --enabled \
+  --project=$PROJECT_ID | grep -q apikeys.googleapis.com
+do sleep 5; done
+
 gcloud alpha services api-keys create \
     --display-name="gsp048-api-key" 
 export KEY_ID=$(
@@ -61,6 +72,8 @@ cat << 'EOF' > request.json
 EOF
 cat request.json
 
+echo -e "\n👉  Check the progress in the lab.\n"
+ask_to_proceed
 
 cat << 'EOF'
 
@@ -77,7 +90,6 @@ curl -s -X POST -H "Content-Type: application/json" --data-binary @request.json 
 "https://speech.googleapis.com/v1/speech:recognize?key=${API_KEY}" > result.json
 echo -e "\n👉  Check result.json\n"
 cat result.json
-rm -f task.sh request.json result.json
 EOF
 
 ## Copy files to the VM instance
@@ -91,6 +103,9 @@ gcloud compute ssh linux-instance \
   --zone=$ZONE \
   --quiet \
   --command="chmod +x ~/task.sh && ~/task.sh"
+
+echo -e "\n👉  Check the progress in the lab.\n"
+ask_to_proceed
 
 cat << 'EOF'
 
@@ -124,5 +139,9 @@ gcloud compute ssh linux-instance \
   --zone=$ZONE \
   --quiet \
   --command="chmod +x ~/task.sh && ~/task.sh"
+
+echo -e "\n👉  Check the progress in the lab.\n"
+ask_to_proceed
+
 
 echo -e "\n✅  All done\n"
