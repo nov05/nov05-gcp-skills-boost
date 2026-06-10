@@ -1,6 +1,8 @@
 #!/bin/bash
 ## Created by nov05, 2026-06-10
 
+set -e
+
 export PROJECT_ID=$(gcloud config get-value project)
 export REGION=$(gcloud compute project-info describe \
   --format="value(commonInstanceMetadata.items[google-compute-default-region])")
