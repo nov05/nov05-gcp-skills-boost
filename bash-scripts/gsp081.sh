@@ -45,12 +45,11 @@ gcloud services enable run.googleapis.com \
   artifactregistry.googleapis.com \
   cloudbuild.googleapis.com \
   --project=$PROJECT_ID
-# until enabled=$(gcloud services list --enabled --project=$PROJECT_ID); \
-#   echo "$enabled" | grep -q run.googleapis.com && \
-#   echo "$enabled" | grep -q artifactregistry.googleapis.com && \
-#   echo "$enabled" | grep -q cloudbuild.googleapis.com
-# do sleep 5; done
-sleep 30
+until enabled=$(gcloud services list --enabled --project=$PROJECT_ID); \
+  echo "$enabled" | grep -q run.googleapis.com && \
+  echo "$enabled" | grep -q artifactregistry.googleapis.com && \
+  echo "$enabled" | grep -q cloudbuild.googleapis.com
+do sleep 5; done
 
 # mkdir myfunc && cd myfunc
 # cat > index.js << 'EOF'
@@ -69,6 +68,7 @@ sleep 30
 # EOF
 # cd ..
 # echo -e "\n👉  Deploying Cloud Run function 'gcfunction'...\n"
+## ⚠️ It may need retry a couple of times.
 # gcloud functions deploy gcfunction \
 #   --gen2 \
 #   --runtime=nodejs22 \
@@ -84,7 +84,7 @@ sleep 30
 #   --concurrency=80
 
 ## ⚠️ Unfortunately the function has to be created via console to pass the lab check.
-echo -e "👉  Create Cloud Run funcion 'gcfunction' at"  
+echo -e "\n👉  Create and deploy Cloud Run funcion 'gcfunction' at"  
 echo -e "https://console.cloud.google.com/run/services?project=$PROJECT_ID\n"
 ask_to_proceed
 
@@ -129,7 +129,19 @@ Task 3. Test the function
 
 EOF
 
-curl -X POST "https://${REGION}-${PROJECT_ID}.cloudfunctions.net/gcfunction" \
+## If the function is created via Cloud Shell, in the console you will find this type of URL.
+# curl -X POST "https://${REGION}-${PROJECT_ID}.cloudfunctions.net/gcfunction" \
+# -H "Authorization: bearer $(gcloud auth print-identity-token)" \
+# -H "Content-Type: application/json" \
+# -d '{
+#   "name": "Developer"
+# }'
+
+## E.g. https://gcfunction-d27fjhcvqq-wn.a.run.app
+URL=$(gcloud run services describe gcfunction \
+  --region us-west4 \
+  --format='value(status.url)')
+curl -X POST "$URL" \
 -H "Authorization: bearer $(gcloud auth print-identity-token)" \
 -H "Content-Type: application/json" \
 -d '{
