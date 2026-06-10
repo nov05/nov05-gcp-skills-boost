@@ -3,13 +3,6 @@
 
 set -e
 
-ask_to_proceed() {
-    while true; do
-        read -rp "Ready to proceed? (y): " answer
-        [[ "$answer" =~ ^[Yy]$ ]] && break
-    done
-}
-
 echo
 # read -p "👉  Enter Task 2 VM instance name: " VM_NAME
 # read -p "👉  Enter Task 2 result file name: " TASK2_RESULT
@@ -63,14 +56,15 @@ until gcloud services list --enabled \
   --project=$PROJECT_ID | grep -q apikeys.googleapis.com
 do sleep 5; done
 
-## Delete multiple API keys by the display name
-## -r (--no-run-if-empty)
 export API_DISPLAY_NAME=arc132-api-key
-gcloud alpha services api-keys list \
-    --filter="displayName:$API_DISPLAY_NAME" \
-    --format="value(name)" \
-| xargs -r -n 1 gcloud alpha services api-keys delete \
-    --location=global
+
+# ## Delete multiple API keys by the display name
+# ## -r (--no-run-if-empty)
+# gcloud alpha services api-keys list \
+#     --filter="displayName:$API_DISPLAY_NAME" \
+#     --format="value(name)" \
+# | xargs -r -n 1 gcloud alpha services api-keys delete \
+#     --location=global
 
 ## Create API key and limit the services
 gcloud alpha services api-keys create \
@@ -87,8 +81,6 @@ export API_KEY=$(
     gcloud alpha services api-keys get-key-string $KEY_ID \
         --format="value(keyString)")
 
-echo -e "\n👉  Check the progress in the lab.\n"
-ask_to_proceed
 
 cat << 'EOF'
 
