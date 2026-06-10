@@ -4,10 +4,12 @@
 set -e
 
 ask_to_proceed() {
+    echo
     while true; do
         read -rp "Ready to proceed? (y): " answer
         [[ "$answer" =~ ^[Yy]$ ]] && break
     done
+    echo
 }
 
 echo
@@ -93,15 +95,7 @@ gcloud alpha services api-keys list \
 echo -e "\n👉  Create an API key with display name 'arc132-api-key' at"
 echo -e "https://console.cloud.google.com/apis/credentials?project=$PROJECT_ID"
 echo -e "Search for 'speech' first, then 'translate' when selecting services."
-
-ask_to_proceed() {
-    echo
-    while true; do
-        read -rp "Ready to proceed? (y): " answer
-        [[ "$answer" =~ ^[Yy]$ ]] && break
-    done
-    echo
-}
+ask_to_proceed
 
 export API_KEY_ID=$(
     gcloud alpha services api-keys list \
