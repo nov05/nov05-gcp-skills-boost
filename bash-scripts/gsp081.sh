@@ -3,6 +3,16 @@
 
 set -e
 
+ask_to_proceed() {
+    echo
+    while true; do
+        read -rp "Ready to proceed? (y): " answer
+        [[ "$answer" =~ ^[Yy]$ ]] && break
+    done
+    echo
+    echo
+}
+
 export PROJECT_ID=$(gcloud config get-value project)
 export REGION=$(gcloud compute project-info describe \
   --format="value(commonInstanceMetadata.items[google-compute-default-region])")
@@ -41,39 +51,42 @@ gcloud services enable run.googleapis.com \
 #   echo "$enabled" | grep -q cloudbuild.googleapis.com
 # do sleep 5; done
 sleep 30
-gcloud builds submit --tag $REGION-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/warmup .
 
-mkdir myfunc && cd myfunc
-cat > index.js << 'EOF'
-const functions = require('@google-cloud/functions-framework');
-functions.http('helloHttp', (req, res) => {
-  res.set('Content-Type', 'text/plain');
-  res.send(`Hello ${req.query.name || req.body.name || 'World'}!`);
-});
-EOF
-cat > package.json << 'EOF'
-{
-  "dependencies": {
-    "@google-cloud/functions-framework": "^3.0.0"
-  }
-}
-EOF
-cd ..
+# mkdir myfunc && cd myfunc
+# cat > index.js << 'EOF'
+# const functions = require('@google-cloud/functions-framework');
+# functions.http('helloHttp', (req, res) => {
+#   res.set('Content-Type', 'text/plain');
+#   res.send(`Hello ${req.query.name || req.body.name || 'World'}!`);
+# });
+# EOF
+# cat > package.json << 'EOF'
+# {
+#   "dependencies": {
+#     "@google-cloud/functions-framework": "^3.0.0"
+#   }
+# }
+# EOF
+# cd ..
+# echo -e "\n👉  Deploying Cloud Run function 'gcfunction'...\n"
+# gcloud functions deploy gcfunction \
+#   --gen2 \
+#   --runtime=nodejs22 \
+#   --region=$REGION \
+#   --source=./myfunc \
+#   --entry-point=helloHttp \
+#   --trigger-http \
+#   --allow-unauthenticated \
+#   --max-instances=5 \
+#   --timeout=300 \
+#   --memory=512Mi \
+#   --cpu=1 \
+#   --concurrency=80
 
-echo -e "\n👉  Deploying Cloud Run function 'gcfunction'...\n"
-gcloud functions deploy gcfunction \
-  --gen2 \
-  --runtime=nodejs22 \
-  --region=$REGION \
-  --source=./myfunc \
-  --entry-point=helloHttp \
-  --trigger-http \
-  --allow-unauthenticated \
-  --max-instances=5 \
-  --timeout=300 \
-  --memory=512Mi \
-  --cpu=1 \
-  --concurrency=80
+## ⚠️ Unfortunately the function has to be created via console to pass the lab check.
+echo -e "👉  Create Cloud Run funcion 'gcfunction' at"  
+echo -e "https://console.cloud.google.com/run/services?project=$PROJECT_ID\n"
+ask_to_proceed
 
 # gcloud run services update gcfunction \
 #   --region=$REGION \
