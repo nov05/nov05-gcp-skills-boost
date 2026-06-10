@@ -4,7 +4,7 @@
 set -e
 
 echo
-read -p "👉  Enter Taks 1 VM instance name: " VM_NAME
+read -p "👉  Enter VM instance name: " VM_NAME
 export VM_NAME
 read -p "👉  Enter Task 2 result file name: " TASK2_RESULT
 export TASK2_RESULT
@@ -63,11 +63,12 @@ until gcloud services list --enabled \
 do sleep 5; done
 
 ## Delete multiple API keys by the display name
+## -r (--no-run-if-empty)
 export API_DISPLAY_NAME=arc132-api-key
 gcloud alpha services api-keys list \
     --filter="displayName:$API_DISPLAY_NAME" \
     --format="value(name)" \
-| xargs -n 1 gcloud alpha services api-keys delete \
+| xargs -r -n 1 gcloud alpha services api-keys delete \
     --location=global
 
 ## Create API key and limit the services

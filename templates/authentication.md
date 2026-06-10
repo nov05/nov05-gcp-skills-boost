@@ -19,11 +19,12 @@
 
 ```bash
 ## Delete multiple API keys by the display name
+## -r (--no-run-if-empty)
 export API_DISPLAY_NAME=gsp048-api-key
 gcloud alpha services api-keys list \
     --filter="displayName:$API_DISPLAY_NAME" \
     --format="value(name)" \
-| xargs -n 1 gcloud alpha services api-keys delete \
+| xargs -r -n 1 gcloud alpha services api-keys delete \
     --location=global
 
 gcloud alpha services api-keys create \
