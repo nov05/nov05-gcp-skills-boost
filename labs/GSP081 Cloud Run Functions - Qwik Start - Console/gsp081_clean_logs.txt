@@ -1,0 +1,159 @@
+Your active configuration is: [cloudshell-18684]
+[environment: untagged] Read more to tag: g.co/cloud/project-env-tag.
+Updated property [core/project].
+Updated property [compute/region].
+Updated property [compute/zone].
+
+🔹  User: student_04_25d59cf59615
+🔹  Project ID: qwiklabs-gcp-04-0216b86fd20c
+🔹  Region: us-east4
+🔹  Zone: us-east4-c
+
+Credentialed Accounts
+
+ACTIVE: *
+ACCOUNT: student-04-25d59cf59615@qwiklabs.net
+
+To set the active account, run:
+    $ gcloud config set account `ACCOUNT`
+
+
+========================================================
+Task 1. Create a function
+========================================================
+========================================================
+Task 2. Deploy the function
+========================================================
+
+
+👉  Enabling services...
+
+Operation "operations/acat.p2-85753438317-811fcd79-40de-400d-a84d-52efa872c1b4" finished successfully.
+
+👉  Create and deploy Cloud Run funcion 'gcfunction' at
+https://console.cloud.google.com/run/services?project=qwiklabs-gcp-04-0216b86fd20c
+
+
+Ready to proceed? (y): 
+
+
+👉  Check revisions:
+
+✔
+REVISION: gcfunction-00002-5gm
+ACTIVE: yes
+SERVICE: gcfunction
+DEPLOYED: 2026-06-10 22:10:44 UTC
+DEPLOYED BY: student-04-25d59cf59615@qwiklabs.net
+
+✔
+REVISION: gcfunction-00001-4sg
+ACTIVE: 
+SERVICE: gcfunction
+DEPLOYED: 2026-06-10 22:09:39 UTC
+DEPLOYED BY: student-04-25d59cf59615@qwiklabs.net
+
+👉  Check Cloud Run function 'gcfunction' configurations:
+
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/maxScale: '5'
+        run.googleapis.com/base-images: '{"gcfunction-1":"us-east4-docker.pkg.dev/serverless-runtimes/google-22/runtimes/nodejs22"}'
+        run.googleapis.com/client-name: cloud-console
+        run.googleapis.com/execution-environment: gen2
+        run.googleapis.com/startup-cpu-boost: 'true'
+      labels:
+        run.googleapis.com/startupProbeType: Default
+    spec:
+      containerConcurrency: 80
+      containers:
+      - image: us-east4-docker.pkg.dev/qwiklabs-gcp-04-0216b86fd20c/cloud-run-source-deploy/gcfunction:latest@sha256:b06fa0cd0ec236a93022a29ed49187b6f5e613440c955575b79ed4d6751f9bd2
+        name: gcfunction-1
+        ports:
+        - containerPort: 8080
+          name: http1
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+        startupProbe:
+          failureThreshold: 1
+          periodSeconds: 240
+          tcpSocket:
+            port: 8080
+          timeoutSeconds: 240
+      runtimeClassName: run.googleapis.com/linux-base-image-update
+      serviceAccountName: 85753438317-compute@developer.gserviceaccount.com
+      timeoutSeconds: 300
+
+========================================================
+Task 3. Test the function
+========================================================
+
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100    41  100    16  100    25     14     21  0:00:01  0:00:01 --:--:--    36100    41  100    16  100    25     14     21  0:00:01  0:00:01 --:--:--    35
+Hello Developer!
+========================================================
+Task 4. View logs
+========================================================
+
+TIMESTAMP: 2026-06-10T22:10:55.549283Z
+SEVERITY: INFO
+TEXT_PAYLOAD: 
+
+TIMESTAMP: 2026-06-10T22:10:51.262906Z
+SEVERITY: INFO
+TEXT_PAYLOAD: 
+
+TIMESTAMP: 2026-06-10T22:10:50.696670Z
+SEVERITY: INFO
+TEXT_PAYLOAD: Default STARTUP TCP probe succeeded after 1 attempt for container "gcfunction-1" on port 8080.
+
+TIMESTAMP: 2026-06-10T22:10:49.951887Z
+SEVERITY: INFO
+TEXT_PAYLOAD: Starting new instance. Reason: DEPLOYMENT_ROLLOUT - Instance started due to traffic shifting between revisions due to deployment, traffic split adjustment, or deployment health check.
+
+TIMESTAMP: 2026-06-10T22:10:44.290152Z
+SEVERITY: NOTICE
+TEXT_PAYLOAD: 
+
+TIMESTAMP: 2026-06-10T22:09:47.064045Z
+SEVERITY: INFO
+TEXT_PAYLOAD: 
+
+TIMESTAMP: 2026-06-10T22:09:44.924965Z
+SEVERITY: INFO
+TEXT_PAYLOAD: 
+
+TIMESTAMP: 2026-06-10T22:09:44.429103Z
+SEVERITY: INFO
+TEXT_PAYLOAD: Default STARTUP TCP probe succeeded after 1 attempt for container "placeholder-1" on port 8080.
+
+TIMESTAMP: 2026-06-10T22:09:44.428514Z
+SEVERITY: 
+TEXT_PAYLOAD: 2026/06/10 22:09:44 Hello from Cloud Run! The container started successfully and is listening for HTTP requests on port 8080
+
+TIMESTAMP: 2026-06-10T22:09:44.019296Z
+SEVERITY: INFO
+TEXT_PAYLOAD: Starting new instance. Reason: DEPLOYMENT_ROLLOUT - Instance started due to traffic shifting between revisions due to deployment, traffic split adjustment, or deployment health check.
+
+TIMESTAMP: 2026-06-10T22:09:38.746182Z
+SEVERITY: NOTICE
+TEXT_PAYLOAD: 
+
+========================================================
+Task 5. Test your understanding
+========================================================
+
+1. Cloud Run functions is a serverless execution environment for event driven services on Google Cloud. 
+  True
+
+2. Which type of trigger is used while creating Cloud Run functions in the lab?
+  HTTPS
+
+
+✅  All done
+
