@@ -41,9 +41,10 @@ do sleep 5; done
 
 ## Delete multiple API keys by the display name
 gcloud alpha services api-keys list \
-  --filter="displayName:gsp048-api-key" \
-  --format="value(name)" \
-| xargs -n 1 gcloud alpha services api-keys delete
+    --filter="displayName:gsp048-api-key" \
+    --format="value(name)" \
+| xargs -n 1 gcloud alpha services api-keys delete \
+    --location=global
 
 gcloud alpha services api-keys create \
     --display-name="gsp048-api-key" 
