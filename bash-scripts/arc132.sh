@@ -254,7 +254,8 @@ echo "export TASK4_TEXT=$TASK4_TEXT" >> task4.sh
 echo "export TASK4_RESULT=$TASK4_RESULT" >> task4.sh
 cat << 'EOF' >> task4.sh
 rm -f $TASK4_RESULT
-curl "https://translation.googleapis.com/language/translate/v2?target=en&key=${API_KEY}&q=${TASK4_TEXT}" \
+curl "https://translation.googleapis.com/language/translate/v2?target=en&key=${API_KEY}" \
+    -d "q=${TASK4_TEXT}" \
     > "${TASK4_RESULT}"
 echo -e "\n👉  Check ${TASK4_RESULT}\n"
 cat $TASK4_RESULT
