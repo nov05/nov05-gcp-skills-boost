@@ -93,6 +93,7 @@ EOF
 echo '#!/bin/bash' > task.sh
 echo "export API_KEY=$API_KEY" >> task.sh
 cat << 'EOF' >> task.sh
+rm -f result.json
 curl -s -X POST -H "Content-Type: application/json" --data-binary @request.json \
 "https://speech.googleapis.com/v1/speech:recognize?key=${API_KEY}" > result.json
 echo -e "\n👉  Check result.json\n"
