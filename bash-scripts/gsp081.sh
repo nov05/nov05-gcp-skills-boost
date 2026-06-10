@@ -69,20 +69,38 @@ gcloud functions deploy gcfunction \
   --entry-point=helloHttp \
   --trigger-http \
   --allow-unauthenticated \
-  --max-instances=5
+  --max-instances=5 \
+  --timeout=300 \
+  --memory=512Mi \
+  --cpu=1 \
+  --concurrency=80
 
 # gcloud run services update gcfunction \
 #   --region=$REGION \
 #   --max-instances=8
 
 echo -e "\n👉  Check revisions:\n"
-## Sample return: gcfunction-00001-far
 gcloud run revisions list \
   --service=gcfunction \
   --region=$REGION \
-  --sort-by="~metadata.creationTimestamp" \
-  # --limit=1 \
-  --format="value(name)"
+  --sort-by="~metadata.creationTimestamp"
+  # --format="value(name)"
+  # --limit=1
+
+: << 'COMMENT'
+If the function is created via Cloud Shell.
+  REVISION: gcfunction-00001-gew
+  ACTIVE: yes
+  SERVICE: gcfunction
+  DEPLOYED: 2026-06-10 20:35:33 UTC
+  DEPLOYED BY: service-660504225966@gcf-admin-robot.iam.gserviceaccount.com
+If it is created via Console.
+  REVISION: gcfunction-00001-p62
+  ACTIVE: yes
+  SERVICE: gcfunction
+  DEPLOYED: 2026-06-10 20:42:28 UTC
+  DEPLOYED BY: student-04-dcd619cc3816@qwiklabs.net
+COMMENT
 
 echo -e "\n👉  Check Cloud Run function 'gcfunction' configurations:\n"
 gcloud run services describe gcfunction \
