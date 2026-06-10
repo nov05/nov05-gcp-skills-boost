@@ -1,0 +1,151 @@
+Your active configuration is: [cloudshell-23539]
+[environment: untagged] Read more to tag: g.co/cloud/project-env-tag.
+Updated property [core/project].
+Updated property [compute/region].
+Updated property [compute/zone].
+
+🔹  User: student_04_93f925f8b25e
+🔹  Project ID: qwiklabs-gcp-01-4dfb46b848e2
+🔹  Region: us-central1
+🔹  Zone: us-central1-b
+
+Credentialed Accounts
+
+ACTIVE: *
+ACCOUNT: student-04-93f925f8b25e@qwiklabs.net
+
+To set the active account, run:
+    $ gcloud config set account `ACCOUNT`
+
+
+========================================================
+Task 1. Create an API key
+========================================================
+
+Operation [operations/akmf.p12-77642198750-95e34dde-4af5-44ee-bcb5-e5a01a344c1d] complete. Result: {
+    "@type":"type.googleapis.com/google.api.apikeys.v2.Key",
+    "createTime":"2026-06-10T00:51:36.696113Z",
+    "deleteTime":"2026-06-10T00:56:14.187270Z",
+    "displayName":"gsp048-api-key",
+    "etag":"W/\"CGyq0oJ3G8LnCC4ZVMoWZw==\"",
+    "keyString":"AIzaSyCkNF7yJDHDQeBrVIN3KNweihv3XwcXTUo",
+    "name":"projects/77642198750/locations/global/keys/4f92fb86-403f-4e33-92dc-8acd6a905a83",
+    "restrictions":{
+        "apiTargets":[
+            {
+                "service":"speech.googleapis.com"
+            }
+        ]
+    },
+    "uid":"4f92fb86-403f-4e33-92dc-8acd6a905a83",
+    "updateTime":"2026-06-10T00:56:14.187270Z"
+}
+Operation [operations/akmf.p7-77642198750-51783650-4565-4187-a13c-3239b1f57ca2] complete. Result: {
+    "@type":"type.googleapis.com/google.api.apikeys.v2.Key",
+    "createTime":"2026-06-10T00:56:19.304269Z",
+    "displayName":"gsp048-api-key",
+    "etag":"W/\"7hzvrvFaXqAanbbM33fLXg==\"",
+    "keyString":"AIzaSyB9kM3OJaJ6E_VYVlTCG-XVe8w6AaDZaD4",
+    "name":"projects/77642198750/locations/global/keys/a6107485-913d-4047-8984-3a3f1fb87000",
+    "uid":"a6107485-913d-4047-8984-3a3f1fb87000",
+    "updateTime":"2026-06-10T00:56:19.692490Z"
+}
+Operation [operations/akmf.p10-77642198750-7ae786b2-58b9-4155-85f5-25b33ae42941] complete. Result: {
+    "@type":"type.googleapis.com/google.api.apikeys.v2.Key",
+    "createTime":"2026-06-10T00:56:19.304269Z",
+    "displayName":"gsp048-api-key",
+    "etag":"W/\"hPsRdOThDsTOiFDLiMi56g==\"",
+    "name":"projects/77642198750/locations/global/keys/a6107485-913d-4047-8984-3a3f1fb87000",
+    "restrictions":{
+        "apiTargets":[
+            {
+                "service":"speech.googleapis.com"
+            }
+        ]
+    },
+    "uid":"a6107485-913d-4047-8984-3a3f1fb87000",
+    "updateTime":"2026-06-10T00:56:25.631097Z"
+}
+
+========================================================
+Task 2. Create your API request
+========================================================
+
+{
+  "config": {
+      "encoding":"FLAC",
+      "languageCode": "en-US"
+  },
+  "audio": {
+      "uri":"gs://cloud-samples-data/speech/brooklyn_bridge.flac"
+  }
+}
+
+👉  Check the progress in the lab.
+
+
+========================================================
+Task 3. Call the Speech-to-Text API
+========================================================
+
+
+👉  Check result.json
+
+{
+  "results": [
+    {
+      "alternatives": [
+        {
+          "transcript": "how old is the Brooklyn Bridge",
+          "confidence": 0.93480206
+        }
+      ],
+      "resultEndTime": "1.770s",
+      "languageCode": "en-us"
+    }
+  ],
+  "totalBilledTime": "2s",
+  "requestId": "5491761046034543645"
+}
+
+👉  Check the progress in the lab.
+
+
+========================================================
+Task 4. Speech-to-Text transcription in different languages
+========================================================
+
+ {
+  "config": {
+      "encoding":"FLAC",
+      "languageCode": "fr"
+  },
+  "audio": {
+      "uri":"gs://cloud-samples-data/speech/corbeau_renard.flac"
+  }
+}
+
+👉  Check result.json
+
+{
+  "results": [
+    {
+      "alternatives": [
+        {
+          "transcript": "maître corbeau sur un arbre perché tenait en son bec un fromage maître Renard par l'odeur alléché lui tint à peu près ce langage et bonjour monsieur du corbeau",
+          "confidence": 0.90392107
+        }
+      ],
+      "resultEndTime": "12.720s",
+      "languageCode": "fr-fr"
+    }
+  ],
+  "totalBilledTime": "13s",
+  "requestId": "5838638471708081722"
+}
+
+👉  Check the progress in the lab.
+
+
+✅  All done
+
