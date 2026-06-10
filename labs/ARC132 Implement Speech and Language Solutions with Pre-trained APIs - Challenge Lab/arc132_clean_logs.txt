@@ -1,0 +1,161 @@
+
+👉  Enter Task 3 request file name: 👉  Enter Task 3 result file name: 👉  Enter Task 4 result file name: 👉  Enter Task 5 result file name: 
+Your active configuration is: [cloudshell-27182]
+[environment: untagged] Read more to tag: g.co/cloud/project-env-tag.
+Updated property [core/project].
+Updated property [compute/region].
+Updated property [compute/zone].
+
+🔹  User: student_01_9c10e3f6bd0b
+🔹  Project ID: qwiklabs-gcp-00-130e0f568ee4
+🔹  Region: europe-west1
+🔹  Zone: europe-west1-b
+
+Credentialed Accounts
+
+ACTIVE: *
+ACCOUNT: student-01-9c10e3f6bd0b@qwiklabs.net
+
+To set the active account, run:
+    $ gcloud config set account `ACCOUNT`
+
+
+========================================================
+Task 1. Create an API key
+========================================================
+
+Operation "operations/acat.p2-604835939750-98785b8b-1a22-456f-b8ad-4d32942833d2" finished successfully.
+WARNING: The following filter keys were not present in any resource : displayName
+
+👉  Create an API key with display name 'arc132-api-key' at
+https://console.cloud.google.com/apis/credentials?project=qwiklabs-gcp-00-130e0f568ee4
+Search for 'speech' first, then 'translation' when selecting services.
+
+Ready to proceed? (y): 
+
+Operation [operations/noop.DONE_OPERATION] complete. Result: {
+    "@type":"type.googleapis.com/google.api.apikeys.v2.Key",
+    "createTime":"2026-06-10T06:03:32.863807Z",
+    "displayName":"arc132-api-key",
+    "etag":"W/\"Ct1tV76ZWO/jmyY8ijhfpQ==\"",
+    "keyString":"AIzaSyBlQhKyeMVnO1C178ENly6hHLL3MVEWVcs",
+    "name":"projects/604835939750/locations/global/keys/f1385777-141f-42f2-9bd5-dd94e3b5c9d7",
+    "restrictions":{
+        "apiTargets":[
+            {
+                "service":"speech.googleapis.com"
+            },
+            {
+                "service":"texttospeech.googleapis.com"
+            },
+            {
+                "service":"translate.googleapis.com"
+            }
+        ]
+    },
+    "uid":"f1385777-141f-42f2-9bd5-dd94e3b5c9d7",
+    "updateTime":"2026-06-10T06:03:33.122692Z"
+}
+
+========================================================
+Task 2. Create synthetic speech from text using the Text-to-Speech API
+========================================================
+
+WARNING: The private SSH key file for gcloud does not exist.
+WARNING: The public SSH key file for gcloud does not exist.
+WARNING: You do not have an SSH key for gcloud.
+WARNING: SSH keygen will be executed to generate a key.
+Generating public/private rsa key pair.
+Your identification has been saved in /home/student_01_9c10e3f6bd0b/.ssh/google_compute_engine
+Your public key has been saved in /home/student_01_9c10e3f6bd0b/.ssh/google_compute_engine.pub
+The key fingerprint is:
+SHA256:bSZiTWzzr9XAMR7i7SkbvKBJJ4/4Hqbmw3yKNspSiiM student_01_9c10e3f6bd0b@cs-242944790460-default
+The key's randomart image is:
++---[RSA 3072]----+
+|                 |
+|       .         |
+|        = . +    |
+|       + = = +   |
+|      o S * =    |
+|  .  . . = o +   |
+|.o o  = o + = .  |
+|E o.==.O . B     |
+|+=.+=** . +      |
++----[SHA256]-----+
+Warning: Permanently added 'compute.9119831747155282758' (ED25519) to the list of known hosts.
+
+👉  Check the first 500 characters of synthesize-text.txt
+
+{
+  "audioContent": "//OExAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//OExAAnW5oEAHpMvQFQc5J4GmNVsDWThZc3mWxQRIZIyFwTJ0ba4rJEBASdQUEmWjbmujXR7PzUQf9QnkgjPzUMLit/6ZGj29UY8PDPewfRAEUQx/Dk9i7/tsP1Now9ZkZEIRE20Xex/d7ae5exDkMaOYg0WTu2QPC+0R+xDPbQ97E33v+Jvum2eM/u7aJJ33v//x4iL3P/GaYg4A/3lnNR5B9QAZg
+========================================================
+Task 3. Perform speech to text transcription with the Cloud Speech API
+========================================================
+
+
+👉  Check speech_response_fr.json
+
+{
+  "results": [
+    {
+      "alternatives": [
+        {
+          "transcript": "maître corbeau sur un arbre perché tenait en son bec un fromage maître Renard par l'odeur alléché lui tint à peu près ce langage et bonjour monsieur du corbeau",
+          "confidence": 0.90392107
+        }
+      ],
+      "resultEndTime": "12.720s",
+      "languageCode": "fr-fr"
+    }
+  ],
+  "totalBilledTime": "13s",
+  "requestId": "3268773434731281278"
+}
+
+========================================================
+Task 4. Translate text with the Cloud Translation API
+========================================================
+
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   179    0   150  100    29   1851    358 --:--:-- --:--:-- --:--:--  2237
+
+👉  Check translation_response.txt
+
+{
+  "data": {
+    "translations": [
+      {
+        "translatedText": "This is Japanese.",
+        "detectedSourceLanguage": "ja"
+      }
+    ]
+  }
+}
+
+========================================================
+Task 5. Detect a language with the Cloud Translation API
+========================================================
+
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   186    0   167  100    19   3211    365 --:--:-- --:--:-- --:--:--  3647
+
+👉  Check detection_response.txt
+
+{
+  "data": {
+    "detections": [
+      [
+        {
+          "language": "pt",
+          "confidence": 1,
+          "isReliable": false
+        }
+      ]
+    ]
+  }
+}
+
+✅  All done
+

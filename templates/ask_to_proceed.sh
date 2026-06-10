@@ -8,6 +8,7 @@ ask_to_proceed() {
         [[ "$answer" =~ ^[Yy]$ ]] && break
     done
     echo
+    echo
 }
 
 
