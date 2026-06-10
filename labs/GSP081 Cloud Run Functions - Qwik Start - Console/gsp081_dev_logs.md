@@ -8,6 +8,7 @@ sudo chmod +x gsp081.sh
 sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 ```
 
+* Check [the issues](https://gist.github.com/nov05/bde6c67f959217434d4296c29c50b3ab).
 
 ## 👉 Logs
 

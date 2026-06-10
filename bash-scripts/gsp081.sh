@@ -139,7 +139,7 @@ EOF
 
 ## E.g. https://gcfunction-d27fjhcvqq-wn.a.run.app
 URL=$(gcloud run services describe gcfunction \
-  --region us-west4 \
+  --region $REGION \
   --format='value(status.url)')
 curl -X POST "$URL" \
 -H "Authorization: bearer $(gcloud auth print-identity-token)" \
