@@ -2,10 +2,12 @@
 ## Created by nov05, 2026-05-12  
 
 ask_to_proceed() {
+    echo
     while true; do
         read -rp "Ready to proceed? (y): " answer
         [[ "$answer" =~ ^[Yy]$ ]] && break
     done
+    echo
 }
 
 
