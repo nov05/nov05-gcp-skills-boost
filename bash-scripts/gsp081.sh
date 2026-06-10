@@ -30,7 +30,7 @@ Task 2. Deploy the function
 
 EOF
 
-echo -e "\n👉  Enableing services...\n"
+echo -e "\n👉  Enabling services...\n"
 gcloud services enable run.googleapis.com \
   artifactregistry.googleapis.com \
   cloudbuild.googleapis.com \
@@ -40,7 +40,8 @@ gcloud services enable run.googleapis.com \
 #   echo "$enabled" | grep -q artifactregistry.googleapis.com && \
 #   echo "$enabled" | grep -q cloudbuild.googleapis.com
 # do sleep 5; done
-sleep 10
+sleep 30
+gcloud builds submit --tag $REGION-docker.pkg.dev/$PROJECT_ID/cloud-run-source-deploy/warmup .
 
 mkdir myfunc && cd myfunc
 cat > index.js << 'EOF'
