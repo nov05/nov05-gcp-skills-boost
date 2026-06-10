@@ -92,7 +92,7 @@ gcloud alpha services api-keys list \
 ## ⚠️ Unfortuantely an API key has to be created via the console to pass the Task 1 check.  
 echo -e "\n👉  Create an API key with display name 'arc132-api-key' at"
 echo -e "https://console.cloud.google.com/apis/credentials?project=$PROJECT_ID"
-echo -e "Search for “speech” first, then “translate” when selecting services."
+echo -e "Search for 'speech' first, then 'translate' when selecting services."
 
 ask_to_proceed() {
     echo
