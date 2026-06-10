@@ -94,7 +94,7 @@ gcloud alpha services api-keys list \
 ## ⚠️ Unfortuantely an API key has to be created via the console to pass the Task 1 check.  
 echo -e "\n👉  Create an API key with display name 'arc132-api-key' at"
 echo -e "https://console.cloud.google.com/apis/credentials?project=$PROJECT_ID"
-echo -e "Search for 'speech' first, then 'translate' when selecting services."
+echo -e "Search for 'speech' first, then 'translation' when selecting services."
 ask_to_proceed
 
 export API_KEY_ID=$(
@@ -191,8 +191,8 @@ curl -s -X POST \
   -d @synthesize-text.json \
   "https://texttospeech.googleapis.com/v1/text:synthesize?key=${API_KEY}" \
   > $TASK2_RESULT
-echo -e "\n👉  Check the first 5 lines of ${TASK2_RESULT}\n"
-head -n 5 $TASK2_RESULT
+echo -e "\n👉  Check the first 500 characters of ${TASK2_RESULT}\n"
+head -c 500 "$TASK2_RESULT"
 source venv/bin/activate
 python tts_decode.py --input "$TASK2_RESULT" --output "synthesize-text-audio.mp3"
 EOF
