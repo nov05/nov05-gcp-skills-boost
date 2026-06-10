@@ -28,6 +28,12 @@ Task 2. Deploy the function
 
 EOF
 
+gcloud services enable run.googleapis.com \
+  --project=$PROJECT_ID
+until gcloud services list --enabled \
+  --project=$PROJECT_ID | grep -q run.googleapis.com
+do sleep 5; done
+
 gcloud run deploy gcfunction \
     --source=. \
     --region=REGION \
