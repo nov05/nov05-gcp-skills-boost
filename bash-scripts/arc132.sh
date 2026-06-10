@@ -182,7 +182,7 @@ gcloud compute ssh $VM_NAME \
   --quiet \
   --command="chmod +x ~/task2.sh && ~/task2.sh"
 
-gcloud compute scp VM_NAME:~/synthesize-text-audio.mp3 . \
+gcloud compute scp $VM_NAME:~/synthesize-text-audio.mp3 . \
   --project=$PROJECT_ID \
   --zone=$ZONE \
   --quiet
