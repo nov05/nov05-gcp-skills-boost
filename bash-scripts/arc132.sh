@@ -10,17 +10,18 @@ ask_to_proceed() {
     done
 }
 
+echo
 # read -p "👉  Enter Task 2 VM instance name: " VM_NAME
-read -p "👉  Enter Task 2 result file name: " TASK2_RESULT
+# read -p "👉  Enter Task 2 result file name: " TASK2_RESULT
 read -p "👉  Enter Task 3 request file name: " TASK3_REQUEST
-# read -p "👉  Enter Task 3 result file name: " TASK3_RESULT
+read -p "👉  Enter Task 3 result file name: " TASK3_RESULT
 # read -p "👉  Enter Task 4 text: " TASK4_TEXT
 read -p "👉  Enter Task 4 result file name: " TASK4_RESULT
 # read -p "👉  Enter Task 5 text: " TASK5_TEXT
 read -p "👉  Enter Task 5 result file name: " TASK5_RESULT
 # export VM_NAME TASK2_RESULT TASK3_REQUEST TASK3_RESULT TASK4_TEXT TASK4_RESULT TASK5_TEXT TASK5_RESULT
 export TASK3_REQUEST TASK3_RESULT TASK4_RESULT TASK5_RESULT
-# echo
+echo
 export VM_NAME="lab-vm"
 export TASK2_RESULT="synthesize-text.txt"
 # export TASK3_REQUEST="speech_request.json"
