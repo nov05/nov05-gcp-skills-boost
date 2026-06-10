@@ -24,26 +24,18 @@ export TASK5_RESULT="detected_response.txt"
 
 ## Get project id, project number, region, zone
 export PROJECT_ID=$(gcloud config get-value project)
-export PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID \
-  --format='value(projectNumber)')
 export REGION=$(gcloud compute project-info describe \
   --format="value(commonInstanceMetadata.items[google-compute-default-region])")
 export ZONE=$(gcloud compute project-info describe \
   --format="value(commonInstanceMetadata.items[google-compute-default-zone])")
-# export USER_EMAIL=$(gcloud auth list --format="value(account)" --filter="status:ACTIVE")
-# export BUCKET="$PROJECT_ID-bucket"
-# gcloud config set project $(gcloud projects list --format='value(PROJECT_ID)' --filter='qwiklabs-gcp')
 gcloud config set project $PROJECT_ID  
 gcloud config set compute/region $REGION
 gcloud config set compute/zone $ZONE
 echo
 echo "🔹  User: $USER"
-# echo "🔹  User email: $USER_EMAIL"
 echo "🔹  Project ID: $PROJECT_ID"
-# echo "🔹  Project number: $PROJECT_NUMBER"
 echo "🔹  Region: $REGION"
 echo "🔹  Zone: $ZONE"
-# echo "🔹  Bukect: $BUCKET"
 echo
 gcloud auth list
 
@@ -74,7 +66,7 @@ gcloud alpha services api-keys list \
 ## Create API key and limit the services
 gcloud alpha services api-keys create \
     --display-name="$API_DISPLAY_NAME" 
-export API_KEY_ID=$(
+export KEY_ID=$(
     gcloud alpha services api-keys list \
         --format="value(name)" \
         --filter "displayName=$API_DISPLAY_NAME")
@@ -83,7 +75,7 @@ export API_KEY_ID=$(
 #     --api-target=service=texttospeech.googleapis.com \
 #     --api-target=service=translate.googleapis.com
 export API_KEY=$(
-    gcloud alpha services api-keys get-key-string $API_KEY_ID \
+    gcloud alpha services api-keys get-key-string $KEY_ID \
         --format="value(keyString)")
 
 cat << 'EOF'
