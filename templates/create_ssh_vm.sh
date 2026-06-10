@@ -23,13 +23,20 @@ cat > my-query.sh << 'EOF'
 sudo apt-get update -qq
 EOF
 
+## Or my-instance:/~
 gcloud compute scp my-query.sh my-instance:/tmp \
   --project=$PROJECT_ID \
   --zone=$ZONE \
   --quiet
 
+## Or chmod +x ~/my-query.sh && ~/my-query.sh
 gcloud compute ssh my-instance \
   --project=$PROJECT_ID \
   --zone=$ZONE \
   --quiet \
   --command="chmod +x /tmp/my-query.sh && /tmp/my-query.sh"
+
+gcloud compute scp my-instance:/tmp/result.json . \
+  --project=$PROJECT_ID \
+  --zone=$ZONE \
+  --quiet

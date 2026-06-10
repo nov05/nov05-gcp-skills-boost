@@ -18,26 +18,24 @@
 * Refer to GSP048, GSP049 for API key usage
 
 ```bash
-gcloud services enable apikeys.googleapis.com
-until gcloud services list --enabled \
-  --project=$PROJECT_ID | grep -q apikeys.googleapis.com
-do sleep 5; done
-
 ## Delete multiple API keys by the display name
+export API_DISPLAY_NAME=gsp048-api-key
 gcloud alpha services api-keys list \
-    --filter="displayName:gsp049-api-key" \
+    --filter="displayName:$API_DISPLAY_NAME" \
     --format="value(name)" \
 | xargs -n 1 gcloud alpha services api-keys delete \
     --location=global
 
 gcloud alpha services api-keys create \
-    --display-name="gsp049-api-key" 
-export KEY_ID=$(
+    --display-name="$API_DISPLAY_NAME" 
+export API_KEY_ID=$(
     gcloud alpha services api-keys list \
         --format="value(name)" \
-        --filter "displayName=gsp049-api-key")
+        --filter "displayName=$API_DISPLAY_NAME")
+gcloud services api-keys update $API_KEY_ID \
+    --api-target=service=speech.googleapis.com
 export API_KEY=$(
-    gcloud alpha services api-keys get-key-string $KEY_ID \
+    gcloud alpha services api-keys get-key-string $API_KEY_ID \
         --format="value(keyString)")
 
 TEXT="My%20name%20is%20Steve"

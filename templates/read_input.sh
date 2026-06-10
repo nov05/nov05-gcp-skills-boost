@@ -4,6 +4,7 @@
 echo
 read -p "👉  Enter user 2: " USER2
 export USER2 
+echo
 
 ##################################################3
 
