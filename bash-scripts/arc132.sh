@@ -176,7 +176,7 @@ gcloud compute scp synthesize-text.json tts_decode.py task2.sh $VM_NAME:~ \
   --zone=$ZONE \
   --quiet
 
-gcloud compute ssh my-instance \
+gcloud compute ssh $VM_NAME \
   --project=$PROJECT_ID \
   --zone=$ZONE \
   --quiet \
@@ -292,5 +292,17 @@ curl -X POST "https://translation.googleapis.com/language/translate/v2/detect?ke
 echo -e "\n👉  Check ${TASK5_RESULT}\n"
 cat $TASK5_RESULT
 EOF
+
+## Copy files to the VM instance
+gcloud compute scp task5.sh $VM_NAME:~ \
+  --project=$PROJECT_ID \
+  --zone=$ZONE \
+  --quiet
+
+gcloud compute ssh $VM_NAME \
+  --project=$PROJECT_ID \
+  --zone=$ZONE \
+  --quiet \
+  --command="chmod +x ~/task5.sh && ~/task5.sh"
 
 echo -e "\n✅  All done\n"
