@@ -56,7 +56,7 @@ until gcloud services list --enabled \
   --project=$PROJECT_ID | grep -q apikeys.googleapis.com
 do sleep 5; done
 
-export API_DISPLAY_NAME=arc132-api-key
+# export API_DISPLAY_NAME=arc132-api-key
 
 # ## Delete multiple API keys by the display name
 # ## -r (--no-run-if-empty)
@@ -68,15 +68,15 @@ export API_DISPLAY_NAME=arc132-api-key
 
 ## Create API key and limit the services
 gcloud alpha services api-keys create \
-    --display-name="$API_DISPLAY_NAME" 
+    --display-name="arc132-api-key" 
 export KEY_ID=$(
     gcloud alpha services api-keys list \
         --format="value(name)" \
-        --filter "displayName=$API_DISPLAY_NAME")
-# gcloud services api-keys update $API_KEY_ID \
-#     --api-target=service=speech.googleapis.com \
-#     --api-target=service=texttospeech.googleapis.com \
-#     --api-target=service=translate.googleapis.com
+        --filter "displayName=arc132-api-key")
+gcloud services api-keys update $KEY_ID \
+    --api-target=service=speech.googleapis.com \
+    --api-target=service=texttospeech.googleapis.com \
+    --api-target=service=translate.googleapis.com
 export API_KEY=$(
     gcloud alpha services api-keys get-key-string $KEY_ID \
         --format="value(keyString)")
@@ -163,8 +163,8 @@ curl -s -X POST \
   -d @synthesize-text.json \
   "https://texttospeech.googleapis.com/v1/text:synthesize?key=${API_KEY}" \
   > $TASK2_RESULT
-echo -e "\n👉  Check ${TASK2_RESULT}\n"
-cat $TASK2_RESULT
+echo -e "\n👉  Check the first 5 lines of ${TASK2_RESULT}\n"
+head -n 5 $TASK2_RESULT
 source venv/bin/activate
 python tts_decode.py --input "$TASK2_RESULT" --output "synthesize-text-audio.mp3"
 EOF
