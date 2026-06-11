@@ -97,6 +97,12 @@ until enabled=$(gcloud services list --enabled --project=$PROJECT_ID); \
   echo "$enabled" | grep -q artifactregistry.googleapis.com && \
   echo "$enabled" | grep -q cloudbuild.googleapis.com
 do sleep 5; done
+
+export GCS_SERVICE_ACCOUNT="service-${PROJECT_ID}@gs-project-accounts.iam.gserviceaccount.com"
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:${GCS_SERVICE_ACCOUNT}" \
+  --role="roles/pubsub.publisher"
+
 sleep 300
 
 mkdir myfunc && cd myfunc
@@ -208,6 +214,8 @@ for i in {1..5}; do
     --concurrency=80 && break
   sleep 30
 done
+echo -e "\n👉 Deployment done. Check the function at"
+echo -e "https://console.cloud.google.com/run/services?project=$PROJECT_ID\n"
 
 ## Tha lab doesn't check whether the function can be triggered.
 echo -e "\n👉  Test the Cloud Run function...\n"

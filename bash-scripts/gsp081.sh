@@ -83,7 +83,7 @@ do sleep 5; done
 #   --cpu=1 \
 #   --concurrency=80
 
-## ⚠️ Unfortunately the function has to be created via console to pass the lab check.
+## ⚠️ The function has to be created via console to pass the lab check.
 echo -e "\n👉  Create and deploy Cloud Run funcion 'gcfunction' at"  
 echo -e "https://console.cloud.google.com/run/services?project=$PROJECT_ID\n"
 ask_to_proceed
