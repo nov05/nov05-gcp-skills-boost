@@ -1,0 +1,346 @@
+
+========================================================
+Task 1. Create a virtual environment
+========================================================
+
+********************************************************************************
+You are running apt-get inside of Cloud Shell. Note that your Cloud Shell  
+machine is ephemeral and no system-wide change will persist beyond session end. 
+
+To suppress this warning, create an empty ~/.cloudshell/no-apt-get-warning file.
+The command will automatically proceed in 5 seconds or on any key. 
+
+Visit https://cloud.google.com/shell/help for more information.                 
+********************************************************************************
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  python3-distlib python3-filelock python3-platformdirs python3-virtualenv
+  python3-wheel-whl
+Recommended packages:
+  python3-distutils
+The following NEW packages will be installed:
+  python3-distlib python3-filelock python3-platformdirs python3-virtualenv
+  python3-wheel-whl virtualenv
+0 upgraded, 6 newly installed, 0 to remove and 2 not upgraded.
+Need to get 486 kB of archives.
+After this operation, 1,796 kB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu noble/universe amd64 python3-distlib all 0.3.8-1 [318 kB]
+Get:2 http://archive.ubuntu.com/ubuntu noble/universe amd64 python3-filelock all 3.13.1-1 [10.8 kB]
+Get:3 http://archive.ubuntu.com/ubuntu noble/main amd64 python3-platformdirs all 4.2.0-1 [16.1 kB]
+Get:4 http://archive.ubuntu.com/ubuntu noble/universe amd64 python3-wheel-whl all 0.42.0-2 [67.8 kB]
+Get:5 http://archive.ubuntu.com/ubuntu noble/universe amd64 python3-virtualenv all 20.25.0+ds-2 [70.8 kB]
+Get:6 http://archive.ubuntu.com/ubuntu noble/universe amd64 virtualenv all 20.25.0+ds-2 [1,978 B]
+debconf: delaying package configuration, since apt-utils is not installed
+Fetched 486 kB in 0s (3,561 kB/s)
+Selecting previously unselected package python3-distlib.
+(Reading database ... 
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 120820 files and directories currently installed.)
+Preparing to unpack .../0-python3-distlib_0.3.8-1_all.deb ...
+Unpacking python3-distlib (0.3.8-1) ...
+Selecting previously unselected package python3-filelock.
+Preparing to unpack .../1-python3-filelock_3.13.1-1_all.deb ...
+Unpacking python3-filelock (3.13.1-1) ...
+Selecting previously unselected package python3-platformdirs.
+Preparing to unpack .../2-python3-platformdirs_4.2.0-1_all.deb ...
+Unpacking python3-platformdirs (4.2.0-1) ...
+Selecting previously unselected package python3-wheel-whl.
+Preparing to unpack .../3-python3-wheel-whl_0.42.0-2_all.deb ...
+Unpacking python3-wheel-whl (0.42.0-2) ...
+Selecting previously unselected package python3-virtualenv.
+Preparing to unpack .../4-python3-virtualenv_20.25.0+ds-2_all.deb ...
+Unpacking python3-virtualenv (20.25.0+ds-2) ...
+Selecting previously unselected package virtualenv.
+Preparing to unpack .../5-virtualenv_20.25.0+ds-2_all.deb ...
+Unpacking virtualenv (20.25.0+ds-2) ...
+Setting up python3-filelock (3.13.1-1) ...
+Setting up python3-distlib (0.3.8-1) ...
+Setting up python3-platformdirs (4.2.0-1) ...
+Setting up python3-wheel-whl (0.42.0-2) ...
+Setting up python3-virtualenv (20.25.0+ds-2) ...
+Setting up virtualenv (20.25.0+ds-2) ...
+Processing triggers for man-db (2.12.0-4build2) ...
+
+========================================================
+Task 2. Install the client library
+========================================================
+
+Collecting google-cloud-pubsub
+  Downloading google_cloud_pubsub-2.39.0-py3-none-any.whl.metadata (14 kB)
+Collecting google-api-core<3.0.0,>=2.17.1 (from google-api-core[grpc]<3.0.0,>=2.17.1->google-cloud-pubsub)
+  Downloading google_api_core-2.31.0-py3-none-any.whl.metadata (3.2 kB)
+Collecting google-auth!=2.24.0,!=2.25.0,<3.0.0,>=2.14.1 (from google-cloud-pubsub)
+  Downloading google_auth-2.53.0-py3-none-any.whl.metadata (5.5 kB)
+Collecting grpcio<2.0.0,>=1.51.3 (from google-cloud-pubsub)
+  Downloading grpcio-1.81.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (3.7 kB)
+Collecting proto-plus<2.0.0,>=1.22.3 (from google-cloud-pubsub)
+  Downloading proto_plus-1.28.0-py3-none-any.whl.metadata (2.2 kB)
+Collecting protobuf<8.0.0,>=4.25.8 (from google-cloud-pubsub)
+  Downloading protobuf-7.35.0-cp310-abi3-manylinux2014_x86_64.whl.metadata (595 bytes)
+Collecting grpc-google-iam-v1<1.0.0,>=0.14.0 (from google-cloud-pubsub)
+  Downloading grpc_google_iam_v1-0.14.4-py3-none-any.whl.metadata (9.1 kB)
+Collecting grpcio-status>=1.51.3 (from google-cloud-pubsub)
+  Downloading grpcio_status-1.81.0-py3-none-any.whl.metadata (1.2 kB)
+Collecting opentelemetry-api>=1.27.0 (from google-cloud-pubsub)
+  Downloading opentelemetry_api-1.42.1-py3-none-any.whl.metadata (1.4 kB)
+Collecting opentelemetry-sdk>=1.27.0 (from google-cloud-pubsub)
+  Downloading opentelemetry_sdk-1.42.1-py3-none-any.whl.metadata (1.7 kB)
+Collecting googleapis-common-protos<2.0.0,>=1.63.2 (from google-api-core<3.0.0,>=2.17.1->google-api-core[grpc]<3.0.0,>=2.17.1->google-cloud-pubsub)
+  Downloading googleapis_common_protos-1.75.0-py3-none-any.whl.metadata (8.6 kB)
+Collecting requests<3.0.0,>=2.33.0 (from google-api-core<3.0.0,>=2.17.1->google-api-core[grpc]<3.0.0,>=2.17.1->google-cloud-pubsub)
+  Downloading requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+Collecting pyasn1-modules>=0.2.1 (from google-auth!=2.24.0,!=2.25.0,<3.0.0,>=2.14.1->google-cloud-pubsub)
+  Downloading pyasn1_modules-0.4.2-py3-none-any.whl.metadata (3.5 kB)
+Collecting cryptography>=38.0.3 (from google-auth!=2.24.0,!=2.25.0,<3.0.0,>=2.14.1->google-cloud-pubsub)
+  Downloading cryptography-48.0.1-cp311-abi3-manylinux_2_34_x86_64.whl.metadata (4.3 kB)
+Collecting typing-extensions~=4.12 (from grpcio<2.0.0,>=1.51.3->google-cloud-pubsub)
+  Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting opentelemetry-semantic-conventions==0.63b1 (from opentelemetry-sdk>=1.27.0->google-cloud-pubsub)
+  Downloading opentelemetry_semantic_conventions-0.63b1-py3-none-any.whl.metadata (2.4 kB)
+Collecting cffi>=2.0.0 (from cryptography>=38.0.3->google-auth!=2.24.0,!=2.25.0,<3.0.0,>=2.14.1->google-cloud-pubsub)
+  Downloading cffi-2.0.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.6 kB)
+Collecting pyasn1<0.7.0,>=0.6.1 (from pyasn1-modules>=0.2.1->google-auth!=2.24.0,!=2.25.0,<3.0.0,>=2.14.1->google-cloud-pubsub)
+  Downloading pyasn1-0.6.3-py3-none-any.whl.metadata (8.4 kB)
+Collecting charset_normalizer<4,>=2 (from requests<3.0.0,>=2.33.0->google-api-core<3.0.0,>=2.17.1->google-api-core[grpc]<3.0.0,>=2.17.1->google-cloud-pubsub)
+  Downloading charset_normalizer-3.4.7-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (40 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 40.9/40.9 kB 2.6 MB/s eta 0:00:00
+Collecting idna<4,>=2.5 (from requests<3.0.0,>=2.33.0->google-api-core<3.0.0,>=2.17.1->google-api-core[grpc]<3.0.0,>=2.17.1->google-cloud-pubsub)
+  Downloading idna-3.18-py3-none-any.whl.metadata (6.1 kB)
+Collecting urllib3<3,>=1.26 (from requests<3.0.0,>=2.33.0->google-api-core<3.0.0,>=2.17.1->google-api-core[grpc]<3.0.0,>=2.17.1->google-cloud-pubsub)
+  Downloading urllib3-2.7.0-py3-none-any.whl.metadata (6.9 kB)
+Collecting certifi>=2023.5.7 (from requests<3.0.0,>=2.33.0->google-api-core<3.0.0,>=2.17.1->google-api-core[grpc]<3.0.0,>=2.17.1->google-cloud-pubsub)
+  Downloading certifi-2026.5.20-py3-none-any.whl.metadata (2.5 kB)
+Collecting pycparser (from cffi>=2.0.0->cryptography>=38.0.3->google-auth!=2.24.0,!=2.25.0,<3.0.0,>=2.14.1->google-cloud-pubsub)
+  Downloading pycparser-3.0-py3-none-any.whl.metadata (8.2 kB)
+Downloading google_cloud_pubsub-2.39.0-py3-none-any.whl (324 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 324.7/324.7 kB 12.7 MB/s eta 0:00:00
+Downloading google_api_core-2.31.0-py3-none-any.whl (173 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 173.1/173.1 kB 17.2 MB/s eta 0:00:00
+Downloading google_auth-2.53.0-py3-none-any.whl (246 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 246.1/246.1 kB 23.8 MB/s eta 0:00:00
+Downloading grpc_google_iam_v1-0.14.4-py3-none-any.whl (32 kB)
+Downloading grpcio-1.81.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (6.8 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 6.8/6.8 MB 55.1 MB/s eta 0:00:00
+Downloading grpcio_status-1.81.0-py3-none-any.whl (14 kB)
+Downloading opentelemetry_api-1.42.1-py3-none-any.whl (61 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 61.3/61.3 kB 6.2 MB/s eta 0:00:00
+Downloading opentelemetry_sdk-1.42.1-py3-none-any.whl (170 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 170.9/170.9 kB 16.1 MB/s eta 0:00:00
+Downloading opentelemetry_semantic_conventions-0.63b1-py3-none-any.whl (203 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 203.7/203.7 kB 20.4 MB/s eta 0:00:00
+Downloading proto_plus-1.28.0-py3-none-any.whl (50 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 50.4/50.4 kB 5.4 MB/s eta 0:00:00
+Downloading protobuf-7.35.0-cp310-abi3-manylinux2014_x86_64.whl (327 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 327.1/327.1 kB 27.5 MB/s eta 0:00:00
+Downloading cryptography-48.0.1-cp311-abi3-manylinux_2_34_x86_64.whl (4.7 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.7/4.7 MB 79.5 MB/s eta 0:00:00
+Downloading googleapis_common_protos-1.75.0-py3-none-any.whl (300 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 300.6/300.6 kB 26.8 MB/s eta 0:00:00
+Downloading pyasn1_modules-0.4.2-py3-none-any.whl (181 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 181.3/181.3 kB 16.4 MB/s eta 0:00:00
+Downloading requests-2.34.2-py3-none-any.whl (73 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 73.1/73.1 kB 8.1 MB/s eta 0:00:00
+Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 44.6/44.6 kB 4.5 MB/s eta 0:00:00
+Downloading certifi-2026.5.20-py3-none-any.whl (134 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 134.1/134.1 kB 13.3 MB/s eta 0:00:00
+Downloading cffi-2.0.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (219 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 219.6/219.6 kB 19.3 MB/s eta 0:00:00
+Downloading charset_normalizer-3.4.7-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (216 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 216.6/216.6 kB 22.4 MB/s eta 0:00:00
+Downloading idna-3.18-py3-none-any.whl (65 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 65.5/65.5 kB 6.2 MB/s eta 0:00:00
+Downloading pyasn1-0.6.3-py3-none-any.whl (83 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 84.0/84.0 kB 8.2 MB/s eta 0:00:00
+Downloading urllib3-2.7.0-py3-none-any.whl (131 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 131.1/131.1 kB 13.3 MB/s eta 0:00:00
+Downloading pycparser-3.0-py3-none-any.whl (48 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 48.2/48.2 kB 4.6 MB/s eta 0:00:00
+Installing collected packages: urllib3, typing-extensions, pycparser, pyasn1, protobuf, idna, charset_normalizer, certifi, requests, pyasn1-modules, proto-plus, opentelemetry-api, grpcio, googleapis-common-protos, cffi, opentelemetry-semantic-conventions, grpcio-status, cryptography, opentelemetry-sdk, grpc-google-iam-v1, google-auth, google-api-core, google-cloud-pubsub
+Successfully installed certifi-2026.5.20 cffi-2.0.0 charset_normalizer-3.4.7 cryptography-48.0.1 google-api-core-2.31.0 google-auth-2.53.0 google-cloud-pubsub-2.39.0 googleapis-common-protos-1.75.0 grpc-google-iam-v1-0.14.4 grpcio-1.81.0 grpcio-status-1.81.0 idna-3.18 opentelemetry-api-1.42.1 opentelemetry-sdk-1.42.1 opentelemetry-semantic-conventions-0.63b1 proto-plus-1.28.0 protobuf-7.35.0 pyasn1-0.6.3 pyasn1-modules-0.4.2 pycparser-3.0 requests-2.34.2 typing-extensions-4.15.0 urllib3-2.7.0
+Cloning into 'python-pubsub'...
+
+========================================================
+Task 3. Pub/Sub - the Basics
+========================================================
+
+
+========================================================
+Task 4. Create a topic
+========================================================
+
+qwiklabs-gcp-01-e29a2d9e1e40
+
+👉  Check publisher.py at
+https://github.com/googleapis/python-pubsub/blob/main/samples/snippets/publisher.py
+
+usage: publisher.py [-h]
+                    project_id
+                    {list,create,pubsub-publish-otel-tracing,create_kinesis_ingestion,create_cloud_storage_ingestion,create_aws_msk_ingestion,create_azure_event_hubs_ingestion,create_confluent_cloud_ingestion,create_smt,update_kinesis_ingestion,delete,publish,publish-with-custom-attributes,publish-with-error-handler,publish-with-batch-settings,publish-with-flow-control,publish-with-retry-settings,publish-with-ordering-keys,resume-publish-with-ordering-keys,detach-subscription}
+                    ...
+
+This application demonstrates how to perform basic operations on topics
+with the Cloud Pub/Sub API.
+
+For more information, see the README.md under /pubsub and the documentation
+at https://cloud.google.com/pubsub/docs.
+
+positional arguments:
+  project_id            Your Google Cloud project ID
+  {list,create,pubsub-publish-otel-tracing,create_kinesis_ingestion,create_cloud_storage_ingestion,create_aws_msk_ingestion,create_azure_event_hubs_ingestion,create_confluent_cloud_ingestion,create_smt,update_kinesis_ingestion,delete,publish,publish-with-custom-attributes,publish-with-error-handler,publish-with-batch-settings,publish-with-flow-control,publish-with-retry-settings,publish-with-ordering-keys,resume-publish-with-ordering-keys,detach-subscription}
+    list                Lists all Pub/Sub topics in the given project.
+    create              Create a new Pub/Sub topic.
+    pubsub-publish-otel-tracing
+                        Publish to `topic_id` in `topic_project_id` with
+                        OpenTelemetry enabled. Export the OpenTelemetry traces
+                        to Google Cloud Trace in project `trace_project_id`
+                        Args: topic_project_id: project ID of the topic to
+                        publish to. trace_project_id: project ID to export
+                        Cloud Trace to. topic_id: topic ID to publish to.
+                        Returns: None
+    create_kinesis_ingestion
+                        Create a new Pub/Sub topic with AWS Kinesis Ingestion
+                        Settings.
+    create_cloud_storage_ingestion
+                        Create a new Pub/Sub topic with Cloud Storage
+                        Ingestion Settings.
+    create_aws_msk_ingestion
+                        Create a new Pub/Sub topic with AWS MSK Ingestion
+                        Settings.
+    create_azure_event_hubs_ingestion
+                        Create a new Pub/Sub topic with Azure Event Hubs
+                        Ingestion Settings.
+    create_confluent_cloud_ingestion
+                        Create a new Pub/Sub topic with Confluent Cloud
+                        Ingestion Settings.
+    create_smt          Create a new Pub/Sub topic with a UDF SMT.
+    update_kinesis_ingestion
+                        Update Pub/Sub topic with AWS Kinesis Ingestion
+                        Settings.
+    delete              Deletes an existing Pub/Sub topic.
+    publish             Publishes multiple messages to a Pub/Sub topic.
+    publish-with-custom-attributes
+                        Publishes multiple messages with custom attributes to
+                        a Pub/Sub topic.
+    publish-with-error-handler
+                        Publishes multiple messages to a Pub/Sub topic with an
+                        error handler.
+    publish-with-batch-settings
+                        Publishes multiple messages to a Pub/Sub topic with
+                        batch settings.
+    publish-with-flow-control
+                        Publishes messages to a Pub/Sub topic with flow
+                        control settings.
+    publish-with-retry-settings
+                        Publishes messages with custom retry settings.
+    publish-with-ordering-keys
+                        Publishes messages with ordering keys.
+    resume-publish-with-ordering-keys
+                        Resume publishing messages with ordering keys when
+                        unrecoverable errors occur.
+    detach-subscription
+                        Detaches a subscription from a topic and drops all
+                        messages retained in it.
+
+options:
+  -h, --help            show this help message and exit
+Created topic: projects/qwiklabs-gcp-01-e29a2d9e1e40/topics/MyTopic
+name: "projects/qwiklabs-gcp-01-e29a2d9e1e40/topics/MyTopic"
+message_storage_policy {
+  allowed_persistence_regions: "us-east1"
+}
+
+
+========================================================
+Task 5. Create a subscription
+========================================================
+
+Subscription created: name: "projects/qwiklabs-gcp-01-e29a2d9e1e40/subscriptions/MySub"
+topic: "projects/qwiklabs-gcp-01-e29a2d9e1e40/topics/MyTopic"
+push_config {
+}
+ack_deadline_seconds: 10
+message_retention_duration {
+  seconds: 604800
+}
+expiration_policy {
+  ttl {
+    seconds: 2678400
+  }
+}
+state: ACTIVE
+
+projects/qwiklabs-gcp-01-e29a2d9e1e40/subscriptions/MySub
+
+========================================================
+Task 6. Publish messages
+========================================================
+
+messageIds:
+- '20195426552019527'
+messageIds:
+- '20195444978491787'
+messageIds:
+- '20195378731546250'
+messageIds:
+- '20195293044115367'
+
+========================================================
+Task 7. View messages
+========================================================
+
+Listening for messages on projects/qwiklabs-gcp-01-e29a2d9e1e40/subscriptions/MySub..
+
+Received Message {
+  data: b"Publisher's name is Joey (dog)"
+  ordering_key: ''
+  attributes: {}
+}.
+Received Message {
+  data: b'Publisher thinks Pub/Sub is awesome'
+  ordering_key: ''
+  attributes: {}
+}.
+Received Message {
+  data: b'Hello'
+  ordering_key: ''
+  attributes: {}
+}.Received Message {
+  data: b'Publisher likes to eat dog treats'
+  ordering_key: ''
+  attributes: {}
+}.
+
+
+========================================================
+Task 8. Test your understanding
+========================================================
+
+1. Google Cloud Pub/Sub service allows applications to exchange messages reliably, quickly, and asynchronously.
+  True
+2. A _____ is a shared string that allows applications to connect with one another.
+  topic
+
+✅  All done
+

@@ -23,6 +23,10 @@ yes y | ./gsp094.sh 2>&1 | tee -a logs.txt
 sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 ```
 
+* You can find a terminal output log sample file in this folder.  
+
+---   
+
 * For development only  
 
 ```bash

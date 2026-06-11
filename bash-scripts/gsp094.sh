@@ -45,7 +45,7 @@ EOF
 echo $GOOGLE_CLOUD_PROJECT
 # cat publisher.py
 echo -e "\n👉  Check publisher.py at"
-echo =e "https://github.com/googleapis/python-pubsub/blob/main/samples/snippets/publisher.py\n"  
+echo -e "https://github.com/googleapis/python-pubsub/blob/main/samples/snippets/publisher.py\n"  
 python publisher.py -h
 
 python publisher.py $GOOGLE_CLOUD_PROJECT create MyTopic
