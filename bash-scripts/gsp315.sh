@@ -133,15 +133,18 @@ ask_to_proceed
 
 echo -e "\n👉  Create Cloud Run funcion trigger...\n" 
 ## Create the trigger
-gcloud eventarc triggers create trigger-thumbnail \
-  --location=$REGION \
-  --service-account=$SA_THUMBNAIL \
-  --event-data-content-type=application/json \
-  --destination-run-service=$FUNCTION \
-  --destination-run-region=$REGION \
-  --destination-run-path="/" \
-  --event-filters="type=google.cloud.storage.object.v1.finalized" \
-  --event-filters="bucket=$BUCKET"
+for i in {1..5}; do
+  gcloud eventarc triggers create trigger-thumbnail \
+    --location=$REGION \
+    --service-account=$SA_THUMBNAIL \
+    --event-data-content-type=application/json \
+    --destination-run-service=$FUNCTION \
+    --destination-run-region=$REGION \
+    --destination-run-path="/" \
+    --event-filters="type=google.cloud.storage.object.v1.finalized" \
+    --event-filters="bucket=$BUCKET" && break
+  sleep 60
+done
 sleep 30
                                                                          
 # mkdir myfunc && cd myfunc
