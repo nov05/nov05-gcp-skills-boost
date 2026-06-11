@@ -18,12 +18,19 @@ sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 
 ```bash
 PROJECT_ID=$(gcloud config get-value project)
-GCS_SERVICE_AGENT="$(gcloud storage service-agent --project=$PROJECT_ID)"
+PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format="value(projectNumber)")
+GCS_SERVICE_AGENT="service-${PROJECT_NUMBER}@gs-project-accounts.iam.gserviceaccount.com"
 echo $GCS_SERVICE_AGENT
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:${GCS_SERVICE_AGENT}" \
+  --role="roles/pubsub.publisher"
 ```
 ```text
-Your active configuration is: [cloudshell-2725]    
-service-437182158726@gs-project-accounts.iam.gserviceaccount.com    
+Your active configuration is: [cloudshell-2725]
+service-437182158726@gs-project-accounts.iam.gserviceaccount.com
+Updated IAM policy for project [qwiklabs-gcp-04-dfb5a5ec8990].
+bindings:
+...
 ```
 
 * Grant Pub/Sub Publisher role
@@ -44,6 +51,11 @@ Updated IAM policy for project [qwiklabs-gcp-04-dfb5a5ec8990].
 bindings:    
 ...   
 ```
+
+
+
+
+
 
 ## 👉 Logs
 
