@@ -186,20 +186,26 @@ EOF
 cd ..
 echo -e "\n👉  Deploying Cloud Run function 'gcfunction'...\n"
 # ⚠️ It may need retry a couple of times.
-gcloud functions deploy gcfunction \
-  --gen2 \
-  --runtime=nodejs22 \
-  --region=$REGION \
-  --source=./myfunc \
-  --entry-point=$FUNCTION \
-  --trigger-http \
-  --allow-unauthenticated \
-  --max-instances=5 \
-  --timeout=300 \
-  --memory=512Mi \
-  --cpu=1 \
-  --concurrency=80
+for i in {1..5}; do
+  gcloud functions deploy gcfunction \
+    --gen2 \
+    --runtime=nodejs22 \
+    --region=$REGION \
+    --source=./myfunc \
+    --entry-point=$FUNCTION \
+    --trigger-http \
+    --allow-unauthenticated \
+    --max-instances=5 \
+    --timeout=300 \
+    --memory=512Mi \
+    --cpu=1 \
+    --concurrency=80 \
+    --trigger-event-filters="type=google.cloud.storage.object.v1.finalized" \
+    --trigger-event-filters="bucket=$BUCKET" && break
+  sleep 30
+done
 
+## Tha lab doesn't check whether the function can be triggered.
 echo -e "\n👉  Test the Cloud Run function...\n"
 curl -o map.jpg https://storage.googleapis.com/cloud-training/gsp315/map.jpg
 gsutil cp map.jpg gs://$BUCKET/
