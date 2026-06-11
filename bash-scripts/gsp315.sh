@@ -186,7 +186,9 @@ cat > package.json << 'EOF'
 EOF
 cd ..
 echo -e "\n👉  Deploying Cloud Run function 'gcfunction'...\n"
-# ⚠️ It may need retry a couple of times.
+## ⚠️ It may need retry a couple of times.
+## At most one of --trigger-bucket | --trigger-http | --trigger-topic | --trigger-event --trigger-resource | 
+## --trigger-event-filters --trigger-event-filters-path-pattern --trigger-channel can be specified.
 for i in {1..5}; do
   gcloud functions deploy gcfunction \
     --gen2 \
@@ -194,14 +196,13 @@ for i in {1..5}; do
     --region=$REGION \
     --source=./myfunc \
     --entry-point=$FUNCTION \
-    --trigger-http \
+    --trigger-bucket=$BUCKET \
     --allow-unauthenticated \
     --max-instances=5 \
     --timeout=300 \
     --memory=512Mi \
     --cpu=1 \
-    --concurrency=80 \
-    --trigger-bucket=$BUCKET && break
+    --concurrency=80 && break
   sleep 30
 done
 
