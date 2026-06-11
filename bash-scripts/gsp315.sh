@@ -13,14 +13,14 @@ ask_to_proceed() {
 }
 
 echo
-read -p "👉  Enter bucket name (Task 1): " BUCKET
-export BUCKET 
+read -p "👉  Enter username 2: " USER_ID2
+export USER_ID2
+# read -p "👉  Enter bucket name (Task 1): " BUCKET
+# export BUCKET 
 read -p "👉  Enter topic name (Task 2): " TOPIC
 export TOPIC
 read -p "👉  Enter Cloud Run function name (Task 3): " FUNCTION
 export FUNCTION
-read -p "👉  Enter username 2 (Task 4): " USER_ID2
-export USER_ID2
 echo
 
 export USER_ID=$(gcloud auth list --format="value(account)" --filter="status:ACTIVE")
@@ -31,6 +31,7 @@ export REGION=$(gcloud compute project-info describe \
   --format="value(commonInstanceMetadata.items[google-compute-default-region])")
 export ZONE=$(gcloud compute project-info describe \
   --format="value(commonInstanceMetadata.items[google-compute-default-zone])")
+export BUCKET="$PROECT_ID-bucket"
 gcloud config set project $PROJECT_ID  
 gcloud config set compute/region $REGION
 gcloud config set compute/zone $ZONE
