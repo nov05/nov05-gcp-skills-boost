@@ -26,8 +26,8 @@ echo
 
 export USER_ID=$(gcloud auth list --format="value(account)" --filter="status:ACTIVE")
 export PROJECT_ID=$(gcloud config get-value project)
-# export PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID \
-#   --format='value(projectNumber)')
+export PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID \
+  --format='value(projectNumber)')
 export REGION=$(gcloud compute project-info describe \
   --format="value(commonInstanceMetadata.items[google-compute-default-region])")
 export ZONE=$(gcloud compute project-info describe \
@@ -92,15 +92,15 @@ gcloud services enable run.googleapis.com \
   cloudbuild.googleapis.com \
   eventarc.googleapis.com \
   --project=$PROJECT_ID
-until enabled=$(gcloud services list --enabled --project=$PROJECT_ID); \
-  echo "$enabled" | grep -q run.googleapis.com && \
-  echo "$enabled" | grep -q artifactregistry.googleapis.com && \
-  echo "$enabled" | grep -q cloudbuild.googleapis.com
-do sleep 5; done
+# until enabled=$(gcloud services list --enabled --project=$PROJECT_ID); \
+#   echo "$enabled" | grep -q run.googleapis.com && \
+#   echo "$enabled" | grep -q artifactregistry.googleapis.com && \
+#   echo "$enabled" | grep -q cloudbuild.googleapis.com
+# do sleep 5; done
 
-export GCS_SERVICE_ACCOUNT="service-${PROJECT_ID}@gs-project-accounts.iam.gserviceaccount.com"
+export EVENTARC_AGENT="service-${PROJECT_NUMBER}@gcp-sa-eventarc.iam.gserviceaccount.com"
 gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:${GCS_SERVICE_ACCOUNT}" \
+  --member="serviceAccount:${EVENTARC_AGENT}" \
   --role="roles/pubsub.publisher"
 
 sleep 300
