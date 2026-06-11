@@ -80,32 +80,68 @@ Task 3. Create the thumbnail Cloud Run Function
 EOF
 ## Refer to GSP081
 
+##-----------------------------------------------------------------------------
+## ⚠️ This code block is necessary for the Cloud Run trigger creation.
+##-----------------------------------------------------------------------------
+echo -e "\n👉  Enabling services..."
+echo -e "Enabling API [eventarc.googleapis.com] will take a few minutes.\n"
+gcloud services enable run.googleapis.com \
+  artifactregistry.googleapis.com \
+  cloudbuild.googleapis.com \
+  eventarc.googleapis.com \
+  --project=$PROJECT_ID
+until enabled=$(gcloud services list --enabled --project=$PROJECT_ID); \
+  echo "$enabled" | grep -q run.googleapis.com && \
+  echo "$enabled" | grep -q artifactregistry.googleapis.com && \
+  echo "$enabled" | grep -q cloudbuild.googleapis.com
+do sleep 5; done
+
+## Create a service account for the Cloud Run function trigger.
+export SA_THUMBNAIL="thumbnail-service-account@$PROJECT_ID.iam.gserviceaccount.com"
+gcloud iam service-accounts create thumbnail-service-account
+until gcloud iam service-accounts describe \
+  "thumbnail-service-account@$PROJECT_ID.iam.gserviceaccount.com" >/dev/null 2>&1
+do sleep 5; done
+## Grand roles to the service account used by the Cloud Run function trigger.
+: 'Note:
+If you get a permission denied error stating it may take a few minutes before 
+all necessary permissions are propagated to the Service Agent, wait a few minutes and try again.
+Ensure you have the appropriate roles (Eventarc Service Agent, Eventarc Event Receiver,
+Service Account Token Creator, and Pub/Sub Publisher) assigned to the correct service accounts.
+'
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$SA_THUMBNAIL" \
+  --role="roles/eventarc.serviceAgent"
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$SA_THUMBNAIL" \
+  --role="roles/eventarc.eventReceiver"
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$SA_THUMBNAIL" \
+  --role="roles/iam.serviceAccountTokenCreator"
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$SA_THUMBNAIL" \
+  --role="roles/pubsub.publisher"
+
+sleep 300
+##-----------------------------------------------------------------------------
+
 ## ⚠️ The function has to be created via console to pass the lab check.
 echo -e "\n👉  Create and deploy Cloud Run funcion $FUNCTION at"  
 echo -e "https://console.cloud.google.com/run/services?project=$PROJECT_ID\n"
 ask_to_proceed
 
-# echo -e "\n👉  Enabling services..."
-# echo -e "Enabling API [eventarc.googleapis.com] will take a few minutes.\n"
-# gcloud services enable run.googleapis.com \
-#   artifactregistry.googleapis.com \
-#   cloudbuild.googleapis.com \
-#   eventarc.googleapis.com \
-#   --project=$PROJECT_ID
-# # until enabled=$(gcloud services list --enabled --project=$PROJECT_ID); \
-# #   echo "$enabled" | grep -q run.googleapis.com && \
-# #   echo "$enabled" | grep -q artifactregistry.googleapis.com && \
-# #   echo "$enabled" | grep -q cloudbuild.googleapis.com
-# # do sleep 5; done
-
-# export GCS_SERVICE_AGENT="service-${PROJECT_NUMBER}@gs-project-accounts.iam.gserviceaccount.com"
-# echo -e "\n👉  GCS_SERVICE_AGENT: $GCS_SERVICE_AGENT\n"
-# gcloud projects add-iam-policy-binding $PROJECT_ID \
-#   --member="serviceAccount:$GCS_SERVICE_AGENT" \
-#   --role="roles/pubsub.publisher"
-
-# sleep 300
-
+## Create the trigger
+gcloud eventarc triggers create trigger-thumbnail \
+  --location=$REGION \
+  --service-account=$SA_THUMBNAIL \
+  --event-data-content-type=application/json \
+  --destination-run-service=$FUNCTION \
+  --destination-run-region=$REGION \
+  --destination-run-path="/" \
+  --event-filters="type=google.cloud.storage.object.v1.finalized" \
+  --event-filters="bucket=$BUCKET"
+sleep 30
+                                                                         
 # mkdir myfunc && cd myfunc
 # cat > index.js << 'EOF'
 # const functions = require('@google-cloud/functions-framework');
@@ -218,7 +254,8 @@ ask_to_proceed
 # echo -e "\n👉 Deployment done. Check the function at"
 # echo -e "https://console.cloud.google.com/run/services?project=$PROJECT_ID\n"
 
-## Tha lab doesn't check whether the function can be triggered.
+## The lab doesn't check whether the function can be triggered.
+## But the uploading step is necessary to pass the check.
 echo -e "\n👉  Test the Cloud Run function..."
 echo -e "Check the bucket at https://console.cloud.google.com/storage/browser/$BUCKET?project=$PROJECT_ID\n"
 curl -o map.jpg https://storage.googleapis.com/cloud-training/gsp315/map.jpg

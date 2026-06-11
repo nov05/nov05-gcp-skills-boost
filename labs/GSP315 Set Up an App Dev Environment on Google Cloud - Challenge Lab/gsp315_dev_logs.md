@@ -16,12 +16,43 @@ sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 
 ## Tips
 
+* Cloud Run function trigger creation    
+  **$SA_THUMBNAIL** example: thumbnail-service-account@$PROJECT_ID.iam.gserviceaccount.com
+
+```bash
+gcloud eventarc triggers update trigger-hvxikyd0 \
+  --location=asia-south1 \
+  --service-account=$SA_THUMBNAIL \
+  --event-data-content-type=application/json \
+  --destination-run-service=$FUNCTION \
+  --destination-run-region=$REGION \
+  --destination-run-path="/" \
+  --event-filters="type=google.cloud.storage.object.v1.finalized" \
+  --event-filters="bucket=$BUCKET"
+```
+
+| Field                       | Value                                                         |
+| --------------------------- | ------------------------------------------------------------- |
+| Trigger name                | trigger-hvxikyd0                                              |
+| Trigger type                | Google sources                                                |
+| Event provider              | Cloud Storage                                                 |
+| Event type                  | google.cloud.storage.object.v1.finalized                      |
+| Event data content type     | application/json                                              |
+| Bucket                      | qwiklabs-gcp-02-d2b63e3698d9-bucket                           |
+| Description                 | Google Cloud Storage bucket to subscribe to                   |
+| Region                      | Region is selected based on the selected Cloud Storage bucket |
+| Service account             | thumbnail-service-account                                     |
+| Service account description | Identity to be used by the created Eventarc trigger           |
+| Service URL path            | /                                                             |
+
+
+
+* Find the correct Cloud Storage service agent automatically.  
+  Grant Pub/Sub Publisher role - Not necessary for this lab.
+
 ```bash
 gcloud storage service-agent --project=$PROJECT_ID
 ```
-
-* Find the correct Cloud Storage service agent automatically.  
-  Grant Pub/Sub Publisher role.  
 
 ```bash
 PROJECT_ID=$(gcloud config get-value project)

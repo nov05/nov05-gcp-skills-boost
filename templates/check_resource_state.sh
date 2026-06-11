@@ -45,12 +45,12 @@ do sleep 5; done
 
 
 ## Make sure a service account has been created.
+export SA="devops@$PROJECT_ID.iam.gserviceaccount.com"
 gcloud iam service-accounts create devops --display-name devops
 until gcloud iam service-accounts describe \
   "devops@$PROJECT_ID.iam.gserviceaccount.com" >/dev/null 2>&1
 do sleep 5; done
-
-export SA="devops@$PROJECT_ID.iam.gserviceaccount.com"
+## Make sure a role is granded to the service account.
 gcloud projects add-iam-policy-binding $PROJECT_ID \
     --member serviceAccount:$SA \
     --role=roles/compute.instanceAdmin
