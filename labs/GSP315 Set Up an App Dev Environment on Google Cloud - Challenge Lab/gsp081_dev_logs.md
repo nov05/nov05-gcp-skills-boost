@@ -8,11 +8,17 @@ sudo chmod +x gsp315.sh
 sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 ```
 
+## 👉 Logs
+
+* 2026-06-11 Bash script `gsp081.sh` created
 
 
 
+## Tips
 
-### Tips
+```bash
+gcloud storage service-agent --project=$PROJECT_ID
+```
 
 * Find the correct Cloud Storage service agent automatically.  
   Grant Pub/Sub Publisher role.  
@@ -27,16 +33,54 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
   --role="roles/pubsub.publisher"
 ```
 ```text
-
-...
+service-300445648948@gs-project-accounts.iam.gserviceaccount.com
+Updated IAM policy for project [qwiklabs-gcp-00-ddcd2a10d829].
+bindings:
+- members:
+  - serviceAccount:qwiklabs-gcp-00-ddcd2a10d829@qwiklabs-gcp-00-ddcd2a10d829.iam.gserviceaccount.com
+  role: roles/bigquery.admin
+- members:
+  - serviceAccount:300445648948@cloudbuild.gserviceaccount.com
+  role: roles/cloudbuild.builds.builder
+- members:
+  - serviceAccount:service-300445648948@gcp-sa-cloudbuild.iam.gserviceaccount.com
+  role: roles/cloudbuild.serviceAgent
+- members:
+  - serviceAccount:300445648948@cloudservices.gserviceaccount.com
+  role: roles/compute.instanceGroupManagerServiceAgent
+- members:
+  - serviceAccount:service-300445648948@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:300445648948-compute@developer.gserviceaccount.com
+  - serviceAccount:300445648948@cloudservices.gserviceaccount.com
+  role: roles/editor
+- members:
+  - serviceAccount:admiral@qwiklabs-services-prod.iam.gserviceaccount.com
+  - serviceAccount:qwiklabs-gcp-00-ddcd2a10d829@qwiklabs-gcp-00-ddcd2a10d829.iam.gserviceaccount.com
+  - user:student-02-1e34634e62e5@qwiklabs.net
+  role: roles/owner
+- members:
+  - serviceAccount:service-300445648948@gs-project-accounts.iam.gserviceaccount.com
+  role: roles/pubsub.publisher
+- members:
+  - user:student-02-1e34634e62e5@qwiklabs.net
+  role: roles/resourcemanager.projectIamAdmin
+- members:
+  - serviceAccount:service-300445648948@serverless-robot-prod.iam.gserviceaccount.com
+  role: roles/run.serviceAgent
+- members:
+  - serviceAccount:qwiklabs-gcp-00-ddcd2a10d829@qwiklabs-gcp-00-ddcd2a10d829.iam.gserviceaccount.com
+  role: roles/storage.admin
+- members:
+  - user:student-02-1e34634e62e5@qwiklabs.net
+  - user:student-02-a8fef0386f2b@qwiklabs.net
+  role: roles/viewer
+etag: BwZT-tOdP_A=
+version: 1
 ```
 
-gcloud storage service-agent --project=$PROJECT_ID
 
 
 
 
-
-## 👉 Logs
-
-* 2026-06-11 Bash script `gsp081.sh` created
