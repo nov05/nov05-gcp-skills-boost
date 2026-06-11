@@ -1,3 +1,5 @@
+## 👉 For development   
+
 ```bash
 rm -rf *
 curl -LO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/dev/bash-scripts/gsp095.sh

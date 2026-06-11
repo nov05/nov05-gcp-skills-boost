@@ -1,4 +1,4 @@
-# 🟢 GSP095
+# 🟢 GSP095 Pub/Sub: Qwik Start - Command Line
 
 https://www.skills.google/games/7222/labs/44673
 
