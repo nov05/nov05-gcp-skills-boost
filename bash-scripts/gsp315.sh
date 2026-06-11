@@ -85,16 +85,19 @@ EOF
 # echo -e "https://console.cloud.google.com/run/services?project=$PROJECT_ID\n"
 # ask_to_proceed
 
-echo -e "\n👉  Enabling services...\n"
+echo -e "\n👉  Enabling services..."
+echo -e "Enabling API [eventarc.googleapis.com] will take a few minutes.\n"
 gcloud services enable run.googleapis.com \
   artifactregistry.googleapis.com \
   cloudbuild.googleapis.com \
+  eventarc.googleapis.com \
   --project=$PROJECT_ID
 until enabled=$(gcloud services list --enabled --project=$PROJECT_ID); \
   echo "$enabled" | grep -q run.googleapis.com && \
   echo "$enabled" | grep -q artifactregistry.googleapis.com && \
   echo "$enabled" | grep -q cloudbuild.googleapis.com
 do sleep 5; done
+sleep 300
 
 mkdir myfunc && cd myfunc
 cat > index.js << 'EOF'
