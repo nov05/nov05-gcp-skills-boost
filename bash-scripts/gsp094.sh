@@ -87,7 +87,7 @@ EOF
 
 python subscriber.py $GOOGLE_CLOUD_PROJECT receive MySub &
 PID=$!
-sleep 30
+sleep 10
 kill $PID
 
 
