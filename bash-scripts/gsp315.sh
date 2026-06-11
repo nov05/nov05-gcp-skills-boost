@@ -31,7 +31,7 @@ export REGION=$(gcloud compute project-info describe \
   --format="value(commonInstanceMetadata.items[google-compute-default-region])")
 export ZONE=$(gcloud compute project-info describe \
   --format="value(commonInstanceMetadata.items[google-compute-default-zone])")
-export BUCKET="$PROECT_ID-bucket"
+export BUCKET="$PROJECT_ID-bucket"
 gcloud config set project $PROJECT_ID  
 gcloud config set compute/region $REGION
 gcloud config set compute/zone $ZONE
