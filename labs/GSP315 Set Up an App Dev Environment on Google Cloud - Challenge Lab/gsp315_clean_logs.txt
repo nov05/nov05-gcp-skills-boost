@@ -1,0 +1,348 @@
+
+👉  Enter username 2 (Task 4): 👉  Enter topic name (Task 2): 
+Your active configuration is: [cloudshell-12331]
+[environment: untagged] Read more to tag: g.co/cloud/project-env-tag.
+Updated property [core/project].
+Updated property [compute/region].
+Updated property [compute/zone].
+
+🔹  User ID: student-04-f57342438233@qwiklabs.net
+🔹  User ID 2: student-02-06f3f525933a@qwiklabs.net
+🔹  Project ID: qwiklabs-gcp-00-ccb1fc1de722
+🔹  Region: us-west4
+🔹  Zone: us-west4-a
+🔹  Bukect: qwiklabs-gcp-00-ccb1fc1de722-bucket
+🔹  Topic: topic-memories-926
+🔹  Cloud Run function: memories-thumbnail-maker
+
+Credentialed Accounts
+
+ACTIVE: *
+ACCOUNT: student-04-f57342438233@qwiklabs.net
+
+To set the active account, run:
+    $ gcloud config set account `ACCOUNT`
+
+
+========================================================
+Task 1. Create a bucket
+========================================================
+
+Creating gs://qwiklabs-gcp-00-ccb1fc1de722-bucket/...
+
+========================================================
+Task 2. Create a Pub/Sub topic
+========================================================
+
+Created topic [projects/qwiklabs-gcp-00-ccb1fc1de722/topics/topic-memories-926].
+
+========================================================
+Task 3. Create the thumbnail Cloud Run Function
+========================================================
+
+
+👉  Enabling services...
+Enabling API [eventarc.googleapis.com] will take a few minutes.
+
+Operation "operations/acf.p2-910449315207-f79f79b4-a341-4159-8d03-9eab2536d987" finished successfully.
+Created service account [thumbnail-service-account].
+Updated IAM policy for project [qwiklabs-gcp-00-ccb1fc1de722].
+bindings:
+- members:
+  - serviceAccount:qwiklabs-gcp-00-ccb1fc1de722@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  role: roles/bigquery.admin
+- members:
+  - serviceAccount:910449315207@cloudbuild.gserviceaccount.com
+  role: roles/cloudbuild.builds.builder
+- members:
+  - serviceAccount:service-910449315207@gcp-sa-cloudbuild.iam.gserviceaccount.com
+  role: roles/cloudbuild.serviceAgent
+- members:
+  - serviceAccount:910449315207@cloudservices.gserviceaccount.com
+  role: roles/compute.instanceGroupManagerServiceAgent
+- members:
+  - serviceAccount:service-910449315207@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:910449315207-compute@developer.gserviceaccount.com
+  - serviceAccount:910449315207@cloudservices.gserviceaccount.com
+  role: roles/editor
+- members:
+  - serviceAccount:thumbnail-service-account@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  role: roles/eventarc.serviceAgent
+- members:
+  - serviceAccount:admiral@qwiklabs-services-prod.iam.gserviceaccount.com
+  - serviceAccount:qwiklabs-gcp-00-ccb1fc1de722@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  - user:student-04-f57342438233@qwiklabs.net
+  role: roles/owner
+- members:
+  - user:student-04-f57342438233@qwiklabs.net
+  role: roles/resourcemanager.projectIamAdmin
+- members:
+  - serviceAccount:service-910449315207@serverless-robot-prod.iam.gserviceaccount.com
+  role: roles/run.serviceAgent
+- members:
+  - serviceAccount:qwiklabs-gcp-00-ccb1fc1de722@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  role: roles/storage.admin
+- members:
+  - user:student-02-06f3f525933a@qwiklabs.net
+  - user:student-04-f57342438233@qwiklabs.net
+  role: roles/viewer
+etag: BwZT_UPZ-V4=
+version: 1
+Updated IAM policy for project [qwiklabs-gcp-00-ccb1fc1de722].
+bindings:
+- members:
+  - serviceAccount:qwiklabs-gcp-00-ccb1fc1de722@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  role: roles/bigquery.admin
+- members:
+  - serviceAccount:910449315207@cloudbuild.gserviceaccount.com
+  role: roles/cloudbuild.builds.builder
+- members:
+  - serviceAccount:service-910449315207@gcp-sa-cloudbuild.iam.gserviceaccount.com
+  role: roles/cloudbuild.serviceAgent
+- members:
+  - serviceAccount:910449315207@cloudservices.gserviceaccount.com
+  role: roles/compute.instanceGroupManagerServiceAgent
+- members:
+  - serviceAccount:service-910449315207@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:910449315207-compute@developer.gserviceaccount.com
+  - serviceAccount:910449315207@cloudservices.gserviceaccount.com
+  role: roles/editor
+- members:
+  - serviceAccount:thumbnail-service-account@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  role: roles/eventarc.eventReceiver
+- members:
+  - serviceAccount:thumbnail-service-account@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  role: roles/eventarc.serviceAgent
+- members:
+  - serviceAccount:admiral@qwiklabs-services-prod.iam.gserviceaccount.com
+  - serviceAccount:qwiklabs-gcp-00-ccb1fc1de722@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  - user:student-04-f57342438233@qwiklabs.net
+  role: roles/owner
+- members:
+  - user:student-04-f57342438233@qwiklabs.net
+  role: roles/resourcemanager.projectIamAdmin
+- members:
+  - serviceAccount:service-910449315207@serverless-robot-prod.iam.gserviceaccount.com
+  role: roles/run.serviceAgent
+- members:
+  - serviceAccount:qwiklabs-gcp-00-ccb1fc1de722@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  role: roles/storage.admin
+- members:
+  - user:student-02-06f3f525933a@qwiklabs.net
+  - user:student-04-f57342438233@qwiklabs.net
+  role: roles/viewer
+etag: BwZT_UP7pmA=
+version: 1
+Updated IAM policy for project [qwiklabs-gcp-00-ccb1fc1de722].
+bindings:
+- members:
+  - serviceAccount:qwiklabs-gcp-00-ccb1fc1de722@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  role: roles/bigquery.admin
+- members:
+  - serviceAccount:910449315207@cloudbuild.gserviceaccount.com
+  role: roles/cloudbuild.builds.builder
+- members:
+  - serviceAccount:service-910449315207@gcp-sa-cloudbuild.iam.gserviceaccount.com
+  role: roles/cloudbuild.serviceAgent
+- members:
+  - serviceAccount:910449315207@cloudservices.gserviceaccount.com
+  role: roles/compute.instanceGroupManagerServiceAgent
+- members:
+  - serviceAccount:service-910449315207@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:910449315207-compute@developer.gserviceaccount.com
+  - serviceAccount:910449315207@cloudservices.gserviceaccount.com
+  role: roles/editor
+- members:
+  - serviceAccount:thumbnail-service-account@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  role: roles/eventarc.eventReceiver
+- members:
+  - serviceAccount:thumbnail-service-account@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  role: roles/eventarc.serviceAgent
+- members:
+  - serviceAccount:thumbnail-service-account@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  role: roles/iam.serviceAccountTokenCreator
+- members:
+  - serviceAccount:admiral@qwiklabs-services-prod.iam.gserviceaccount.com
+  - serviceAccount:qwiklabs-gcp-00-ccb1fc1de722@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  - user:student-04-f57342438233@qwiklabs.net
+  role: roles/owner
+- members:
+  - user:student-04-f57342438233@qwiklabs.net
+  role: roles/resourcemanager.projectIamAdmin
+- members:
+  - serviceAccount:service-910449315207@serverless-robot-prod.iam.gserviceaccount.com
+  role: roles/run.serviceAgent
+- members:
+  - serviceAccount:qwiklabs-gcp-00-ccb1fc1de722@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  role: roles/storage.admin
+- members:
+  - user:student-02-06f3f525933a@qwiklabs.net
+  - user:student-04-f57342438233@qwiklabs.net
+  role: roles/viewer
+etag: BwZT_UQbmRo=
+version: 1
+Updated IAM policy for project [qwiklabs-gcp-00-ccb1fc1de722].
+bindings:
+- members:
+  - serviceAccount:qwiklabs-gcp-00-ccb1fc1de722@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  role: roles/bigquery.admin
+- members:
+  - serviceAccount:910449315207@cloudbuild.gserviceaccount.com
+  role: roles/cloudbuild.builds.builder
+- members:
+  - serviceAccount:service-910449315207@gcp-sa-cloudbuild.iam.gserviceaccount.com
+  role: roles/cloudbuild.serviceAgent
+- members:
+  - serviceAccount:910449315207@cloudservices.gserviceaccount.com
+  role: roles/compute.instanceGroupManagerServiceAgent
+- members:
+  - serviceAccount:service-910449315207@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:910449315207-compute@developer.gserviceaccount.com
+  - serviceAccount:910449315207@cloudservices.gserviceaccount.com
+  role: roles/editor
+- members:
+  - serviceAccount:thumbnail-service-account@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  role: roles/eventarc.eventReceiver
+- members:
+  - serviceAccount:thumbnail-service-account@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  role: roles/eventarc.serviceAgent
+- members:
+  - serviceAccount:thumbnail-service-account@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  role: roles/iam.serviceAccountTokenCreator
+- members:
+  - serviceAccount:admiral@qwiklabs-services-prod.iam.gserviceaccount.com
+  - serviceAccount:qwiklabs-gcp-00-ccb1fc1de722@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  - user:student-04-f57342438233@qwiklabs.net
+  role: roles/owner
+- members:
+  - serviceAccount:thumbnail-service-account@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  role: roles/pubsub.publisher
+- members:
+  - user:student-04-f57342438233@qwiklabs.net
+  role: roles/resourcemanager.projectIamAdmin
+- members:
+  - serviceAccount:service-910449315207@serverless-robot-prod.iam.gserviceaccount.com
+  role: roles/run.serviceAgent
+- members:
+  - serviceAccount:qwiklabs-gcp-00-ccb1fc1de722@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  role: roles/storage.admin
+- members:
+  - user:student-02-06f3f525933a@qwiklabs.net
+  - user:student-04-f57342438233@qwiklabs.net
+  role: roles/viewer
+etag: BwZT_UQ7lkk=
+version: 1
+
+👉  Create and deploy Cloud Run funcion memories-thumbnail-maker at
+https://console.cloud.google.com/run/services?project=qwiklabs-gcp-00-ccb1fc1de722
+
+
+Ready to proceed? (y): 
+
+
+👉  Create Cloud Run funcion trigger...
+
+ERROR: (gcloud.eventarc.triggers.create) FAILED_PRECONDITION: Invalid resource state for "": Permission denied while using the Eventarc Service Agent. If you recently started to use Eventarc, it may take a few minutes before all necessary permissions are propagated to the Service Agent. Otherwise, verify that it has Eventarc Service Agent role.
+- '@type': type.googleapis.com/google.rpc.PreconditionFailure
+  violations:
+  - description: Permission denied while using the Eventarc Service Agent. If you
+      recently started to use Eventarc, it may take a few minutes before all necessary
+      permissions are propagated to the Service Agent. Otherwise, verify that it has
+      Eventarc Service Agent role.
+    type: Eventarc Service Agent
+- '@type': type.googleapis.com/google.rpc.RequestInfo
+  requestId: bdc8c0b3907613c6
+Creating trigger [trigger-thumbnail] in project [qwiklabs-gcp-00-ccb1fc1de722], location [us-west4]...
+..............done.
+WARNING: It may take up to 2 minutes for the new trigger to become active.
+
+👉  Test the Cloud Run function...
+Check the bucket at https://console.cloud.google.com/storage/browser/qwiklabs-gcp-00-ccb1fc1de722-bucket?project=qwiklabs-gcp-00-ccb1fc1de722
+
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100  887k  100  887k    0     0  4734k      0 --:--:-- --:--:-- --:--:-- 4746k
+Copying file://map.jpg [Content-Type=image/jpeg]...
+/ [0 files][    0.0 B/887.7 KiB]                                                
+/ [1 files][887.7 KiB/887.7 KiB]                                                
+Operation completed over 1 objects/887.7 KiB.                                    
+
+========================================================
+Task 4. Remove the previous cloud engineer
+========================================================
+
+Updated IAM policy for project [qwiklabs-gcp-00-ccb1fc1de722].
+bindings:
+- members:
+  - serviceAccount:service-910449315207@gcp-sa-artifactregistry.iam.gserviceaccount.com
+  role: roles/artifactregistry.serviceAgent
+- members:
+  - serviceAccount:qwiklabs-gcp-00-ccb1fc1de722@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  role: roles/bigquery.admin
+- members:
+  - serviceAccount:910449315207@cloudbuild.gserviceaccount.com
+  role: roles/cloudbuild.builds.builder
+- members:
+  - serviceAccount:service-910449315207@gcp-sa-cloudbuild.iam.gserviceaccount.com
+  role: roles/cloudbuild.serviceAgent
+- members:
+  - serviceAccount:910449315207@cloudservices.gserviceaccount.com
+  role: roles/compute.instanceGroupManagerServiceAgent
+- members:
+  - serviceAccount:service-910449315207@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:service-910449315207@container-analysis.iam.gserviceaccount.com
+  role: roles/containeranalysis.ServiceAgent
+- members:
+  - serviceAccount:service-910449315207@gcp-sa-containerscanning.iam.gserviceaccount.com
+  role: roles/containerscanning.ServiceAgent
+- members:
+  - serviceAccount:910449315207-compute@developer.gserviceaccount.com
+  - serviceAccount:910449315207@cloudservices.gserviceaccount.com
+  role: roles/editor
+- members:
+  - serviceAccount:thumbnail-service-account@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  role: roles/eventarc.eventReceiver
+- members:
+  - serviceAccount:service-910449315207@gcp-sa-eventarc.iam.gserviceaccount.com
+  - serviceAccount:thumbnail-service-account@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  role: roles/eventarc.serviceAgent
+- members:
+  - serviceAccount:thumbnail-service-account@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  role: roles/iam.serviceAccountTokenCreator
+- members:
+  - serviceAccount:admiral@qwiklabs-services-prod.iam.gserviceaccount.com
+  - serviceAccount:qwiklabs-gcp-00-ccb1fc1de722@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  - user:student-04-f57342438233@qwiklabs.net
+  role: roles/owner
+- members:
+  - serviceAccount:thumbnail-service-account@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  role: roles/pubsub.publisher
+- members:
+  - user:student-04-f57342438233@qwiklabs.net
+  role: roles/resourcemanager.projectIamAdmin
+- members:
+  - serviceAccount:service-910449315207@serverless-robot-prod.iam.gserviceaccount.com
+  role: roles/run.serviceAgent
+- members:
+  - serviceAccount:qwiklabs-gcp-00-ccb1fc1de722@qwiklabs-gcp-00-ccb1fc1de722.iam.gserviceaccount.com
+  role: roles/storage.admin
+- members:
+  - user:student-04-f57342438233@qwiklabs.net
+  role: roles/viewer
+etag: BwZT_WiI924=
+version: 1
+
+✅  All done
+

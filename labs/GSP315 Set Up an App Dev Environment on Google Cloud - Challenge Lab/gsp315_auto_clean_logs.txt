@@ -1,0 +1,245 @@
+
+👉  Enter username 2: 👉  Enter topic name (Task 2): 
+Your active configuration is: [cloudshell-24733]
+[environment: untagged] Read more to tag: g.co/cloud/project-env-tag.
+Updated property [core/project].
+Updated property [compute/region].
+Updated property [compute/zone].
+
+🔹  User ID: student-02-1e34634e62e5@qwiklabs.net
+🔹  User ID 2: student-02-a8fef0386f2b@qwiklabs.net
+🔹  Project ID: qwiklabs-gcp-00-ddcd2a10d829
+🔹  Region: us-east4
+🔹  Zone: us-east4-b
+🔹  Bukect: qwiklabs-gcp-00-ddcd2a10d829-bucket
+🔹  Topic: topic-memories-957
+🔹  Cloud Run function: memories-thumbnail-maker
+
+Credentialed Accounts
+
+ACTIVE: *
+ACCOUNT: student-02-1e34634e62e5@qwiklabs.net
+
+To set the active account, run:
+    $ gcloud config set account `ACCOUNT`
+
+
+========================================================
+Task 1. Create a bucket
+========================================================
+
+Creating gs://qwiklabs-gcp-00-ddcd2a10d829-bucket/...
+ServiceException: 409 A Cloud Storage bucket named 'qwiklabs-gcp-00-ddcd2a10d829-bucket' already exists. Try another name. Bucket names must be globally unique across all Google Cloud projects, including those outside of your organization.
+
+========================================================
+Task 2. Create a Pub/Sub topic
+========================================================
+
+ERROR: Failed to create topic [projects/qwiklabs-gcp-00-ddcd2a10d829/topics/topic-memories-957]: Resource already exists in the project (resource=topic-memories-957).
+ERROR: (gcloud.pubsub.topics.create) Failed to create the following: [topic-memories-957].
+
+========================================================
+Task 3. Create the thumbnail Cloud Run Function
+========================================================
+
+
+👉  Enabling services...
+Enabling API [eventarc.googleapis.com] will take a few minutes.
+
+Operation "operations/acat.p2-300445648948-9e3f9fe6-8ec0-4a1d-9f04-e23cea590825" finished successfully.
+
+👉  GCS_SERVICE_AGENT: service-300445648948@gs-project-accounts.iam.gserviceaccount.com
+
+Updated IAM policy for project [qwiklabs-gcp-00-ddcd2a10d829].
+bindings:
+- members:
+  - serviceAccount:qwiklabs-gcp-00-ddcd2a10d829@qwiklabs-gcp-00-ddcd2a10d829.iam.gserviceaccount.com
+  role: roles/bigquery.admin
+- members:
+  - serviceAccount:300445648948@cloudbuild.gserviceaccount.com
+  role: roles/cloudbuild.builds.builder
+- members:
+  - serviceAccount:service-300445648948@gcp-sa-cloudbuild.iam.gserviceaccount.com
+  role: roles/cloudbuild.serviceAgent
+- members:
+  - serviceAccount:300445648948@cloudservices.gserviceaccount.com
+  role: roles/compute.instanceGroupManagerServiceAgent
+- members:
+  - serviceAccount:service-300445648948@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:300445648948-compute@developer.gserviceaccount.com
+  - serviceAccount:300445648948@cloudservices.gserviceaccount.com
+  role: roles/editor
+- members:
+  - serviceAccount:admiral@qwiklabs-services-prod.iam.gserviceaccount.com
+  - serviceAccount:qwiklabs-gcp-00-ddcd2a10d829@qwiklabs-gcp-00-ddcd2a10d829.iam.gserviceaccount.com
+  - user:student-02-1e34634e62e5@qwiklabs.net
+  role: roles/owner
+- members:
+  - serviceAccount:service-300445648948@gs-project-accounts.iam.gserviceaccount.com
+  role: roles/pubsub.publisher
+- members:
+  - user:student-02-1e34634e62e5@qwiklabs.net
+  role: roles/resourcemanager.projectIamAdmin
+- members:
+  - serviceAccount:service-300445648948@serverless-robot-prod.iam.gserviceaccount.com
+  role: roles/run.serviceAgent
+- members:
+  - serviceAccount:qwiklabs-gcp-00-ddcd2a10d829@qwiklabs-gcp-00-ddcd2a10d829.iam.gserviceaccount.com
+  role: roles/storage.admin
+- members:
+  - user:student-02-1e34634e62e5@qwiklabs.net
+  - user:student-02-a8fef0386f2b@qwiklabs.net
+  role: roles/viewer
+etag: BwZT-tOdP_A=
+version: 1
+
+👉  Deploying Cloud Run function 'gcfunction'...
+
+ERROR: (gcloud.functions.deploy) ResponseError: status=[403], code=[], message=[Validation failed for trigger projects/qwiklabs-gcp-00-ddcd2a10d829/locations/us-east4/triggers/gcfunction-953312: Permission "storage.buckets.get" denied on "Bucket \"qwiklabs-gcp-00-ddcd2a10d829-bucket\" could not be validated. Please verify that the bucket exists and that the Eventarc service account has permission."]
+ERROR: (gcloud.functions.deploy) ResponseError: status=[400], code=[], message=[Validation failed for trigger projects/qwiklabs-gcp-00-ddcd2a10d829/locations/us-east4/triggers/gcfunction-118042: Invalid resource state for "": Permission denied while using the Eventarc Service Agent. If you recently started to use Eventarc, it may take a few minutes before all necessary permissions are propagated to the Service Agent. Otherwise, verify that it has Eventarc Service Agent role.]
+Preparing function...
+..done.
+Deploying function...
+[Build]................................................................................................................................................................................................................................................................................................................................................................................................................................................................................warning
+[Service]...................................................................................................................................done
+[Trigger].................................................................................................................................done
+Completed with warnings:
+  [WARNING] *** Improve build performance by generating and committing package-lock.json.
+You can view your function in the Cloud Console here: https://console.cloud.google.com/functions/details/us-east4/gcfunction?project=qwiklabs-gcp-00-ddcd2a10d829
+
+buildConfig:
+  automaticUpdatePolicy: {}
+  build: projects/300445648948/locations/us-east4/builds/5da244b5-4192-4758-90fe-8f5d8507e309
+  dockerRegistry: ARTIFACT_REGISTRY
+  dockerRepository: projects/qwiklabs-gcp-00-ddcd2a10d829/locations/us-east4/repositories/gcf-artifacts
+  entryPoint: memories-thumbnail-maker
+  runtime: nodejs22
+  serviceAccount: projects/qwiklabs-gcp-00-ddcd2a10d829/serviceAccounts/300445648948-compute@developer.gserviceaccount.com
+  source:
+    storageSource:
+      bucket: gcf-v2-sources-300445648948-us-east4
+      generation: '1781187018069811'
+      object: gcfunction/function-source.zip
+  sourceProvenance:
+    resolvedStorageSource:
+      bucket: gcf-v2-sources-300445648948-us-east4
+      generation: '1781187018069811'
+      object: gcfunction/function-source.zip
+createTime: '2026-06-11T14:10:19.321759132Z'
+environment: GEN_2
+eventTrigger:
+  eventFilters:
+  - attribute: bucket
+    value: qwiklabs-gcp-00-ddcd2a10d829-bucket
+  eventType: google.cloud.storage.object.v1.finalized
+  pubsubTopic: projects/qwiklabs-gcp-00-ddcd2a10d829/topics/eventarc-us-east4-gcfunction-081955-530
+  retryPolicy: RETRY_POLICY_DO_NOT_RETRY
+  serviceAccountEmail: 300445648948-compute@developer.gserviceaccount.com
+  trigger: projects/qwiklabs-gcp-00-ddcd2a10d829/locations/us-east4/triggers/gcfunction-081955
+  triggerRegion: us-east4
+labels:
+  deployment-tool: cli-gcloud
+name: projects/qwiklabs-gcp-00-ddcd2a10d829/locations/us-east4/functions/gcfunction
+satisfiesPzi: true
+satisfiesPzs: true
+serviceConfig:
+  allTrafficOnLatestRevision: true
+  availableCpu: '1'
+  availableMemory: 512Mi
+  environmentVariables:
+    LOG_EXECUTION_ID: 'true'
+  ingressSettings: ALLOW_ALL
+  maxInstanceCount: 5
+  maxInstanceRequestConcurrency: 80
+  revision: gcfunction-00001-pib
+  service: projects/qwiklabs-gcp-00-ddcd2a10d829/locations/us-east4/services/gcfunction
+  serviceAccountEmail: 300445648948-compute@developer.gserviceaccount.com
+  timeoutSeconds: 300
+  uri: https://gcfunction-wyzlvsonuq-uk.a.run.app
+state: ACTIVE
+updateTime: '2026-06-11T14:11:40.571754068Z'
+url: https://us-east4-qwiklabs-gcp-00-ddcd2a10d829.cloudfunctions.net/gcfunction
+
+👉 Deployment done. Check the function at
+https://console.cloud.google.com/run/services?project=qwiklabs-gcp-00-ddcd2a10d829
+
+
+👉  Test the Cloud Run function...
+
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  887k  100  887k    0     0  5826k      0 --:--:-- --:--:-- --:--:-- 5840k
+Copying file://map.jpg [Content-Type=image/jpeg]...
+/ [0 files][    0.0 B/887.7 KiB]                                                -- [1 files][887.7 KiB/887.7 KiB]                                                
+Operation completed over 1 objects/887.7 KiB.                                    
+
+========================================================
+Task 4. Remove the previous cloud engineer
+========================================================
+
+Updated IAM policy for project [qwiklabs-gcp-00-ddcd2a10d829].
+bindings:
+- members:
+  - serviceAccount:service-300445648948@gcp-sa-artifactregistry.iam.gserviceaccount.com
+  role: roles/artifactregistry.serviceAgent
+- members:
+  - serviceAccount:qwiklabs-gcp-00-ddcd2a10d829@qwiklabs-gcp-00-ddcd2a10d829.iam.gserviceaccount.com
+  role: roles/bigquery.admin
+- members:
+  - serviceAccount:300445648948@cloudbuild.gserviceaccount.com
+  role: roles/cloudbuild.builds.builder
+- members:
+  - serviceAccount:service-300445648948@gcp-sa-cloudbuild.iam.gserviceaccount.com
+  role: roles/cloudbuild.serviceAgent
+- members:
+  - serviceAccount:service-300445648948@gcf-admin-robot.iam.gserviceaccount.com
+  role: roles/cloudfunctions.serviceAgent
+- members:
+  - serviceAccount:300445648948@cloudservices.gserviceaccount.com
+  role: roles/compute.instanceGroupManagerServiceAgent
+- members:
+  - serviceAccount:service-300445648948@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:service-300445648948@container-analysis.iam.gserviceaccount.com
+  role: roles/containeranalysis.ServiceAgent
+- members:
+  - serviceAccount:service-300445648948@gcp-sa-containerscanning.iam.gserviceaccount.com
+  role: roles/containerscanning.ServiceAgent
+- members:
+  - serviceAccount:300445648948-compute@developer.gserviceaccount.com
+  - serviceAccount:300445648948@cloudservices.gserviceaccount.com
+  role: roles/editor
+- members:
+  - serviceAccount:service-300445648948@gcp-sa-eventarc.iam.gserviceaccount.com
+  role: roles/eventarc.serviceAgent
+- members:
+  - serviceAccount:admiral@qwiklabs-services-prod.iam.gserviceaccount.com
+  - serviceAccount:qwiklabs-gcp-00-ddcd2a10d829@qwiklabs-gcp-00-ddcd2a10d829.iam.gserviceaccount.com
+  - user:student-02-1e34634e62e5@qwiklabs.net
+  role: roles/owner
+- members:
+  - serviceAccount:service-300445648948@gs-project-accounts.iam.gserviceaccount.com
+  role: roles/pubsub.publisher
+- members:
+  - serviceAccount:service-300445648948@gcp-sa-pubsub.iam.gserviceaccount.com
+  role: roles/pubsub.serviceAgent
+- members:
+  - user:student-02-1e34634e62e5@qwiklabs.net
+  role: roles/resourcemanager.projectIamAdmin
+- members:
+  - serviceAccount:service-300445648948@serverless-robot-prod.iam.gserviceaccount.com
+  role: roles/run.serviceAgent
+- members:
+  - serviceAccount:qwiklabs-gcp-00-ddcd2a10d829@qwiklabs-gcp-00-ddcd2a10d829.iam.gserviceaccount.com
+  role: roles/storage.admin
+- members:
+  - user:student-02-1e34634e62e5@qwiklabs.net
+  role: roles/viewer
+etag: BwZT-vDN3JE=
+version: 1
+
+✅  All done
+

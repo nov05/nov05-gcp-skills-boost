@@ -18,3 +18,5 @@ sudo chmod +x gsp315.sh
 ./gsp315.sh 2>&1 | tee -a logs.txt
 sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 ```
+
+* You can find the terminal output log sample files in this folder.  

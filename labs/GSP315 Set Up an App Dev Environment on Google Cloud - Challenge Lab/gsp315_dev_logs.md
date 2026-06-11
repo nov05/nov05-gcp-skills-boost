@@ -114,6 +114,18 @@ version: 1
 ```text
 Cloud Pub/Sub needs the role roles/iam.serviceAccountTokenCreator granted to service account service-910449315207@gcp-sa-pubsub.iam.gserviceaccount.com on this project to create identity tokens. You can change this later.
 ```
+```bash
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:service-$PROJECT_NUMBER@gcp-sa-pubsub.iam.gserviceaccount.com" \
+  --role="roles/iam.serviceAccountTokenCreator"
+```
 
-
-
+```text
+This trigger needs the role roles/pubsub.publisher granted to service account 
+service-$PROJECT_NUMBER@gs-project-accounts.iam.gserviceaccount.com to receive events via Cloud Storage.
+```
+```bash
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:service-${PROJECT_NUMBER}@gs-project-accounts.iam.gserviceaccount.com" \
+  --role="roles/pubsub.publisher"
+```

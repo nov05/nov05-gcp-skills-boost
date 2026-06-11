@@ -97,6 +97,7 @@ until enabled=$(gcloud services list --enabled --project=$PROJECT_ID); \
   echo "$enabled" | grep -q cloudbuild.googleapis.com
 do sleep 5; done
 
+echo -e "\n👉  Create service account and grand roles..."
 ## Create a service account for the Cloud Run function trigger.
 export SA_THUMBNAIL="thumbnail-service-account@$PROJECT_ID.iam.gserviceaccount.com"
 gcloud iam service-accounts create thumbnail-service-account
@@ -151,7 +152,7 @@ ask_to_proceed
 
 echo -e "\n👉  Create Cloud Run funcion trigger...\n" 
 ## Create the trigger
-for i in {1..5}; do
+for i in {1..10}; do
   gcloud eventarc triggers create trigger-thumbnail \
     --location=$REGION \
     --service-account=$SA_THUMBNAIL \
@@ -163,7 +164,8 @@ for i in {1..5}; do
     --event-filters="bucket=$BUCKET" && break
   sleep 60
 done
-sleep 30
+## WARNING: It may take up to 2 minutes for the new trigger to become active.
+sleep 120
                                                                          
 # mkdir myfunc && cd myfunc
 # cat > index.js << 'EOF'
@@ -254,12 +256,12 @@ sleep 30
 # }
 # EOF
 # cd ..
-# echo -e "\n👉  Deploying Cloud Run function 'gcfunction'...\n"
+# echo -e "\n👉  Deploying Cloud Run function $FUNCTION...\n"
 # ## ⚠️ It may need retry a couple of times.
 # ## At most one of --trigger-bucket | --trigger-http | --trigger-topic | --trigger-event --trigger-resource | 
 # ## --trigger-event-filters --trigger-event-filters-path-pattern --trigger-channel can be specified.
-# for i in {1..5}; do
-#   gcloud functions deploy gcfunction \
+# for i in {1..10}; do
+#   gcloud functions deploy $FUNCTION \
 #     --gen2 \
 #     --runtime=nodejs22 \
 #     --region=$REGION \
@@ -272,7 +274,7 @@ sleep 30
 #     --memory=512Mi \
 #     --cpu=1 \
 #     --concurrency=80 && break
-#   sleep 30
+#   sleep 60
 # done
 # echo -e "\n👉 Deployment done. Check the function at"
 # echo -e "https://console.cloud.google.com/run/services?project=$PROJECT_ID\n"
