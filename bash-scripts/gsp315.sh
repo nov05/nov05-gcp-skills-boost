@@ -37,11 +37,14 @@ gcloud config set compute/region $REGION
 gcloud config set compute/zone $ZONE
 echo
 echo "🔹  User ID: $USER_ID"
+echo "🔹  User ID 2: $USER_ID2"
 echo "🔹  Project ID: $PROJECT_ID"
 # echo "🔹  Project number: $PROJECT_NUMBER"
 echo "🔹  Region: $REGION"
 echo "🔹  Zone: $ZONE"
 echo "🔹  Bukect: $BUCKET"
+echo "🔹  Topic: $TOPIC"
+echo "🔹  Cloud Run function: $FUNCTION"
 echo
 gcloud auth list
 
