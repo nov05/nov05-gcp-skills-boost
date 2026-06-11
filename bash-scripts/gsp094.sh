@@ -66,20 +66,6 @@ python subscriber.py $GOOGLE_CLOUD_PROJECT list-in-project
 cat << 'EOF'
 
 ========================================================
-Task 7. View messages
-========================================================
-
-👉  Start MySub in background...
-
-EOF
-
-python subscriber.py $GOOGLE_CLOUD_PROJECT receive MySub &
-PID=$!
-sleep 30
-
-cat << 'EOF'
-
-========================================================
 Task 6. Publish messages
 ========================================================
 
@@ -90,9 +76,20 @@ gcloud pubsub topics publish MyTopic --message "Publisher's name is Joey (dog)"
 gcloud pubsub topics publish MyTopic --message "Publisher likes to eat dog treats"
 gcloud pubsub topics publish MyTopic --message "Publisher thinks Pub/Sub is awesome"
 
+
+cat << 'EOF'
+
+========================================================
+Task 7. View messages
+========================================================
+
+EOF
+
+python subscriber.py $GOOGLE_CLOUD_PROJECT receive MySub &
+PID=$!
 sleep 30
-echo -e "\n👉  End MySub in background...\n"
 kill $PID
+
 
 cat << 'EOF'
 
