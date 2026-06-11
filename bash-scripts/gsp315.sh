@@ -26,8 +26,8 @@ echo
 
 export USER_ID=$(gcloud auth list --format="value(account)" --filter="status:ACTIVE")
 export PROJECT_ID=$(gcloud config get-value project)
-# export PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID \
-#   --format='value(projectNumber)')
+export PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID \
+  --format='value(projectNumber)')
 export REGION=$(gcloud compute project-info describe \
   --format="value(commonInstanceMetadata.items[google-compute-default-region])")
 export ZONE=$(gcloud compute project-info describe \
@@ -40,7 +40,7 @@ echo
 echo "🔹  User ID: $USER_ID"
 echo "🔹  User ID 2: $USER_ID2"
 echo "🔹  Project ID: $PROJECT_ID"
-# echo "🔹  Project number: $PROJECT_NUMBER"
+echo "🔹  Project number: $PROJECT_NUMBER"
 echo "🔹  Region: $REGION"
 echo "🔹  Zone: $ZONE"
 echo "🔹  Bukect: $BUCKET"
@@ -122,6 +122,14 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$SA_THUMBNAIL" \
   --role="roles/pubsub.publisher"
+: 'Note:
+Cloud Pub/Sub needs the role roles/iam.serviceAccountTokenCreator granted to service account 
+service-910449315207@gcp-sa-pubsub.iam.gserviceaccount.com on this project to create identity tokens. 
+You can change this later.
+'
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:service-$PROJECT_NUMBER@gcp-sa-pubsub.iam.gserviceaccount.com" \
+  --role="roles/iam.serviceAccountTokenCreator"
 
 sleep 300
 ##-----------------------------------------------------------------------------
