@@ -16,6 +16,7 @@ For more scripts, refer to [`gcp-skills-boost`](https://github.com/nov05/gcp-ski
 
 * Example of creating 2nd-gen Cloud Run function  
   lab - GSP081 Cloud Run Functions: Qwik Start - Console  
+  lab - GSP315 Set Up an App Dev Environment on Google Cloud: Challenge Lab  
 
 * **Example of building data mesh, creating and adding Dataplex aspect to zone**    
   Bash script - [nov05_gsp514.sh](https://github.com/nov05/gcp-skills-boost/blob/dev/GSP514%20Build%20a%20Data%20Mesh%20with%20Knowledge%20Catalog:%20Challenge%20Lab/nov05_gsp514.sh)

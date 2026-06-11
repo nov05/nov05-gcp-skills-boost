@@ -77,11 +77,128 @@ Task 3. Create the thumbnail Cloud Run Function
 ========================================================
 
 EOF
+## Refer to GSP081
 
-## ⚠️ Unfortunately the function has to be created via console to pass the lab check.
-echo -e "\n👉  Create and deploy Cloud Run funcion $FUNCTION at"  
-echo -e "https://console.cloud.google.com/run/services?project=$PROJECT_ID\n"
-ask_to_proceed
+# ## ⚠️ The function has to be created via console to pass the lab check.
+# echo -e "\n👉  Create and deploy Cloud Run funcion $FUNCTION at"  
+# echo -e "https://console.cloud.google.com/run/services?project=$PROJECT_ID\n"
+# ask_to_proceed
+
+echo -e "\n👉  Enabling services...\n"
+gcloud services enable run.googleapis.com \
+  artifactregistry.googleapis.com \
+  cloudbuild.googleapis.com \
+  --project=$PROJECT_ID
+until enabled=$(gcloud services list --enabled --project=$PROJECT_ID); \
+  echo "$enabled" | grep -q run.googleapis.com && \
+  echo "$enabled" | grep -q artifactregistry.googleapis.com && \
+  echo "$enabled" | grep -q cloudbuild.googleapis.com
+do sleep 5; done
+
+mkdir myfunc && cd myfunc
+cat > index.js << 'EOF'
+const functions = require('@google-cloud/functions-framework');
+const { Storage } = require('@google-cloud/storage');
+const { PubSub } = require('@google-cloud/pubsub');
+const sharp = require('sharp');
+
+functions.cloudEvent('memories-thumbnail-maker', async cloudEvent => {
+  const event = cloudEvent.data;
+
+  console.log(`Event: ${JSON.stringify(event)}`);
+  console.log(`Hello ${event.bucket}`);
+
+  const fileName = event.name;
+  const bucketName = event.bucket;
+  const size = "64x64";
+  const bucket = new Storage().bucket(bucketName);
+  const topicName = "";
+  const pubsub = new PubSub();
+
+  if (fileName.search("64x64_thumbnail") === -1) {
+    // doesn't have a thumbnail, get the filename extension
+    const filename_split = fileName.split('.');
+    const filename_ext = filename_split[filename_split.length - 1].toLowerCase();
+    const filename_without_ext = fileName.substring(0, fileName.length - filename_ext.length - 1); // fix sub string to remove the dot
+
+    if (filename_ext === 'png' || filename_ext === 'jpg' || filename_ext === 'jpeg') {
+      // only support png and jpg at this point
+      console.log(`Processing Original: gs://${bucketName}/${fileName}`);
+      const gcsObject = bucket.file(fileName);
+      const newFilename = `${filename_without_ext}_64x64_thumbnail.${filename_ext}`;
+      const gcsNewObject = bucket.file(newFilename);
+
+      try {
+        const [buffer] = await gcsObject.download();
+        const resizedBuffer = await sharp(buffer)
+          .resize(64, 64, {
+            fit: 'inside',
+            withoutEnlargement: true,
+          })
+          .toFormat(filename_ext)
+          .toBuffer();
+
+        await gcsNewObject.save(resizedBuffer, {
+          metadata: {
+            contentType: `image/${filename_ext}`,
+          },
+        });
+
+        console.log(`Success: ${fileName} → ${newFilename}`);
+
+        await pubsub
+          .topic(topicName)
+          .publishMessage({ data: Buffer.from(newFilename) });
+
+        console.log(`Message published to ${topicName}`);
+      } catch (err) {
+        console.error(`Error: ${err}`);
+      }
+    } else {
+      console.log(`gs://${bucketName}/${fileName} is not an image I can handle`);
+    }
+  } else {
+    console.log(`gs://${bucketName}/${fileName} already has a thumbnail`);
+  }
+});
+EOF
+sed -i "s|const topicName = \"\";|const topicName = \"$TOPIC\";|" index.js
+cat > package.json << 'EOF'
+{
+ "name": "thumbnails",
+ "version": "1.0.0",
+ "description": "Create Thumbnail of uploaded image",
+ "scripts": {
+   "start": "node index.js"
+ },
+ "dependencies": {
+   "@google-cloud/functions-framework": "^3.0.0",
+   "@google-cloud/pubsub": "^2.0.0",
+   "@google-cloud/storage": "^6.11.0",
+   "sharp": "^0.32.1"
+ },
+ "devDependencies": {},
+ "engines": {
+   "node": ">=4.3.2"
+ }
+}
+EOF
+cd ..
+echo -e "\n👉  Deploying Cloud Run function 'gcfunction'...\n"
+# ⚠️ It may need retry a couple of times.
+gcloud functions deploy gcfunction \
+  --gen2 \
+  --runtime=nodejs22 \
+  --region=$REGION \
+  --source=./myfunc \
+  --entry-point=$FUNCTION \
+  --trigger-http \
+  --allow-unauthenticated \
+  --max-instances=5 \
+  --timeout=300 \
+  --memory=512Mi \
+  --cpu=1 \
+  --concurrency=80
 
 echo -e "\n👉  Test the Cloud Run function...\n"
 curl -o map.jpg https://storage.googleapis.com/cloud-training/gsp315/map.jpg
