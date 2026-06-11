@@ -85,7 +85,7 @@ Task 7. View messages
 
 EOF
 
-python subscriber.py $GOOGLE_CLOUD_PROJECT receive MySub &
+python -u subscriber.py $GOOGLE_CLOUD_PROJECT receive MySub &
 PID=$!
 sleep 10
 kill $PID
