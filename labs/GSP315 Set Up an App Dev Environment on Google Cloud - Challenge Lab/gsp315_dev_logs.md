@@ -16,6 +16,11 @@ sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 
 ## Tips
 
+* The Cloud Run function trigger logs
+
+  <img src="https://raw.githubusercontent.com/nov05/pictures/refs/heads/master/gcp-skills-boost/gsp315/2026-06-11%2012_47_10-Settings.jpg" width=800>  
+  
+
 * Cloud Run function trigger creation    
   **$SA_THUMBNAIL** example: thumbnail-service-account@$PROJECT_ID.iam.gserviceaccount.com
 
