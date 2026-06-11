@@ -19,8 +19,9 @@ export USER_ID2
 # export BUCKET 
 read -p "👉  Enter topic name (Task 2): " TOPIC
 export TOPIC
-read -p "👉  Enter Cloud Run function name (Task 3): " FUNCTION
-export FUNCTION
+# read -p "👉  Enter Cloud Run function name (Task 3): " FUNCTION
+# export FUNCTION
+export FUNCTION="memories-thumbnail-maker"
 echo
 
 export USER_ID=$(gcloud auth list --format="value(account)" --filter="status:ACTIVE")
@@ -200,8 +201,7 @@ for i in {1..5}; do
     --memory=512Mi \
     --cpu=1 \
     --concurrency=80 \
-    --trigger-event-filters="type=google.cloud.storage.object.v1.finalized" \
-    --trigger-event-filters="bucket=$BUCKET" && break
+    --trigger-bucket=$BUCKET && break
   sleep 30
 done
 
