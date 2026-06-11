@@ -99,8 +99,9 @@ gcloud services enable run.googleapis.com \
 # do sleep 5; done
 
 export GCS_SERVICE_AGENT="service-${PROJECT_NUMBER}@gs-project-accounts.iam.gserviceaccount.com"
+echo -e "\n👉  GCS_SERVICE_AGENT: $GCS_SERVICE_AGENT\n"
 gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:${GCS_SERVICE_AGENT}" \
+  --member="serviceAccount:$GCS_SERVICE_AGENT" \
   --role="roles/pubsub.publisher"
 
 sleep 300
