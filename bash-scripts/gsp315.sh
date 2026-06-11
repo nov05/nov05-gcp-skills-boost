@@ -13,7 +13,7 @@ ask_to_proceed() {
 }
 
 echo
-read -p "👉  Enter username 2: " USER_ID2
+read -p "👉  Enter username 2 (Task 4): " USER_ID2
 export USER_ID2
 # read -p "👉  Enter bucket name (Task 1): " BUCKET
 # export BUCKET 
@@ -26,8 +26,8 @@ echo
 
 export USER_ID=$(gcloud auth list --format="value(account)" --filter="status:ACTIVE")
 export PROJECT_ID=$(gcloud config get-value project)
-export PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID \
-  --format='value(projectNumber)')
+# export PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID \
+#   --format='value(projectNumber)')
 export REGION=$(gcloud compute project-info describe \
   --format="value(commonInstanceMetadata.items[google-compute-default-region])")
 export ZONE=$(gcloud compute project-info describe \
@@ -70,6 +70,7 @@ Task 2. Create a Pub/Sub topic
 EOF
 
 gcloud pubsub topics create $TOPIC
+
 
 cat << 'EOF'
 
@@ -130,6 +131,7 @@ echo -e "\n👉  Create and deploy Cloud Run funcion $FUNCTION at"
 echo -e "https://console.cloud.google.com/run/services?project=$PROJECT_ID\n"
 ask_to_proceed
 
+echo -e "\n👉  Create Cloud Run funcion trigger...\n" 
 ## Create the trigger
 gcloud eventarc triggers create trigger-thumbnail \
   --location=$REGION \
