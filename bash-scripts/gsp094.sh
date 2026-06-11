@@ -43,7 +43,9 @@ Task 4. Create a topic
 EOF
 
 echo $GOOGLE_CLOUD_PROJECT
-cat publisher.py
+# cat publisher.py
+echo -e "\n👉  Check publisher.py at"
+echo =e "https://github.com/googleapis/python-pubsub/blob/main/samples/snippets/publisher.py\n"  
 python publisher.py -h
 
 python publisher.py $GOOGLE_CLOUD_PROJECT create MyTopic
@@ -60,6 +62,21 @@ EOF
 python subscriber.py $GOOGLE_CLOUD_PROJECT create MyTopic MySub
 python subscriber.py $GOOGLE_CLOUD_PROJECT list-in-project
 
+
+cat << 'EOF'
+
+========================================================
+Task 7. View messages
+========================================================
+
+👉  Start MySub in background...
+
+EOF
+
+python subscriber.py $GOOGLE_CLOUD_PROJECT receive MySub &
+PID=$!
+sleep 5
+
 cat << 'EOF'
 
 ========================================================
@@ -73,15 +90,9 @@ gcloud pubsub topics publish MyTopic --message "Publisher's name is Joey (dog)"
 gcloud pubsub topics publish MyTopic --message "Publisher likes to eat dog treats"
 gcloud pubsub topics publish MyTopic --message "Publisher thinks Pub/Sub is awesome"
 
-cat << 'EOF'
-
-========================================================
-Task 7. View messages
-========================================================
-
-EOF
-
-python subscriber.py $GOOGLE_CLOUD_PROJECT receive MySub
+sleep 10
+echo -e "\n👉  End MySub in background...\n"
+kill $PID
 
 cat << 'EOF'
 
