@@ -122,6 +122,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$SA_THUMBNAIL" \
   --role="roles/pubsub.publisher"
+
 : 'Note:
 Cloud Pub/Sub needs the role roles/iam.serviceAccountTokenCreator granted to service account 
 service-910449315207@gcp-sa-pubsub.iam.gserviceaccount.com on this project to create identity tokens. 
@@ -131,8 +132,17 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:service-$PROJECT_NUMBER@gcp-sa-pubsub.iam.gserviceaccount.com" \
   --role="roles/iam.serviceAccountTokenCreator"
 
+: 'Note:
+This trigger needs the role roles/pubsub.publisher granted to service account 
+service-$PROJECT_NUMBER@gs-project-accounts.iam.gserviceaccount.com to receive events via Cloud Storage.
+'
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:service-${PROJECT_NUMBER}@gs-project-accounts.iam.gserviceaccount.com" \
+  --role="roles/pubsub.publisher"
+
 sleep 300
 ##-----------------------------------------------------------------------------
+
 
 ## ⚠️ The function has to be created via console to pass the lab check.
 echo -e "\n👉  Create and deploy Cloud Run funcion $FUNCTION at"  
