@@ -75,7 +75,7 @@ EOF
 
 python subscriber.py $GOOGLE_CLOUD_PROJECT receive MySub &
 PID=$!
-sleep 5
+sleep 30
 
 cat << 'EOF'
 
@@ -90,7 +90,7 @@ gcloud pubsub topics publish MyTopic --message "Publisher's name is Joey (dog)"
 gcloud pubsub topics publish MyTopic --message "Publisher likes to eat dog treats"
 gcloud pubsub topics publish MyTopic --message "Publisher thinks Pub/Sub is awesome"
 
-sleep 10
+sleep 30
 echo -e "\n👉  End MySub in background...\n"
 kill $PID
 
