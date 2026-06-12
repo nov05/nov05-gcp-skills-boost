@@ -166,13 +166,14 @@ export DASHBOARD_ID=$(gcloud monitoring dashboards list \
   --format="value(name)")
 curl -o "Media_Dashboard.json" \
   -L https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/dev/files/gsp338/Media_Dashboard.json
+sed "s/<metric_name>/$METRIC_NAME/g" Media_Dashboard.json > tmp1.json
 ## Get Entity Tag of the dashboard
 gcloud monitoring dashboards describe $DASHBOARD_ID \
-  --format=json > tmp.json
-jq '. as $orig | input | .etag = $orig.etag' tmp.json Media_Dashboard.json \
-  > final.json
+  --format=json > tmp2.json
+jq '. as $orig | input | .etag = $orig.etag' tmp2.json tmp1.json \
+  > tmp3.json
 gcloud monitoring dashboards update $DASHBOARD_ID \
-  --config-from-file="final.json"
+  --config-from-file="tmp3.json"
 echo -e "\n👉  Check the dashboard at"
 echo -e "https://console.cloud.google.com/monitoring/dashboards?project=${PROJECT_ID}\n"
 

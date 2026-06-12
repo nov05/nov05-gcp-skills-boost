@@ -174,32 +174,42 @@
         }
       },
       {
-        "title": "logging/user/large_video_upload_rate [MEAN]",
+        "title": "logging/user/<metric_name> [MEAN]",
+        "id": "",
         "xyChart": {
           "chartOptions": {
             "displayHorizontal": false,
-            "mode": "COLOR"
+            "mode": "COLOR",
+            "showLegend": false
           },
           "dataSets": [
             {
+              "breakdowns": [],
+              "dimensions": [],
+              "legendTemplate": "",
+              "measures": [],
               "minAlignmentPeriod": "60s",
               "plotType": "LINE",
+              "sort": [],
               "targetAxis": "Y1",
               "timeSeriesQuery": {
+                "outputFullDuration": false,
                 "timeSeriesFilter": {
                   "aggregation": {
                     "alignmentPeriod": "60s",
-                    "crossSeriesReducer": "REDUCE_MEAN",
+                    "crossSeriesReducer": "REDUCE_SUM",
                     "groupByFields": [],
                     "perSeriesAligner": "ALIGN_RATE"
                   },
-                  "filter": "metric.type=\"logging.googleapis.com/user/large_video_upload_rate\" resource.type=\"gce_instance\""
-                }
+                  "filter": "metric.type=\"logging.googleapis.com/user/<metric_name>\" resource.type=\"cloud_function\""
+                },
+                "unitOverride": ""
               }
             }
           ],
           "thresholds": [],
           "yAxis": {
+            "label": "",
             "scale": "LINEAR"
           }
         }
