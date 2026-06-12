@@ -161,6 +161,7 @@ Task 4. Create charts on the Monitoring Overview window
 
 EOF
 
+curl -LO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/dev/files/gsp092/GSP092%20Dashboard%20-%20Jun%2012%2C%202026%205_25%20AM.json
 gcloud monitoring dashboards create \
   --config-from-file="GSP092 Dashboard - Jun 12, 2026 5_25 AM.json"
 
