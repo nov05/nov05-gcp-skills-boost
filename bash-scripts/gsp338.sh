@@ -149,7 +149,8 @@ gcloud logging metrics create "$METRIC_NAME" \
   --config-from-file="metric.yaml"
 
 echo -e "\n👉  Check the metric '${METRIC_NAME}' at"  
-echo -e "https://console.cloud.google.com/monitoring/metrics-explorer?project=${PROJECT_ID}\n"  
+echo -e "https://console.cloud.google.com/monitoring/metrics-explorer?project=${PROJECT_ID}" 
+echo -e "It usually takes a few minutes for the metric to be available.\n" 
 
 
 cat << 'EOF'
