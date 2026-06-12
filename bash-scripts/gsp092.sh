@@ -1,10 +1,10 @@
 #!/bin/bash
 ## Created by nov05, 2026-06-11  
+## This script can pass all the 2 checks in the lab automatically.  
+
 
 export USER_ID=$(gcloud auth list --format="value(account)" --filter="status:ACTIVE")
 export PROJECT_ID=$(gcloud config get-value project)
-# export PROJECT_ID=$(gcloud projects list --format='value(PROJECT_ID)' \
-#   --filter='qwiklabs-gcp')
 export PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID \
   --format='value(projectNumber)')
 export REGION=$(gcloud compute project-info describe \
@@ -27,6 +27,7 @@ echo "🔹  Zone: $ZONE"
 echo
 gcloud auth list
 
+
 cat << 'EOF'
 
 ========================================================
@@ -35,20 +36,17 @@ Task 1. Viewing Cloud Run function logs & metrics in Cloud Monitoring
 
 EOF
 ## Refer to GSP081, GSP315 for Cloud Run function creation
+
 echo -e "\n👉  Enabling services...\n"
 gcloud services enable \
   run.googleapis.com \
   artifactregistry.googleapis.com \
   cloudbuild.googleapis.com 
-  # cloudfunctions.googleapis.com \
-  # eventarc.googleapis.com
-# until enabled=$(gcloud services list --enabled --project=$PROJECT_ID); \
-#   echo "$enabled" | grep -q run.googleapis.com && \
-#   echo "$enabled" | grep -q artifactregistry.googleapis.com && \
-#   echo "$enabled" | grep -q cloudbuild.googleapis.com && \
-#   echo "$enabled" | grep -q cloudfunctions.googleapis.com \
-#   echo "$enabled" | grep -q eventarc.googleapis.com
-# do sleep 5; done
+until enabled=$(gcloud services list --enabled --project=$PROJECT_ID); \
+  echo "$enabled" | grep -q run.googleapis.com && \
+  echo "$enabled" | grep -q artifactregistry.googleapis.com && \
+  echo "$enabled" | grep -q cloudbuild.googleapis.com
+do sleep 5; done
 
 mkdir myfunc && cd myfunc
 cat > index.js << 'EOF'
@@ -66,8 +64,9 @@ cat > package.json << 'EOF'
 }
 EOF
 cd ..
+
 echo -e "\n👉  Deploying Cloud Run function 'helloworld'...\n"
-## ⚠️ It may need retry a couple of times.
+## It may need retry a couple of times.
 for i in {1..10}; do
   gcloud functions deploy helloworld \
     --gen2 \
@@ -85,14 +84,18 @@ for i in {1..10}; do
   echo "Retry in 30 seconds..."
   sleep 30
 done
-## https://docs.cloud.google.com/run/docs/configuring/execution-environments
 gcloud run services update helloworld \
   --region=$REGION \
   --execution-environment gen2
-
-## Re-deploy the function via console to pass the lab check.
 echo -e "\n👉  Check Cloud Run funcion 'helloworld' at"  
 echo -e "https://console.cloud.google.com/run/detail/${REGION}/helloworld/source?project=$PROJECT_ID"
+
+: << 'COMMENT'
+## https://docs.cloud.google.com/run/docs/configuring/execution-environments
+gcloud functions deploy helloworld --gen2, the flag doesn't work.  
+To pass the lab check, first create the Cloud Run function, then update it to gen2.
+https://stackoverflow.com/questions/74762081/cloud-function-cant-deploy-with-argument-gen2  
+COMMENT
 
 ## Get a tool called vegeta that will let you send some test traffic to your Cloud Run function
 curl -LO 'https://github.com/tsenart/vegeta/releases/download/v12.12.0/vegeta_12.12.0_linux_386.tar.gz'
@@ -140,6 +143,7 @@ gcloud logging metrics create CloudRunFunctionLatency-Logs \
 
 # gcloud logging metrics delete CloudRunFunctionLatency-Logs --quiet
 
+
 cat << 'EOF'
 
 ========================================================
@@ -153,6 +157,7 @@ echo "https://console.cloud.google.com/logs/query?project=${PROJECT_ID}"
 echo -e "\n👉  Check the metric at"
 echo -e "https://console.cloud.google.com/monitoring/metrics-explorer?project=$PROJECT_ID\n"
 
+
 cat << 'EOF'
 
 ========================================================
@@ -161,9 +166,13 @@ Task 4. Create charts on the Monitoring Overview window
 
 EOF
 
-curl -LO https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/dev/files/gsp092/GSP092%20Dashboard%20-%20Jun%2012%2C%202026%205_25%20AM.json
+curl -o "GSP092 Dashboard - Jun 12, 2026 5_25 AM.json" \
+  -L https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/dev/files/gsp092/GSP092%20Dashboard%20-%20Jun%2012%2C%202026%205_25%20AM.json
 gcloud monitoring dashboards create \
   --config-from-file="GSP092 Dashboard - Jun 12, 2026 5_25 AM.json"
+echo -e "\n👉  Check the dashboard at"
+echo -e "https://console.cloud.google.com/monitoring/dashboards?project=${PROJECT_ID}\n"
+
 
 cat << 'EOF'
 

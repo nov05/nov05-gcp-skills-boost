@@ -15,8 +15,12 @@ For more scripts, refer to [`gcp-skills-boost`](https://github.com/nov05/gcp-ski
   Bash script - [nov05_gsp1077.sh](https://github.com/nov05/gcp-skills-boost/blob/main/Google%20Kubernetes%20Engine%20Pipeline%20using%20Cloud%20Build/nov05_gsp1077.sh)
 
 * **Example of creating 2nd-gen Cloud Run function**    
-  lab - GSP081 Cloud Run Functions: Qwik Start - Console  
-  lab - GSP315 Set Up an App Dev Environment on Google Cloud: Challenge Lab  
+  lab - **GSP092** Monitoring and Logging for Cloud Run Functions  
+  lab - GSP081 Cloud Run Functions: Qwik Start - Console   
+  lab - GSP315 Set Up an App Dev Environment on Google Cloud: Challenge Lab   
+
+* Example of reating a logs-based metric  
+  lab - GSP092 Monitoring and Logging for Cloud Run Functions  
 
 * **Example of building data mesh, creating and adding Dataplex aspect to zone**    
   Bash script - [nov05_gsp514.sh](https://github.com/nov05/gcp-skills-boost/blob/dev/GSP514%20Build%20a%20Data%20Mesh%20with%20Knowledge%20Catalog:%20Challenge%20Lab/nov05_gsp514.sh)

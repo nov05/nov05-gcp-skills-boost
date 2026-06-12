@@ -1,0 +1,209 @@
+{
+  "displayName": "Media_Dashboard",
+  "dashboardFilters": [],
+  "gridLayout": {
+    "columns": "2",
+    "widgets": [
+      {
+        "title": "Execution times for video_processing [95TH PERCENTILE]",
+        "id": "",
+        "xyChart": {
+          "chartOptions": {
+            "displayHorizontal": false,
+            "mode": "COLOR",
+            "showLegend": false
+          },
+          "dataSets": [
+            {
+              "breakdowns": [],
+              "dimensions": [],
+              "legendTemplate": "",
+              "measures": [],
+              "minAlignmentPeriod": "60s",
+              "plotType": "LINE",
+              "sort": [],
+              "targetAxis": "Y1",
+              "timeSeriesQuery": {
+                "outputFullDuration": false,
+                "timeSeriesFilter": {
+                  "aggregation": {
+                    "crossSeriesReducer": "REDUCE_PERCENTILE_95",
+                    "groupByFields": [],
+                    "perSeriesAligner": "ALIGN_DELTA"
+                  },
+                  "filter": "metric.type=\"cloudfunctions.googleapis.com/function/execution_times\" resource.type=\"cloud_function\" resource.label.\"function_name\"=\"video_processing\"",
+                  "secondaryAggregation": {
+                    "groupByFields": [],
+                    "perSeriesAligner": "ALIGN_NONE"
+                  }
+                },
+                "unitOverride": "ns"
+              }
+            }
+          ],
+          "thresholds": [],
+          "timeshiftDuration": "0s",
+          "yAxis": {
+            "label": "y1Axis",
+            "scale": "LINEAR"
+          }
+        }
+      },
+      {
+        "title": "Executions for video_processing",
+        "id": "",
+        "xyChart": {
+          "chartOptions": {
+            "displayHorizontal": false,
+            "mode": "COLOR",
+            "showLegend": false
+          },
+          "dataSets": [
+            {
+              "breakdowns": [],
+              "dimensions": [],
+              "legendTemplate": "",
+              "measures": [],
+              "minAlignmentPeriod": "60s",
+              "plotType": "LINE",
+              "sort": [],
+              "targetAxis": "Y1",
+              "timeSeriesQuery": {
+                "outputFullDuration": false,
+                "timeSeriesFilter": {
+                  "aggregation": {
+                    "groupByFields": [],
+                    "perSeriesAligner": "ALIGN_RATE"
+                  },
+                  "filter": "metric.type=\"cloudfunctions.googleapis.com/function/execution_count\" resource.type=\"cloud_function\" resource.label.\"function_name\"=\"video_processing\"",
+                  "secondaryAggregation": {
+                    "groupByFields": [],
+                    "perSeriesAligner": "ALIGN_NONE"
+                  }
+                },
+                "unitOverride": "1"
+              }
+            }
+          ],
+          "thresholds": [],
+          "timeshiftDuration": "0s",
+          "yAxis": {
+            "label": "y1Axis",
+            "scale": "LINEAR"
+          }
+        }
+      },
+      {
+        "title": "Execution times [MEAN]",
+        "id": "",
+        "xyChart": {
+          "chartOptions": {
+            "displayHorizontal": false,
+            "mode": "COLOR",
+            "showLegend": false
+          },
+          "dataSets": [
+            {
+              "breakdowns": [],
+              "dimensions": [],
+              "legendTemplate": "",
+              "measures": [],
+              "minAlignmentPeriod": "60s",
+              "plotType": "LINE",
+              "sort": [],
+              "targetAxis": "Y1",
+              "timeSeriesQuery": {
+                "outputFullDuration": false,
+                "timeSeriesFilter": {
+                  "aggregation": {
+                    "crossSeriesReducer": "REDUCE_MEAN",
+                    "groupByFields": [],
+                    "perSeriesAligner": "ALIGN_SUM"
+                  },
+                  "filter": "metric.type=\"cloudfunctions.googleapis.com/function/execution_times\" resource.type=\"cloud_function\"",
+                  "secondaryAggregation": {
+                    "groupByFields": [],
+                    "perSeriesAligner": "ALIGN_NONE"
+                  }
+                },
+                "unitOverride": "ns"
+              }
+            }
+          ],
+          "thresholds": [],
+          "timeshiftDuration": "0s",
+          "yAxis": {
+            "label": "y1Axis",
+            "scale": "LINEAR"
+          }
+        }
+      },
+      {
+        "title": "OpenCensus/my.videoservice.org/measure/input_queue_size [MEAN]",
+        "xyChart": {
+          "chartOptions": {
+            "displayHorizontal": false,
+            "mode": "COLOR"
+          },
+          "dataSets": [
+            {
+              "minAlignmentPeriod": "60s",
+              "plotType": "STACKED_BAR",
+              "targetAxis": "Y1",
+              "timeSeriesQuery": {
+                "timeSeriesFilter": {
+                  "aggregation": {
+                    "alignmentPeriod": "60s",
+                    "groupByFields": [],
+                    "perSeriesAligner": "ALIGN_MEAN"
+                  },
+                  "filter": "metric.type=\"custom.googleapis.com/opencensus/my.videoservice.org/measure/input_queue_size\" resource.type=\"gce_instance\"",
+                  "pickTimeSeriesFilter": {
+                    "direction": "TOP",
+                    "numTimeSeries": 30,
+                    "rankingMethod": "METHOD_MEAN"
+                  }
+                }
+              }
+            }
+          ],
+          "thresholds": [],
+          "yAxis": {
+            "scale": "LINEAR"
+          }
+        }
+      },
+      {
+        "title": "logging/user/large_video_upload_rate [MEAN]",
+        "xyChart": {
+          "chartOptions": {
+            "displayHorizontal": false,
+            "mode": "COLOR"
+          },
+          "dataSets": [
+            {
+              "minAlignmentPeriod": "60s",
+              "plotType": "LINE",
+              "targetAxis": "Y1",
+              "timeSeriesQuery": {
+                "timeSeriesFilter": {
+                  "aggregation": {
+                    "alignmentPeriod": "60s",
+                    "crossSeriesReducer": "REDUCE_MEAN",
+                    "groupByFields": [],
+                    "perSeriesAligner": "ALIGN_RATE"
+                  },
+                  "filter": "metric.type=\"logging.googleapis.com/user/large_video_upload_rate\" resource.type=\"gce_instance\""
+                }
+              }
+            }
+          ],
+          "thresholds": [],
+          "yAxis": {
+            "scale": "LINEAR"
+          }
+        }
+      }
+    ]
+  }
+}
