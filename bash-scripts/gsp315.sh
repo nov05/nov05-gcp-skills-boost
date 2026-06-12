@@ -94,7 +94,8 @@ gcloud services enable run.googleapis.com \
 until enabled=$(gcloud services list --enabled --project=$PROJECT_ID); \
   echo "$enabled" | grep -q run.googleapis.com && \
   echo "$enabled" | grep -q artifactregistry.googleapis.com && \
-  echo "$enabled" | grep -q cloudbuild.googleapis.com
+  echo "$enabled" | grep -q cloudbuild.googleapis.com && \
+  echo "$enabled" | grep -q eventarc.googleapis.com
 do sleep 5; done
 
 echo -e "\n👉  Create service account and grand roles..."

@@ -1,0 +1,46 @@
+{
+  "displayName": "New Dashboard - Jun 12, 2026 5:25 AM",
+  "dashboardFilters": [],
+  "description": "",
+  "labels": {},
+  "mosaicLayout": {
+    "columns": 48,
+    "tiles": [
+      {
+        "height": 16,
+        "width": 24,
+        "widget": {
+          "title": "logging/user/CloudRunFunctionLatency-Logs [MEAN]",
+          "xyChart": {
+            "chartOptions": {
+              "displayHorizontal": false,
+              "mode": "COLOR"
+            },
+            "dataSets": [
+              {
+                "minAlignmentPeriod": "60s",
+                "plotType": "LINE",
+                "targetAxis": "Y1",
+                "timeSeriesQuery": {
+                  "timeSeriesFilter": {
+                    "aggregation": {
+                      "alignmentPeriod": "60s",
+                      "crossSeriesReducer": "REDUCE_MEAN",
+                      "groupByFields": [],
+                      "perSeriesAligner": "ALIGN_DELTA"
+                    },
+                    "filter": "metric.type=\"logging.googleapis.com/user/CloudRunFunctionLatency-Logs\" resource.type=\"cloud_run_revision\""
+                  }
+                }
+              }
+            ],
+            "thresholds": [],
+            "yAxis": {
+              "scale": "LINEAR"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,10 +1,8 @@
 #!/bin/bash
 ## Created by nov05, 2026-05-11  
 
-# export USER_ID=$(gcloud auth list --format="value(account)" --filter="status:ACTIVE")
+export USER_ID=$(gcloud auth list --format="value(account)" --filter="status:ACTIVE")
 export PROJECT_ID=$(gcloud config get-value project)
-# export PROJECT_ID=$(gcloud projects list --format='value(PROJECT_ID)' \
-#   --filter='qwiklabs-gcp')
 export PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID \
   --format='value(projectNumber)')
 export REGION=$(gcloud compute project-info describe \
@@ -12,12 +10,13 @@ export REGION=$(gcloud compute project-info describe \
 export ZONE=$(gcloud compute project-info describe \
   --format="value(commonInstanceMetadata.items[google-compute-default-zone])")
 # export BUCKET="$PROJECT_ID-bucket"
+gcloud config set account $USER_ID
 gcloud config set project $PROJECT_ID  
 gcloud config set compute/region $REGION
 gcloud config set compute/zone $ZONE
 echo
 echo "🔹  User: $USER"
-# echo "🔹  Username: $USER_ID
+echo "🔹  Username: $USER_ID"
 echo "🔹  Project ID: $PROJECT_ID"
 echo "🔹  Project number: $PROJECT_NUMBER"
 echo "🔹  Region: $REGION"
