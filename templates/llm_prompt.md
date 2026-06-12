@@ -5,6 +5,8 @@
 2. First, list all the task titles in plain text with no blank lines.
 ```
 
+
+
 ```text
 1. Wrap all the task titles using the following code. Don’t change the format.
 
@@ -31,5 +33,7 @@ Task 2. ...
 EOF
 
 <code> 
+
+echo -e "\n✅  All done\n"
 ```
 
