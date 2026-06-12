@@ -160,10 +160,18 @@ Task 4. Add custom metrics to the Media Dashboard in Cloud Operations Monitoring
 
 EOF
 
+export DASHBOARD_ID=$(gcloud monitoring dashboards list \
+  --filter="displayName=Media_Dashboard" \
+  --format="value(name)")
 curl -o "Media_Dashboard.json" \
   -L https://raw.githubusercontent.com/nov05/nov05-gcp-skills-boost/refs/heads/dev/files/gsp338/Media_Dashboard.json
-gcloud monitoring dashboards create \
-  --config-from-file="Media_Dashboard.json"
+## Get Entity Tag of the dashboard
+gcloud monitoring dashboards describe $DASHBOARD_ID \
+  --format=json > tmp.json
+jq '. as $orig | input | .etag = $orig.etag' tmp.json Media_Dashboard.json \
+  > final.json
+gcloud monitoring dashboards update $DASHBOARD_ID \
+  --config-from-file="final.json"
 echo -e "\n👉  Check the dashboard at"
 echo -e "https://console.cloud.google.com/monitoring/dashboards?project=${PROJECT_ID}\n"
 
