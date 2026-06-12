@@ -20,3 +20,7 @@ sudo chmod +x gsp338.sh
 ./gsp338.sh 2>&1 | tee -a logs.txt
 sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 ```
+
+* You can find a terminal output log sample file in this folder.  
+* Sample `Monitoring -> Media_Dashboard`  
+  <img src="https://raw.githubusercontent.com/nov05/pictures/refs/heads/master/gcp-skills-boost/gsp338/2026-06-12%2017_08_25-Media_Dashboard.jpg" width=800>  

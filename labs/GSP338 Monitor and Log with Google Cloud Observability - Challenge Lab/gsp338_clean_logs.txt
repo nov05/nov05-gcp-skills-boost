@@ -1,0 +1,189 @@
+
+👉  Enter metric name (Task 3): 👉  Enter alert shreshold (Task 5): 
+Your active configuration is: [cloudshell-8532]
+Updated property [core/account].
+[environment: untagged] Read more to tag: g.co/cloud/project-env-tag.
+Updated property [core/project].
+Updated property [compute/region].
+Updated property [compute/zone].
+
+🔹  User: student_01_7a8903c6f237
+🔹  Username: student-01-7a8903c6f237@qwiklabs.net
+🔹  Project ID: qwiklabs-gcp-03-2f2bb7fe4e5b
+🔹  Project number: 1092495103764
+🔹  Region: us-east1
+🔹  Zone: us-east1-d
+
+Credentialed Accounts
+
+ACTIVE: *
+ACCOUNT: student-01-7a8903c6f237@qwiklabs.net
+
+To set the active account, run:
+    $ gcloud config set account `ACCOUNT`
+
+
+========================================================
+Task 1. Configure Cloud Monitoring
+========================================================
+
+Operation "operations/acat.p2-1092495103764-87d511f9-2e91-452a-891d-1fe0358a5950" finished successfully.
+
+👉  Check the dashboard at
+https://console.cloud.google.com/monitoring/dashboards?project=qwiklabs-gcp-03-2f2bb7fe4e5b
+
+
+========================================================
+Task 2. Configure a Compute Instance to generate Custom Cloud Monitoring metrics
+========================================================
+
+Updated [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-03-2f2bb7fe4e5b/zones/us-east1-d/instances/video-queue-monitor].
+Updated [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-03-2f2bb7fe4e5b/zones/us-east1-d/instances/video-queue-monitor].
+
+👉  Check the metric 'input_queue_size' at
+https://console.cloud.google.com/monitoring/metrics-explorer?project=qwiklabs-gcp-03-2f2bb7fe4e5b
+
+
+========================================================
+Task 3. Create a custom metric using Cloud Operations logging events
+========================================================
+
+Created [big_video_upload_rate].
+
+👉  Check the metric 'big_video_upload_rate' at
+https://console.cloud.google.com/monitoring/metrics-explorer?project=qwiklabs-gcp-03-2f2bb7fe4e5b
+It usually takes a few minutes for the metric to be available.
+
+
+========================================================
+Task 4. Add custom metrics to the Media Dashboard in Cloud Operations Monitoring
+========================================================
+
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  6965  100  6965    0     0  38449      0 --:--:-- --:--:-- --:--:-- 38694
+Updated dashboard [4117c26b-0560-42f9-bd5b-fa2d5568acb0].
+displayName: Media_Dashboard
+etag: 318244dfa8a1a08927197350605238d7
+gridLayout:
+  columns: '2'
+  widgets:
+  - title: Execution times for video_processing [95TH PERCENTILE]
+    xyChart:
+      chartOptions:
+        mode: COLOR
+      dataSets:
+      - minAlignmentPeriod: 60s
+        plotType: LINE
+        targetAxis: Y1
+        timeSeriesQuery:
+          timeSeriesFilter:
+            aggregation:
+              crossSeriesReducer: REDUCE_PERCENTILE_95
+              perSeriesAligner: ALIGN_DELTA
+            filter: metric.type="cloudfunctions.googleapis.com/function/execution_times"
+              resource.type="cloud_function" resource.label."function_name"="video_processing"
+            secondaryAggregation: {}
+          unitOverride: ns
+      timeshiftDuration: 0s
+      yAxis:
+        label: y1Axis
+        scale: LINEAR
+  - title: Executions for video_processing
+    xyChart:
+      chartOptions:
+        mode: COLOR
+      dataSets:
+      - minAlignmentPeriod: 60s
+        plotType: LINE
+        targetAxis: Y1
+        timeSeriesQuery:
+          timeSeriesFilter:
+            aggregation:
+              perSeriesAligner: ALIGN_RATE
+            filter: metric.type="cloudfunctions.googleapis.com/function/execution_count"
+              resource.type="cloud_function" resource.label."function_name"="video_processing"
+            secondaryAggregation: {}
+          unitOverride: '1'
+      timeshiftDuration: 0s
+      yAxis:
+        label: y1Axis
+        scale: LINEAR
+  - title: Execution times [MEAN]
+    xyChart:
+      chartOptions:
+        mode: COLOR
+      dataSets:
+      - minAlignmentPeriod: 60s
+        plotType: LINE
+        targetAxis: Y1
+        timeSeriesQuery:
+          timeSeriesFilter:
+            aggregation:
+              crossSeriesReducer: REDUCE_MEAN
+              perSeriesAligner: ALIGN_SUM
+            filter: metric.type="cloudfunctions.googleapis.com/function/execution_times"
+              resource.type="cloud_function"
+            secondaryAggregation: {}
+          unitOverride: ns
+      timeshiftDuration: 0s
+      yAxis:
+        label: y1Axis
+        scale: LINEAR
+  - title: OpenCensus/my.videoservice.org/measure/input_queue_size [MEAN]
+    xyChart:
+      chartOptions:
+        mode: COLOR
+      dataSets:
+      - minAlignmentPeriod: 60s
+        plotType: STACKED_BAR
+        targetAxis: Y1
+        timeSeriesQuery:
+          timeSeriesFilter:
+            aggregation:
+              alignmentPeriod: 60s
+              perSeriesAligner: ALIGN_MEAN
+            filter: metric.type="custom.googleapis.com/opencensus/my.videoservice.org/measure/input_queue_size"
+              resource.type="gce_instance"
+            pickTimeSeriesFilter:
+              direction: TOP
+              numTimeSeries: 30
+              rankingMethod: METHOD_MEAN
+      yAxis:
+        scale: LINEAR
+  - title: logging/user/big_video_upload_rate [MEAN]
+    xyChart:
+      chartOptions:
+        mode: COLOR
+      dataSets:
+      - minAlignmentPeriod: 60s
+        plotType: LINE
+        targetAxis: Y1
+        timeSeriesQuery:
+          timeSeriesFilter:
+            aggregation:
+              alignmentPeriod: 60s
+              crossSeriesReducer: REDUCE_SUM
+              perSeriesAligner: ALIGN_RATE
+            filter: metric.type="logging.googleapis.com/user/big_video_upload_rate"
+              resource.type="cloud_function"
+      yAxis:
+        scale: LINEAR
+name: projects/1092495103764/dashboards/4117c26b-0560-42f9-bd5b-fa2d5568acb0
+
+👉  Check the dashboard at
+https://console.cloud.google.com/monitoring/dashboards?project=qwiklabs-gcp-03-2f2bb7fe4e5b
+
+
+========================================================
+Task 5. Create a Cloud Operations alert based on the rate of high resolution video file uploads
+========================================================
+
+Created alert policy [projects/qwiklabs-gcp-03-2f2bb7fe4e5b/alertPolicies/129638179338225480].
+
+👉  Check the alert policy 'High Resolution Video Upload Alert' at
+https://console.cloud.google.com/monitoring/alerting?project=qwiklabs-gcp-03-2f2bb7fe4e5b
+
+
+✅  All done
+
