@@ -26,11 +26,16 @@ export API_DISPLAY_NAME=arc132-api-key
 
 ## Delete multiple API keys by the display name
 ## -r (--no-run-if-empty)
+# gcloud alpha services api-keys list \
+#     --filter="displayName:$API_DISPLAY_NAME" \
+#     --format="value(name)" \
+# | xargs -r -n 1 gcloud alpha services api-keys delete \
+#     --location=global
 gcloud alpha services api-keys list \
-    --filter="displayName:$API_DISPLAY_NAME" \
-    --format="value(name)" \
-| xargs -r -n 1 gcloud alpha services api-keys delete \
-    --location=global
+  --filter="displayName:gsp323-api-key" \
+  --format="value(name)" \
+| xargs -r -n 1 -I {} gcloud alpha services api-keys delete "{}"
+
 
 ## Create API key
 # gcloud alpha services api-keys create \

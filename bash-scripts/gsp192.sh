@@ -6,8 +6,8 @@ Task 1. Ensure that the Dataflow API is successfully re-enabled
 
 EOF
 
-gcloud services disable dataflow.googleapis.com --project Project ID --force
-gcloud services enable dataflow.googleapis.com --project Project ID
+gcloud services disable dataflow.googleapis.com --project $PROJECT_ID --force
+gcloud services enable dataflow.googleapis.com --project $PROJECT_ID
 
 
 cat << 'EOF'
@@ -19,15 +19,15 @@ Task 2. Create a BigQuery dataset, BigQuery table, and Cloud Storage bucket usin
 EOF
 
 bq mk taxirides
-
 bq mk \
---time_partitioning_field timestamp \
---schema ride_id:string,point_idx:integer,latitude:float,longitude:float,\
+    --time_partitioning_field timestamp \
+    --schema \
+ride_id:string,point_idx:integer,latitude:float,longitude:float,\
 timestamp:timestamp,meter_reading:float,meter_increment:float,ride_status:string,\
-passenger_count:integer -t taxirides.realtime
+passenger_count:integer \
+    -t taxirides.realtime
 
-export BUCKET_NAME="Bucket Name"
-
+export BUCKET_NAME=""
 gsutil mb gs://$BUCKET_NAME/
 
 
@@ -56,9 +56,9 @@ EOF
 
 gcloud dataflow jobs run iotflow \
     --gcs-location gs://dataflow-templates-"Region"/latest/PubSub_to_BigQuery \
-    --region "Region" \
+    --region "$REGION" \
     --worker-machine-type e2-medium \
-    --staging-location gs://"Bucket Name"/temp \
+    --staging-location gs://"$BUCKET_NAME"/temp \
     --parameters inputTopic=projects/pubsub-public-data/topics/taxirides-realtime,outputTableSpec="Table Name":taxirides.realtime
 
 

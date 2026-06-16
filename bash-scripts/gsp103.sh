@@ -53,7 +53,7 @@ for i in {1..5}; do
         --worker-boot-disk-type=pd-standard \
         --worker-boot-disk-size=30GB && break
     gcloud dataproc clusters delete "$CLUSTER_NAME" \
-        --region=us-west4 \
+        --region=$REGION \
         --quiet
     echo "Retry in 30 seconds"
     sleep 30
@@ -80,6 +80,7 @@ gcloud dataproc jobs submit spark \
     --jars=file:///usr/lib/spark/examples/jars/spark-examples.jar \
     -- 1000
 
+## 1000 = “run SparkPi with 1000 samples to approximate π”
 
 cat << 'EOF'
 

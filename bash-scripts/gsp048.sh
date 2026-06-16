@@ -69,11 +69,11 @@ EOF
 cat << 'EOF' > request.json
 {
   "config": {
-      "encoding":"FLAC",
-      "languageCode": "en-US"
+    "encoding":"FLAC",
+    "languageCode": "en-US"
   },
   "audio": {
-      "uri":"gs://cloud-samples-data/speech/brooklyn_bridge.flac"
+    "uri":"gs://cloud-samples-data/speech/brooklyn_bridge.flac"
   }
 }
 EOF
