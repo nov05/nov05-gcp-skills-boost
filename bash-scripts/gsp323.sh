@@ -171,46 +171,38 @@ cat > request.json << EOF
 }
 EOF
 
-## ⚠️ Access token doesn't work.
-# ## ADC-based
-# gcloud auth application-default login --quiet
-# gcloud auth application-default set-quota-project $PROJECT_ID
-# ## Credentials saved to file: [/tmp/tmp.hMZI46uI8s/application_default_credentials.json]
-# ## These credentials will be used by any library that requests Application Default Credentials (ADC).
-# export TOKEN=$(gcloud auth application-default print-access-token)
-# ## gcloud-based 
-# # export TOKEN=$(gcloud auth print-access-token)
-# curl -X POST \
-#   -H "Content-Type: application/json" \
-#   -H "Authorization: Bearer $TOKEN" \
-#   "https://speech.googleapis.com/v1/speech:recognize" \
-#   -d @request.json > result.json
+export ACCESS_TOKEN=$(gcloud auth print-access-token)
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $ACCESS_TOKEN" \
+  "https://speech.googleapis.com/v1/projects/$PROJECT_ID/speech:recognize" \
+  -d @request.json > result.json
 
-gcloud services disable apikeys.googleapis.com --project $PROJECT_ID --force
-gcloud services enable apikeys.googleapis.com --project $PROJECT_ID
-until gcloud services list --enabled \
-  --project=$PROJECT_ID | grep -q apikeys.googleapis.com
-do sleep 5; done
-## Delete multiple API keys by the display name
-gcloud alpha services api-keys list \
-  --filter="displayName:gsp323-api-key" \
-  --format="value(name)" \
-| xargs -n 1 -I {} gcloud alpha services api-keys delete "{}"
-gcloud alpha services api-keys create \
-  --display-name="gsp323-api-key" 
-export KEY_ID=$(
-  gcloud alpha services api-keys list \
-    --format="value(name)" \
-    --filter "displayName=gsp323-api-key")
-gcloud services api-keys update $KEY_ID \
-  --api-target=service=speech.googleapis.com \
-  --api-target=service=language.googleapis.com
-export API_KEY=$(
-  gcloud alpha services api-keys get-key-string $KEY_ID \
-    --format="value(keyString)")
+# gcloud services disable apikeys.googleapis.com --project $PROJECT_ID --force
+# gcloud services enable apikeys.googleapis.com --project $PROJECT_ID
+# until gcloud services list --enabled \
+#   --project=$PROJECT_ID | grep -q apikeys.googleapis.com
+# do sleep 5; done
+# ## Delete multiple API keys by the display name
+# gcloud alpha services api-keys list \
+#   --filter="displayName:gsp323-api-key" \
+#   --format="value(name)" \
+# | xargs -n 1 -I {} gcloud alpha services api-keys delete "{}"
+# gcloud alpha services api-keys create \
+#   --display-name="gsp323-api-key" 
+# export KEY_ID=$(
+#   gcloud alpha services api-keys list \
+#     --format="value(name)" \
+#     --filter "displayName=gsp323-api-key")
+# gcloud services api-keys update $KEY_ID \
+#   --api-target=service=speech.googleapis.com \
+#   --api-target=service=language.googleapis.com
+# export API_KEY=$(
+#   gcloud alpha services api-keys get-key-string $KEY_ID \
+#     --format="value(keyString)")
+# curl -s -X POST -H "Content-Type: application/json" --data-binary @request.json \
+# "https://speech.googleapis.com/v1/speech:recognize?key=${API_KEY}" > result.json
 
-curl -s -X POST -H "Content-Type: application/json" --data-binary @request.json \
-"https://speech.googleapis.com/v1/speech:recognize?key=${API_KEY}" > result.json
 echo -e "\n👉  Check the result.\n"
 cat result.json
 echo

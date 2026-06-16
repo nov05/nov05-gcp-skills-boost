@@ -44,9 +44,10 @@ curl "https://translation.googleapis.com/language/translate/v2?target=es&key=${A
 ```
 
 
-* Refer to GSP222 for access token usage
+* Refer to GSP222, GSP107 for access token usage
 
 ```bash
+## GSP222
 export SA="tts-qwiklab@$PROJECT_ID.iam.gserviceaccount.com"
 gcloud iam service-accounts describe "$SA" >/dev/null 2>&1 || \
 gcloud iam service-accounts create tts-qwiklab
@@ -67,4 +68,14 @@ echo -e "\n👉  List the voices available when you use the Text-to-Speech API t
 curl -H "Authorization: Bearer $TOKEN" \
     -H "Content-Type: application/json; charset=utf-8" \
     "https://texttospeech.googleapis.com/v1/voices"
+```
+
+```bash
+## GSP107: /projects/$PROJECT_ID 
+curl -s \
+  -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+  -H "Content-Type: application/json" \
+  https://dlp.googleapis.com/v2/projects/$PROJECT_ID/content:deidentify \
+  -d @new-inspect-file.json -o redact-output.txt
+cat redact-output.txt
 ```
