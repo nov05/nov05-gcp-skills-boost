@@ -171,6 +171,7 @@ cat > request.json << EOF
 }
 EOF
 
+## Authenticated via access token
 export ACCESS_TOKEN=$(gcloud auth print-access-token)
 curl -X POST \
   -H "Content-Type: application/json" \
@@ -178,6 +179,7 @@ curl -X POST \
   "https://speech.googleapis.com/v1/projects/$PROJECT_ID/speech:recognize" \
   -d @request.json > result.json
 
+## Authenticate via API key 
 # gcloud services disable apikeys.googleapis.com --project $PROJECT_ID --force
 # gcloud services enable apikeys.googleapis.com --project $PROJECT_ID
 # until gcloud services list --enabled \

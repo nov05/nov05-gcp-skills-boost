@@ -93,3 +93,29 @@ until gcloud compute ssh bigquery-instance \
     --command="echo ready" >/dev/null 2>&1; do
   sleep 5
 done
+
+
+##==========================================================
+## 👉 Refer to GSP081
+##==========================================================
+
+echo -e "\n👉  Enabling services...\n"
+gcloud services enable run.googleapis.com \
+  artifactregistry.googleapis.com \
+  cloudbuild.googleapis.com \
+  --project=$PROJECT_ID
+until enabled=$(gcloud services list --enabled --project=$PROJECT_ID); \
+  echo "$enabled" | grep -q run.googleapis.com && \
+  echo "$enabled" | grep -q artifactregistry.googleapis.com && \
+  echo "$enabled" | grep -q cloudbuild.googleapis.com
+do sleep 5; done
+
+##==========================================================
+## 👉 Refer to GSP323
+##==========================================================
+
+gcloud services disable language.googleapis.com --project $PROJECT_ID --force
+gcloud services enable language.googleapis.com --project $PROJECT_ID
+until gcloud services list --enabled \
+  --project=$PROJECT_ID | grep -q language.googleapis.com
+do sleep 5; done
