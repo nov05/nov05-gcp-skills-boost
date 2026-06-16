@@ -8,7 +8,19 @@
 
 ```text
 1. Wrap all the task titles using the following code. Don’t change the format.
-2. Extract all the Bash code (no JavaScript, JSON, etc. code blocks) from the lab content and replace <code> with the corresponding code exactly as it appears.  
+
+2. Extract all the Bash code (no JavaScript, JSON, etc. code blocks) from the lab content and replace <code> with the corresponding code exactly as it appears.
+
+3. For multiple-choice questions, extract each question, identify the correct answer, and present the results in the following format:
+
+Question 1: <question>
+Answer: <correct answer>
+
+Question 2: <question>
+Answer: <correct answer>
+
+Continue this format for all multiple-choice questions found in the lab. For each task, restart the question numbering from 1. Number questions sequentially within the same task only, and reset the numbering when a new task begins.
+
 3. Output the text in a code block.
 
 cat << 'EOF'
@@ -17,9 +29,9 @@ cat << 'EOF'
 Task 1. ...
 ========================================================
 
-EOF
+<questions>
 
-<code>  
+EOF
 
 cat << 'EOF'
 
@@ -27,9 +39,23 @@ cat << 'EOF'
 Task 2. ...
 ========================================================
 
+(There is no Bash code from the lab.)
+
 EOF
 
 <code> 
+
+cat << 'EOF'
+
+========================================================
+Task 3. ...
+========================================================
+
+<questions>
+
+EOF
+
+<code>
 
 echo -e "\n✅  All done\n"
 ```
