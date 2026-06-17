@@ -16,3 +16,6 @@ sudo chmod +x gsp323.sh
 ./gsp323.sh 2>&1 | tee -a logs.txt
 sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 ```
+
+* This lab is fully automated with the Bash script.  
+* A terminal output log sample file can be found in this folder.  

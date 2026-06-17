@@ -20,3 +20,5 @@ sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 ```
 
 * This lab can be fully automated with the Bash script.  
+* Task 3 output file example:   
+  <img src="https://raw.githubusercontent.com/nov05/pictures/refs/heads/master/gcp-skills-boost/arc116/images_patient-intake-form.PNG" width=400>  
