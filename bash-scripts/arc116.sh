@@ -9,8 +9,6 @@ export REGION=$(gcloud compute project-info describe \
   --format="value(commonInstanceMetadata.items[google-compute-default-region])")
 export ZONE=$(gcloud compute project-info describe \
   --format="value(commonInstanceMetadata.items[google-compute-default-zone])")
-export BUCKET="$PROJECT_ID-input"
-export BUCKET2="$PROJECT_ID-output"
 gcloud config set account $USER_ID
 gcloud config set project $PROJECT_ID  
 gcloud config set compute/region $REGION
@@ -22,21 +20,25 @@ echo "🔹  Project ID: $PROJECT_ID"
 echo "🔹  Project number: $PROJECT_NUMBER"
 echo "🔹  Region: $REGION"
 echo "🔹  Zone: $ZONE"
-echo "🔹  Bukect (input): $BUCKET"
-echo "🔹  Bukect (output): $BUCKET2"
 echo
 gcloud auth list
 
+export BUCKET="$PROJECT_ID-redact"
+export BUCKET2="$PROJECT_ID-input"
+export BUCKET3="$PROJECT_ID-output"
+export TEMPLATE_NAME=structured_data_template
+export TEMPLATE_NAME2=unstructured_data_template
 
 cat << 'EOF'
 
 ========================================================
-Task 1. Create de-identify templates
+Task 1. Redact sensitive data from text content
 ========================================================
 
 (No multiple-choice questions found in this task)
 
 EOF
+## Refer to GSP107 Task 2, GSP864
 
 gcloud services disable dlp.googleapis.com cloudkms.googleapis.com \
   --project $PROJECT_ID --force
@@ -47,49 +49,74 @@ until enabled=$(gcloud services list --enabled --project=$PROJECT_ID); \
   echo "$enabled" | grep -q cloudkms.googleapis.com
 do sleep 5; done
 
-curl -X POST \
+cat > redact-request.json << EOF
+{
+	"item": {
+		"value": "Please update my records with the following information:\n Email address: foo@example.com,\nNational Provider Identifier: 1245319599"
+	},
+	"deidentifyConfig": {
+		"infoTypeTransformations": {
+			"transformations": [{
+				"primitiveTransformation": {
+					"replaceWithInfoTypeConfig": {}
+				}
+			}]
+		}
+	},
+	"inspectConfig": {
+		"infoTypes": [{
+				"name": "EMAIL_ADDRESS"
+			},
+			{
+				"name": "US_HEALTHCARE_NPI"
+			}
+		]
+	}
+}
+EOF
+curl -s \
   -H "Authorization: Bearer $(gcloud auth print-access-token)" \
   -H "Content-Type: application/json" \
-  "https://dlp.googleapis.com/v2/projects/$PROJECT_ID/deidentifyTemplates?templateId=deid_unstruct1" \
-  -d '{
-    "deidentifyTemplate": {
-      "displayName": "deid_unstruct1 template",
-      "deidentifyConfig": {
-        "infoTypeTransformations": {
-          "transformations": [
-            {
-              "primitiveTransformation": {
-                "replaceWithInfoTypeConfig": {}
-              }
-            }
-          ]
-        }
-      }
-    }
-  }'
+  https://dlp.googleapis.com/v2/projects/$PROJECT_ID/content:deidentify \
+  -d @redact-request.json -o redact-response.txt
+cat redact-response.txt
+gsutil cp redact-response.txt gs://$BUCKET
+gcloud storage ls gs://$BUCKET
+
+
+
+cat << 'EOF'
+
+========================================================
+Task 2. Create DLP inspection templates
+========================================================
+
+(No multiple-choice questions found in this task)
+
+EOF
+## Refer to GSP1073 Task 1
+
 
 curl -X POST \
   -H "Authorization: Bearer $(gcloud auth print-access-token)" \
   -H "Content-Type: application/json" \
-  "https://dlp.googleapis.com/v2/projects/$PROJECT_ID/deidentifyTemplates?templateId=deid_struct1" \
+  "https://dlp.googleapis.com/v2/projects/$PROJECT_ID/locations/us/deidentifyTemplates?templateId=$TEMPLATE_NAME" \
   -d '{
     "deidentifyTemplate": {
-      "displayName": "deid_struct1 template",
+      "displayName": "",
       "deidentifyConfig": {
         "recordTransformations": {
           "fieldTransformations": [
             {
               "fields": [
-                {"name": "ssn"},
-                {"name": "ccn"},
-                {"name": "email"},
-                {"name": "vin"},
-                {"name": "id"},
-                {"name": "agent_id"},
-                {"name": "user_id"}
+                {"name": "bank name"},
+                {"name": "zip code"}
               ],
               "primitiveTransformation": {
-                "replaceConfig": {}
+                "characterMaskConfig": {
+                  "maskingCharacter": "#",
+                  "numberToMask": 0
+                }
               }
             },
             {
@@ -112,28 +139,55 @@ curl -X POST \
     }
   }'
 
+curl -X POST \
+  -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+  -H "Content-Type: application/json" \
+  "https://dlp.googleapis.com/v2/projects/$PROJECT_ID/locations/us/deidentifyTemplates?templateId=$TEMPLATE_NAME2" \
+  -d '{
+    "deidentifyTemplate": {
+      "displayName": "",
+      "deidentifyConfig": {
+        "infoTypeTransformations": {
+          "transformations": [
+            {
+              "primitiveTransformation": {
+                "replaceConfig": {
+                  "newValue": {
+                    "stringValue": "[redacted]"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }'
+
 echo -e "\n👉  Check the templates at"
 echo -e "https://console.cloud.google.com/security/sensitive-data-protection/landing/configuration/templates/deidentify?project=$PROJECT_ID\n"
+
 
 
 cat << 'EOF'
 
 ========================================================
-Task 2. Create a DLP inspection job trigger
+Task 3. Configure a job trigger to run DLP inspection
 ========================================================
 
 (No multiple-choice questions found in this task)
 
 EOF
-## https://docs.cloud.google.com/sdk/gcloud/reference/alpha/dlp/job-triggers/create
+## Refert to GSP1073 Task 2 and 3
+## https://docs.cloud.google.com/sdk/gcloud/reference/alpha/dlp/jobs
 
 curl -X POST \
   -H "Authorization: Bearer $(gcloud auth print-access-token)" \
   -H "Content-Type: application/json" \
-  "https://dlp.googleapis.com/v2/projects/$PROJECT_ID/locations/global/jobTriggers?triggerId=DeID_Storage_Demo1" \
+  "https://dlp.googleapis.com/v2/projects/$PROJECT_ID/locations/us/jobTriggers?triggerId=dlp_job" \
   -d '{
     "jobTrigger": {
-      "displayName": "DeID_Storage_Demo1",
+      "displayName": "dlp_job",
       "triggers": [
         {
           "schedule": {
@@ -151,7 +205,7 @@ curl -X POST \
           "cloudStorageOptions": {
             "fileSet": {
               "regexFileSet": {
-                "bucketName": "'"${BUCKET}"'",
+                "bucketName": "'"${BUCKET2}"'",
                 "includeRegex": [".*"],
                 "excludeRegex": []
               }
@@ -162,10 +216,10 @@ curl -X POST \
         "actions": [
           {
             "deidentify": {
-              "cloudStorageOutput": "gs://'"${BUCKET2}"'",
+              "cloudStorageOutput": "gs://'"${BUCKET3}"'",
               "transformationConfig": {
-                "deidentifyTemplate": "projects/'"$PROJECT_ID"'/locations/global/deidentifyTemplates/deid_unstruct1",
-                "structuredDeidentifyTemplate": "projects/'"$PROJECT_ID"'/locations/global/deidentifyTemplates/deid_struct1"
+                "deidentifyTemplate": "projects/'"$PROJECT_ID"'/locations/us/deidentifyTemplates/unstructured_data_template",
+                "structuredDeidentifyTemplate": "projects/'"$PROJECT_ID"'/locations/us/deidentifyTemplates/structured_data_template"
               }
             }
           }
@@ -175,38 +229,27 @@ curl -X POST \
   }'
 
 gcloud alpha dlp job-triggers list \
-  --filter="name:DeID_Storage_Demo1"
-echo -e "\n👉  Check the trigger 'DeID_Storage_Demo1' at"
+  --filter="name:dlp_job"
+echo -e "\n👉  Check the trigger 'dlp_job' at"
 echo -e "https://console.cloud.google.com/security/sensitive-data-protection/landing/inspection/triggers?project=$PROJECT_ID\n"
-
-
-cat << 'EOF'
-
-========================================================
-Task 3. Run DLP Inspection and review results
-========================================================
-
-(No multiple-choice questions found in this task)
-
-EOF
-## https://docs.cloud.google.com/sdk/gcloud/reference/alpha/dlp/jobs
-
 
 curl -X POST \
   -H "Authorization: Bearer $(gcloud auth print-access-token)" \
-  "https://dlp.googleapis.com/v2/projects/$PROJECT_ID/locations/global/jobTriggers/DeID_Storage_Demo1:activate"
-echo -e "\n👉  Check the jobs for 'DeID_Storage_Demo1' at"
+  "https://dlp.googleapis.com/v2/projects/$PROJECT_ID/locations/us/jobTriggers/dlp_job:activate"
+echo -e "\n👉  Check the jobs for 'dlp_job' at"
 echo -e "https://console.cloud.google.com/security/sensitive-data-protection/landing/inspection/jobs?project=$PROJECT_ID\n"
-
 JOB_ID=$(gcloud alpha dlp jobs list \
+  --location=us \
   --format="value(name)" \
   --limit=1)
-gcloud alpha dlp jobs describe $JOB_ID
+## It does NOT support --location. And it won't find the job without location.
+# gcloud alpha dlp jobs describe $JOB_ID
+gcloud storage ls gs://$BUCKET3
+gcloud storage ls --recursive gs://$BUCKET3/**
 
-# gsutil ls gs://$BUCKET2
-# gsutil ls -r gs://$BUCKET2/**
-gcloud storage ls gs://$BUCKET2
-gcloud storage ls --recursive gs://$BUCKET2/**
+
+
+
 
 
 echo -e "\n✅  All done\n"
