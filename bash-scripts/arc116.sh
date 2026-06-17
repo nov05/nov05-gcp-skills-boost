@@ -163,7 +163,7 @@ curl -X POST \
       }
     }
   }'
-
+sleep 10
 echo -e "\n👉  Check the templates at"
 echo -e "https://console.cloud.google.com/security/sensitive-data-protection/landing/configuration/templates/deidentify?project=$PROJECT_ID\n"
 
@@ -228,6 +228,7 @@ curl -X POST \
     }
   }'
 
+sleep 30
 gcloud alpha dlp job-triggers list \
   --filter="name:dlp_job"
 echo -e "\n👉  Check the trigger 'dlp_job' at"
@@ -236,14 +237,35 @@ echo -e "https://console.cloud.google.com/security/sensitive-data-protection/lan
 curl -X POST \
   -H "Authorization: Bearer $(gcloud auth print-access-token)" \
   "https://dlp.googleapis.com/v2/projects/$PROJECT_ID/locations/us/jobTriggers/dlp_job:activate"
+sleep 30
 echo -e "\n👉  Check the jobs for 'dlp_job' at"
 echo -e "https://console.cloud.google.com/security/sensitive-data-protection/landing/inspection/jobs?project=$PROJECT_ID\n"
 JOB_ID=$(gcloud alpha dlp jobs list \
   --location=us \
   --format="value(name)" \
   --limit=1)
+echo "\n👉  Job ID: $JOB_ID\n"
+## https://docs.cloud.google.com/sdk/gcloud/reference/alpha/dlp/jobs/describe
 ## It does NOT support --location. And it won't find the job without location.
 # gcloud alpha dlp jobs describe $JOB_ID
+curl -X GET \
+  -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+  "https://dlp.googleapis.com/v2/projects/$PROJECT_ID/locations/us/dlpJobs/$JOB_ID" \
+  | jq . | head -n 10
+
+: << 'E.g.
+{
+  "name": "projects/qwiklabs-gcp-01-78b8a1917307/locations/us/dlpJobs/i-3619213168265786675",
+  "type": "INSPECT_JOB",
+  "state": "DONE",
+  "inspectDetails": {
+    "requestedOptions": {
+      "snapshotInspectTemplate": {},
+      "jobConfig": {
+        "storageConfig": {
+          "cloudStorageOptions": {
+'
+
 gcloud storage ls gs://$BUCKET3
 gcloud storage ls --recursive gs://$BUCKET3/**
 
