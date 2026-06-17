@@ -21,7 +21,8 @@ Answer: <correct answer>
 
 Continue this format for all multiple-choice questions found in the lab. For each task, restart the question numbering from 1. Number questions sequentially within the same task only, and reset the numbering when a new task begins.
 
-3. Output the text in a code block.
+3. If there is no code or questions, remove the placeholders and reduce the blank lines properly.
+4. Output the text in a code block.
 
 cat << 'EOF'
 
@@ -38,8 +39,6 @@ cat << 'EOF'
 ========================================================
 Task 2. ...
 ========================================================
-
-(There is no Bash code from the lab.)
 
 EOF
 
