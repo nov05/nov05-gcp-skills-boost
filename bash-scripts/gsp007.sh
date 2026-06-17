@@ -49,7 +49,7 @@ gcloud compute instances create www1 \
   --zone=$ZONE \
   --tags=network-lb-tag \
   --machine-type=e2-small \
-  --image-family=Debian image ID \
+  --image-family=debian-12 \
   --image-project=debian-cloud \
   --metadata=startup-script='#!/bin/bash
     apt-get update
@@ -62,7 +62,7 @@ gcloud compute instances create www2 \
   --zone=$ZONE \
   --tags=network-lb-tag \
   --machine-type=e2-small \
-  --image-family=Debian image ID \
+  --image-family=debian-12 \
   --image-project=debian-cloud \
   --metadata=startup-script='#!/bin/bash
     apt-get update
@@ -75,7 +75,7 @@ gcloud compute instances create www3 \
   --zone=$ZONE  \
   --tags=network-lb-tag \
   --machine-type=e2-small \
-  --image-family=Debian image ID \
+  --image-family=debian-12 \
   --image-project=debian-cloud \
   --metadata=startup-script='#!/bin/bash
     apt-get update
