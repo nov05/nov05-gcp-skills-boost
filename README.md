@@ -19,7 +19,7 @@ For more scripts, refer to [`gcp-skills-boost`](https://github.com/nov05/gcp-ski
   lab - GSP081 Cloud Run Functions: Qwik Start - Console   
   lab - GSP315 Set Up an App Dev Environment on Google Cloud: Challenge Lab   
 
-* Example of reating a logs-based metric  
+* Example of creating a logs-based metric  
   lab - GSP092 Monitoring and Logging for Cloud Run Functions  
 
 * **Example of building data mesh, creating and adding Dataplex aspect to zone**    
@@ -33,6 +33,9 @@ For more scripts, refer to [`gcp-skills-boost`](https://github.com/nov05/gcp-ski
 
 * Example of creating Dataplex aspect and adding to BigQuery table and column   
   Bash script - [nov05_gsp1145.sh](https://github.com/nov05/gcp-skills-boost/blob/main/GSP1145%20Create%20and%20Add%20Aspects%20to%20Knowledge%20Catalog%20Assets/nov05_gsp1145.sh)   
+
+* Example of creating a De-identified Copy of Data in Cloud Storage    
+  lab - GSP1073 (fully automated with Bash script; the API callings are tricky)
 
 * Example of migrating monolith website to microservices on K8s Engines    
   folder - [GSP699](https://github.com/nov05/gcp-skills-boost/tree/main/Migrating%20a%20Monolithic%20Website%20to%20Microservices%20on%20Google%20Kubernetes%20Engine)  
