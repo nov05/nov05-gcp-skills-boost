@@ -123,7 +123,7 @@ gcloud compute target-pools add-instances www-pool \
     --instances www1,www2,www3
 
 gcloud compute forwarding-rules create www-rule \
-    --region  $REGION \
+    --region $REGION \
     --ports 80 \
     --address network-lb-ip-1 \
     --target-pool www-pool
@@ -142,7 +142,7 @@ gcloud compute forwarding-rules describe www-rule --region $REGION
 IPADDRESS=$(gcloud compute forwarding-rules describe www-rule --region $REGION --format="json" | jq -r .IPAddress)
 echo $IPADDRESS
 
-while true; do curl -m1 $IPADDRESS; done
+timeout 120 bash -c 'while true; do curl -m1 $IPADDRESS; done'
 
 
 echo -e "\n✅  All done\n"

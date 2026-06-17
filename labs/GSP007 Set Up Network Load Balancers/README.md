@@ -1,4 +1,4 @@
-#  🟢 GSP007 Set Up Network Load Balancers
+#  🟢 GSP007 Set Up Network Load Balancers 
 
 https://www.skills.google/games/7225/labs/44708
 
