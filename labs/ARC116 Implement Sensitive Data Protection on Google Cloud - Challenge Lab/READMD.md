@@ -1,7 +1,7 @@
 # 🟢 ARC116 Implement Sensitive Data Protection on Google Cloud: Challenge Lab
 
-https://www.skills.google/games/7224/labs/44704   
-
+https://www.skills.google/games/7224/labs/44704     
+https://www.skills.google/course_templates/750/labs/598981   
 
 ```text
 Task 1. Redact sensitive data from text content

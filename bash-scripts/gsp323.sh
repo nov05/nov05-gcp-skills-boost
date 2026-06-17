@@ -8,9 +8,9 @@ read -p "👉  Enter cloud storage bucket name (Task 1): " BUCKET
 export BUCKET
 read -p "👉  Enter BigQuery dataset table name (Task 1): " TABLE_NAME
 export TABLE_NAME
-read -p "👉  Enter result file name (Task 3): " TASK3_RESULT_FILE
+read -p "👉  Enter result file name (Task 3, e.g. task3-gcs-398.result): " TASK3_RESULT_FILE
 export TASK3_RESULT_FILE
-read -p "👉  Enter result file name (Task 4): " TASK4_RESULT_FILE
+read -p "👉  Enter result file name (Task 4, e.g. task4-cnl-245.result): " TASK4_RESULT_FILE
 export TASK4_RESULT_FILE
 echo
 export USER_ID=$(gcloud auth list --format="value(account)" --filter="status:ACTIVE")
@@ -127,10 +127,8 @@ gcloud dataproc clusters list --region=$REGION
 echo -e "\n👉  Check the cluster '${CLUSTER_NAME}' at"
 echo -e "https://console.cloud.google.com/dataproc/clusters?project=${PROJECT_ID}\n"
 
-gcloud compute ssh $CLUSTER_NAME-m --zone=$ZONE --quiet
-hdfs dfs -cp gs://spls/gsp323/data.txt /data.txt
-exit
-
+gcloud compute ssh $CLUSTER_NAME-m --zone=$ZONE --quiet \
+  --command="hdfs dfs -cp gs://spls/gsp323/data.txt /data.txt"
 gcloud dataproc jobs submit spark \
   --cluster=$CLUSTER_NAME \
   --region=$REGION \
@@ -171,42 +169,43 @@ cat > request.json << EOF
 }
 EOF
 
-## Authenticated via access token
-export ACCESS_TOKEN=$(gcloud auth print-access-token)
-curl -X POST \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $ACCESS_TOKEN" \
-  "https://speech.googleapis.com/v1/projects/$PROJECT_ID/speech:recognize" \
-  -d @request.json > result.json
+## Authenticated via access token ✅
+## -H "x-goog-user-project: $PROJECT_ID"
+# curl -X POST \
+#   -H "Content-Type: application/json" \
+#   -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+#   -H "x-goog-user-project: $PROJECT_ID" \
+#   "https://speech.googleapis.com/v1/speech:recognize" \
+#   -d @request.json > result.json
 
 ## Authenticate via API key 
-# gcloud services disable apikeys.googleapis.com --project $PROJECT_ID --force
-# gcloud services enable apikeys.googleapis.com --project $PROJECT_ID
-# until gcloud services list --enabled \
-#   --project=$PROJECT_ID | grep -q apikeys.googleapis.com
-# do sleep 5; done
-# ## Delete multiple API keys by the display name
-# gcloud alpha services api-keys list \
-#   --filter="displayName:gsp323-api-key" \
-#   --format="value(name)" \
-# | xargs -n 1 -I {} gcloud alpha services api-keys delete "{}"
-# gcloud alpha services api-keys create \
-#   --display-name="gsp323-api-key" 
-# export KEY_ID=$(
-#   gcloud alpha services api-keys list \
-#     --format="value(name)" \
-#     --filter "displayName=gsp323-api-key")
-# gcloud services api-keys update $KEY_ID \
-#   --api-target=service=speech.googleapis.com \
-#   --api-target=service=language.googleapis.com
-# export API_KEY=$(
-#   gcloud alpha services api-keys get-key-string $KEY_ID \
-#     --format="value(keyString)")
-# curl -s -X POST -H "Content-Type: application/json" --data-binary @request.json \
-# "https://speech.googleapis.com/v1/speech:recognize?key=${API_KEY}" > result.json
+gcloud services disable apikeys.googleapis.com --project $PROJECT_ID --force
+gcloud services enable apikeys.googleapis.com --project $PROJECT_ID
+until gcloud services list --enabled \
+  --project=$PROJECT_ID | grep -q apikeys.googleapis.com
+do sleep 5; done
+## Delete multiple API keys by the display name
+gcloud alpha services api-keys list \
+  --filter="displayName:gsp323-api-key" \
+  --format="value(name)" \
+| xargs -n 1 -I {} gcloud alpha services api-keys delete "{}"
+gcloud alpha services api-keys create \
+  --display-name="gsp323-api-key" 
+export KEY_ID=$(
+  gcloud alpha services api-keys list \
+    --format="value(name)" \
+    --filter "displayName=gsp323-api-key")
+gcloud services api-keys update $KEY_ID \
+  --api-target=service=speech.googleapis.com \
+  --api-target=service=language.googleapis.com
+export API_KEY=$(
+  gcloud alpha services api-keys get-key-string $KEY_ID \
+    --format="value(keyString)")
+curl -s -X POST -H "Content-Type: application/json" --data-binary @request.json \
+"https://speech.googleapis.com/v1/speech:recognize?key=${API_KEY}" > result.json
 
 echo -e "\n👉  Check the result.\n"
-cat result.json
+cat result.json | jq .
 echo
 gsutil cp result.json gs://$BUCKET/$TASK3_RESULT_FILE
 gsutil setmeta -h "Content-Type:application/json" gs://$BUCKET/$TASK3_RESULT_FILE
