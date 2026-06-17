@@ -189,8 +189,10 @@ gcloud alpha services api-keys list \
   --filter="displayName:gsp323-api-key" \
   --format="value(name)" \
 | xargs -n 1 -I {} gcloud alpha services api-keys delete "{}"
+## Create an API key
 gcloud alpha services api-keys create \
   --display-name="gsp323-api-key" 
+sleep 10
 export KEY_ID=$(
   gcloud alpha services api-keys list \
     --format="value(name)" \
@@ -198,9 +200,11 @@ export KEY_ID=$(
 gcloud services api-keys update $KEY_ID \
   --api-target=service=speech.googleapis.com \
   --api-target=service=language.googleapis.com
+sleep 10
 export API_KEY=$(
   gcloud alpha services api-keys get-key-string $KEY_ID \
     --format="value(keyString)")
+## Call REST API
 curl -s -X POST -H "Content-Type: application/json" --data-binary @request.json \
 "https://speech.googleapis.com/v1/speech:recognize?key=${API_KEY}" > result.json
 
