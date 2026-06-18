@@ -9,6 +9,9 @@ export REGION=$(gcloud compute project-info describe \
   --format="value(commonInstanceMetadata.items[google-compute-default-region])")
 export ZONE=$(gcloud compute project-info describe \
   --format="value(commonInstanceMetadata.items[google-compute-default-zone])")
+# export ZONE2=$(gcloud compute zones list \
+#   --filter="region:$REGION" \
+#   --format="value(name)" | grep -v $ZONE | head -n 1)
 # export BUCKET="$PROJECT_ID-bucket"
 gcloud config set account $USER_ID
 gcloud config set project $PROJECT_ID  
@@ -21,6 +24,7 @@ echo "🔹  Project ID: $PROJECT_ID"
 echo "🔹  Project number: $PROJECT_NUMBER"
 echo "🔹  Region: $REGION"
 echo "🔹  Zone: $ZONE"
+# echo "🔹  Zone 2: $ZONE2"
 # echo "🔹  Bukect: $BUCKET"
 echo
 gcloud auth list
