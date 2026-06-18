@@ -148,7 +148,7 @@ export IP_ADDRESS=$(gcloud compute addresses describe global-lb-ip \
 echo -e "\n👉  Open https://${IP_ADDRESS} in the browser.\n"
 echo 'Refresh the page multiple times. You should observe the content changing \
 between '\''Hello from backend-vm-${REGION}!'\'' and '\''Hello from backend-vm-${REGION2}!'\'''
-
+echo
 for i in {1..20}; do
   curl -k -s -H "Connection: close" https://${IP_ADDRESS}
   echo
