@@ -1,0 +1,173 @@
+Your active configuration is: [cloudshell-29321]
+Updated property [core/account].
+[environment: untagged] Read more to tag: g.co/cloud/project-env-tag.
+Updated property [core/project].
+Updated property [compute/region].
+Updated property [compute/zone].
+
+🔹  User: student_04_395c636c3934
+🔹  Username: student-04-395c636c3934@qwiklabs.net
+🔹  Project ID: qwiklabs-gcp-02-9190b7d56416
+🔹  Project number: 1079363006214
+🔹  Region: us-west1
+🔹  Zone: us-west1-c
+
+Credentialed Accounts
+
+ACTIVE: *
+ACCOUNT: student-04-395c636c3934@qwiklabs.net
+
+To set the active account, run:
+    $ gcloud config set account `ACCOUNT`
+
+
+========================================================
+Task 1. Create multiple web server instances
+========================================================
+
+Bash code:
+  #!/bin/bash
+  apt-get update
+  apt-get install apache2 -y
+  service apache2 restart
+  echo "<h3>Web Server: web-number</h3>" | tee /var/www/html/index.html
+
+Test command:
+  curl http://[IP_ADDRESS]
+
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-9190b7d56416/zones/us-west1-c/instances/web1].
+NAME: web1
+ZONE: us-west1-c
+MACHINE_TYPE: e2-small
+PREEMPTIBLE: 
+INTERNAL_IP: 10.138.0.2
+EXTERNAL_IP: 136.109.221.100
+STATUS: RUNNING
+Generating public/private rsa key pair.
+Your identification has been saved in /home/student_04_395c636c3934/.ssh/google_compute_engine
+Your public key has been saved in /home/student_04_395c636c3934/.ssh/google_compute_engine.pub
+The key fingerprint is:
+SHA256:E8DGVbOyLwn579PiMGlpFjh3rRNqFgRjD6GyJx8SoNg student_04_395c636c3934@cs-329144736951-default
+The key's randomart image is:
++---[RSA 3072]----+
+|.    oBo..o      |
+|oo   o+*   o     |
+|o E ..  = .      |
+|   +   + + .     |
+|  + o = S o .    |
+|   = . = @ o     |
+|    .   / +.     |
+|       * =o..    |
+|         o+o     |
++----[SHA256]-----+
+ready
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-9190b7d56416/zones/us-west1-c/instances/web2].
+NAME: web2
+ZONE: us-west1-c
+MACHINE_TYPE: e2-small
+PREEMPTIBLE: 
+INTERNAL_IP: 10.138.0.3
+EXTERNAL_IP: 136.109.188.247
+STATUS: RUNNING
+ready
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-9190b7d56416/zones/us-west1-c/instances/web3].
+NAME: web3
+ZONE: us-west1-c
+MACHINE_TYPE: e2-small
+PREEMPTIBLE: 
+INTERNAL_IP: 10.138.0.4
+EXTERNAL_IP: 136.117.98.166
+STATUS: RUNNING
+ready
+Creating firewall...
+..Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-9190b7d56416/global/firewalls/www-firewall-network-lb].
+done.
+NAME: www-firewall-network-lb
+NETWORK: default
+DIRECTION: INGRESS
+PRIORITY: 1000
+ALLOW: tcp:80
+DENY: 
+DISABLED: False
+
+👉  curl http://136.109.221.100 
+
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100    26  100    26    0     0   6709      0 --:--:-- --:--:-- --:--:--  8666
+<h3>Web Server: web1</h3>
+
+
+========================================================
+Task 2. Configure the load balancing service
+========================================================
+
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-9190b7d56416/regions/us-west1/addresses/network-lb-ip-1].
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-9190b7d56416/global/httpHealthChecks/basic-check].
+NAME: basic-check
+HOST: 
+PORT: 80
+REQUEST_PATH: /
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-9190b7d56416/regions/us-west1/targetPools/www-pool].
+NAME: www-pool
+REGION: us-west1
+SESSION_AFFINITY: NONE
+BACKUP: 
+HEALTH_CHECKS: basic-check
+Updated [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-9190b7d56416/regions/us-west1/targetPools/www-pool].
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-9190b7d56416/regions/us-west1/forwardingRules/www-rule].
+
+========================================================
+Task 3. Create an HTTP load balancer
+========================================================
+
+Managed instance groups (MIGs)
+
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-9190b7d56416/global/instanceTemplates/lb-backend-template].
+NAME: lb-backend-template
+MACHINE_TYPE: e2-medium
+PREEMPTIBLE: 
+CREATION_TIMESTAMP: 2026-06-17T17:13:37.741-07:00
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-9190b7d56416/zones/us-west1-c/instanceGroupManagers/lb-backend-group].
+NAME: lb-backend-group
+LOCATION: us-west1-c
+SCOPE: zone
+BASE_INSTANCE_NAME: lb-backend-group
+SIZE: 0
+TARGET_SIZE: 2
+INSTANCE_TEMPLATE: lb-backend-template
+AUTOSCALED: no
+Creating firewall...
+..Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-9190b7d56416/global/firewalls/fw-allow-health-check].
+done.
+NAME: fw-allow-health-check
+NETWORK: default
+DIRECTION: INGRESS
+PRIORITY: 1000
+ALLOW: tcp:80
+DENY: 
+DISABLED: False
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-9190b7d56416/global/addresses/lb-ipv4-1].
+8.233.185.238
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-9190b7d56416/global/healthChecks/http-basic-check].
+NAME: http-basic-check
+PROTOCOL: HTTP
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-9190b7d56416/global/backendServices/web-backend-service].
+NAME: web-backend-service
+BACKENDS: 
+PROTOCOL: HTTP
+Updated [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-9190b7d56416/global/backendServices/web-backend-service].
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-9190b7d56416/global/urlMaps/web-map-http].
+NAME: web-map-http
+DEFAULT_SERVICE: backendServices/web-backend-service
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-9190b7d56416/global/targetHttpProxies/http-lb-proxy].
+NAME: http-lb-proxy
+URL_MAP: web-map-http
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-9190b7d56416/global/forwardingRules/http-content-rule].
+
+👉  Open http://8.233.185.238 in the browser. 
+
+Your browser should render a page with content showing the name of the instance that served the page, along with its zone (for example, Page served from: lb-backend-group-xxxx.
+
+✅  All done
+

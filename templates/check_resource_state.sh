@@ -90,7 +90,7 @@ gcloud compute instances create bigquery-instance \
   --metadata=enable-oslogin=FALSE
 until gcloud compute ssh bigquery-instance \
     --zone=$ZONE \
-    --command="echo ready" \
+    --command="echo Ready" \
     --quiet 2>/dev/null
 do sleep 5; done
 

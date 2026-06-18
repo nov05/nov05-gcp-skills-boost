@@ -127,15 +127,15 @@ gcloud compute instance-templates create lb-backend-template \
    --image-family=debian-11 \
    --image-project=debian-cloud \
    --metadata=startup-script='#!/bin/bash
-     apt-get update
-     apt-get install apache2 -y
-     a2ensite default-ssl
-     a2enmod ssl
-     vm_hostname="$(curl -H "Metadata-Flavor:Google" \
-     http://169.254.169.254/computeMetadata/v1/instance/name)"
-     echo "Page served from: $vm_hostname" | \
-     tee /var/www/html/index.html
-     systemctl restart apache2'
+apt-get update
+apt-get install apache2 -y
+a2ensite default-ssl
+a2enmod ssl
+vm_hostname="$(curl -H "Metadata-Flavor:Google" \
+http://169.254.169.254/computeMetadata/v1/instance/name)"
+echo "Page served from: $vm_hostname" | \
+tee /var/www/html/index.html
+systemctl restart apache2'
 
 gcloud compute instance-groups managed create lb-backend-group \
    --template=lb-backend-template --size=2 --zone=$ZONE
@@ -200,7 +200,7 @@ IP_ADDRESS=$(gcloud compute addresses describe lb-ipv4-1 \
 
 echo -e "\n👉  Open http://$IP_ADDRESS in the browser. \n"
 echo "Your browser should render a page with content showing the name of the instance that served the page, \
-along with its zone (for example, Page served from: lb-backend-group-xxxx."
+along with its zone (for example, Page served from: lb-backend-group-xxxx)."
 
 
 echo -e "\n✅  All done\n"
