@@ -19,6 +19,7 @@ sudo chmod +x gsp313.sh
 sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 ```
 
+* This lab can be fully automated with the Bash script.  
 * A terminal output log sample file can be found in this folder.  
 * L4 network and L7 application load balancers created in this lab.   
     <img src="https://raw.githubusercontent.com/nov05/pictures/refs/heads/master/gcp-skills-boost/gsp313/2026-06-17%2019_02_36-Settings.jpg" width=800>  
