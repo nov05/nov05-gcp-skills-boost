@@ -149,13 +149,13 @@ curl -X POST \
 }'
 
 ## CAUTION: The backend service has to be ready for the forwarding rule creation.
-##          The "describe" check isn't sufficient. 
+##          The "describe" or "get-health" check isn't sufficient. 
 # until gcloud compute backend-services describe network-lb-backend-service --region=$REGION >/dev/null 2>&1
-until gcloud compute backend-services get-health network-lb-backend-service \
-  --region=$REGION 2>/dev/null | grep -q "backend:"
-do sleep 5; done
+# until gcloud compute backend-services get-health network-lb-backend-service \
+#   --region=$REGION 2>/dev/null | grep -q "backend:"
+# do sleep 5; done
 
-curl -X POST \
+until curl -X POST \
   -H "Authorization: Bearer $(gcloud auth print-access-token)" \
   -H "Content-Type: application/json" \
   "https://compute.googleapis.com/compute/beta/projects/$PROJECT_ID/regions/$REGION/forwardingRules" \
@@ -172,7 +172,11 @@ curl -X POST \
     "80"
   ],
   "region": "projects/'"$PROJECT_ID"'/regions/'"$REGION"'/"
-}'
+}' | grep -q "200\|201"
+do
+  echo "Waiting for backend service to become attachable..."
+  sleep 5
+done
 
 echo -e "\n👉  Check the load balancer at"  
 echo -e "https://console.cloud.google.com/net-services/loadbalancing/list/loadBalancers?project=$PROJECT_ID\n"
