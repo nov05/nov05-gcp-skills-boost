@@ -121,12 +121,12 @@ curl -X POST \
     {
       "balancingMode": "CONNECTION",
       "failover": false,
-      "group": "projects/'"$PROJECT_ID"'/zones/europe-west1-b/instanceGroups/web-server-1"
+      "group": "projects/'"$PROJECT_ID"'/zones/'"$ZONE"'/instanceGroups/web-server-1"
     },
     {
       "balancingMode": "CONNECTION",
       "failover": false,
-      "group": "projects/'"$PROJECT_ID"'/zones/europe-west1-b/instanceGroups/web-server-2"
+      "group": "projects/'"$PROJECT_ID"'/zones/'"$ZONE"'/instanceGroups/web-server-2"
     }
   ],
   "connectionDraining": {
