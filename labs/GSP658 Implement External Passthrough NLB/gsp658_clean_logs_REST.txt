@@ -1,0 +1,119 @@
+Your active configuration is: [cloudshell-10034]
+Updated property [core/account].
+[environment: untagged] Read more to tag: g.co/cloud/project-env-tag.
+Updated property [core/project].
+Updated property [compute/region].
+Updated property [compute/zone].
+
+🔹  User: student_00_685d6e8e9852
+🔹  Username: student-00-685d6e8e9852@qwiklabs.net
+🔹  Project ID: qwiklabs-gcp-02-ff192b68ef6c
+🔹  Project number: 535165854172
+🔹  Region: us-central1
+🔹  Zone: us-central1-c
+
+Credentialed Accounts
+
+ACTIVE: *
+ACCOUNT: student-00-685d6e8e9852@qwiklabs.net
+
+To set the active account, run:
+    $ gcloud config set account `ACCOUNT`
+
+
+========================================================
+Task 1. Create Instance Groups
+========================================================
+
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-ff192b68ef6c/zones/us-central1-c/instanceGroups/web-server-1].
+NAME: web-server-1
+LOCATION: us-central1-c
+SCOPE: zone
+NETWORK: 
+MANAGED: 
+INSTANCES: 0
+Updated [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-ff192b68ef6c/zones/us-central1-c/instanceGroups/web-server-1].
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-ff192b68ef6c/zones/us-central1-c/instanceGroups/web-server-2].
+NAME: web-server-2
+LOCATION: us-central1-c
+SCOPE: zone
+NETWORK: 
+MANAGED: 
+INSTANCES: 0
+Updated [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-ff192b68ef6c/zones/us-central1-c/instanceGroups/web-server-2].
+
+👉  Check the instance groups at
+https://console.cloud.google.com/compute/instanceGroups/list?project=qwiklabs-gcp-02-ff192b68ef6c
+
+
+========================================================
+Task 2. Configure the load balancing components
+========================================================
+
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-ff192b68ef6c/regions/us-central1/healthChecks/basic-http-check].
+NAME: basic-http-check
+PROTOCOL: TCP
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-02-ff192b68ef6c/regions/us-central1/addresses/network-lb-ip].
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  1718    0   840  100   878   2282   2386 --:--:-- --:--:-- --:--:--  4681
+{
+  "kind": "compute#operation",
+  "id": "828746219472358916",
+  "name": "operation-1781838059588-654928096cae1-572d6c26-89141ab0",
+  "operationType": "insert",
+  "targetLink": "https://www.googleapis.com/compute/beta/projects/qwiklabs-gcp-02-ff192b68ef6c/regions/us-central1/backendServices/network-lb-backend-service",
+  "targetId": "831812731632422404",
+  "status": "RUNNING",
+  "user": "student-00-685d6e8e9852@qwiklabs.net",
+  "progress": 0,
+  "insertTime": "2026-06-18T20:00:59.818-07:00",
+  "startTime": "2026-06-18T20:00:59.821-07:00",
+  "selfLink": "https://www.googleapis.com/compute/beta/projects/qwiklabs-gcp-02-ff192b68ef6c/regions/us-central1/operations/operation-1781838059588-654928096cae1-572d6c26-89141ab0",
+  "region": "https://www.googleapis.com/compute/beta/projects/qwiklabs-gcp-02-ff192b68ef6c/regions/us-central1"
+}
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   954    0   439  100   515   1760   2065 --:--:-- --:--:-- --:--:--  3831
+Wait 10 seconds for backend service to become attachable...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  1373    0   858  100   515   2180   1308 --:--:-- --:--:-- --:--:--  3493
+Wait 10 seconds for backend service to become attachable...
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   987    0   472  100   515   1567   1710 --:--:-- --:--:-- --:--:--  3290
+
+👉  Check the load balancer at
+https://console.cloud.google.com/net-services/loadbalancing/list/loadBalancers?project=qwiklabs-gcp-02-ff192b68ef6c
+
+
+========================================================
+Task 3. Test the load balancer
+========================================================
+
+
+👉  Load Balancer IP: 34.133.129.99
+
+
+<html><body><p>Web Server 1!</p></body></html>
+
+<html><body><p>Web Server 1!</p></body></html>
+
+<html><body><p>Web Server 1!</p></body></html>
+
+<html><body><p>Web Server 1!</p></body></html>
+
+<html><body><p>Web Server 2!</p></body></html>
+
+<html><body><p>Web Server 2!</p></body></html>
+
+<html><body><p>Web Server 1!</p></body></html>
+
+<html><body><p>Web Server 2!</p></body></html>
+
+<html><body><p>Web Server 1!</p></body></html>
+
+
+✅  All done
+

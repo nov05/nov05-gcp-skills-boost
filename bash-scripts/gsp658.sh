@@ -155,6 +155,7 @@ curl -X POST \
 #   --region=$REGION 2>/dev/null | grep -q "backend:"
 # do sleep 5; done
 
+## Keep trying until Google says the resource already exists (409), then stop
 until curl -X POST \
   -H "Authorization: Bearer $(gcloud auth print-access-token)" \
   -H "Content-Type: application/json" \

@@ -1,0 +1,97 @@
+Your active configuration is: [cloudshell-17353]
+Updated property [core/account].
+[environment: untagged] Read more to tag: g.co/cloud/project-env-tag.
+Updated property [core/project].
+Updated property [compute/region].
+Updated property [compute/zone].
+
+🔹  User: student_04_586ac5cf1eef
+🔹  Username: student-04-586ac5cf1eef@qwiklabs.net
+🔹  Project ID: qwiklabs-gcp-01-91d0ce6f4b1f
+🔹  Project number: 697829307450
+🔹  Region: us-west1
+🔹  Zone: us-west1-c
+
+Credentialed Accounts
+
+ACTIVE: *
+ACCOUNT: student-04-586ac5cf1eef@qwiklabs.net
+
+To set the active account, run:
+    $ gcloud config set account `ACCOUNT`
+
+
+========================================================
+Task 1. Create Instance Groups
+========================================================
+
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-01-91d0ce6f4b1f/zones/us-west1-c/instanceGroups/web-server-1].
+NAME: web-server-1
+LOCATION: us-west1-c
+SCOPE: zone
+NETWORK: 
+MANAGED: 
+INSTANCES: 0
+Updated [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-01-91d0ce6f4b1f/zones/us-west1-c/instanceGroups/web-server-1].
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-01-91d0ce6f4b1f/zones/us-west1-c/instanceGroups/web-server-2].
+NAME: web-server-2
+LOCATION: us-west1-c
+SCOPE: zone
+NETWORK: 
+MANAGED: 
+INSTANCES: 0
+Updated [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-01-91d0ce6f4b1f/zones/us-west1-c/instanceGroups/web-server-2].
+
+👉  Check the instance groups at
+https://console.cloud.google.com/compute/instanceGroups/list?project=qwiklabs-gcp-01-91d0ce6f4b1f
+
+
+========================================================
+Task 2. Configure the load balancing components
+========================================================
+
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-01-91d0ce6f4b1f/regions/us-west1/healthChecks/basic-http-check].
+NAME: basic-http-check
+PROTOCOL: TCP
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-01-91d0ce6f4b1f/regions/us-west1/backendServices/network-lb-backend-service].
+NAME: network-lb-backend-service
+BACKENDS: 
+PROTOCOL: TCP
+Updated [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-01-91d0ce6f4b1f/regions/us-west1/backendServices/network-lb-backend-service].
+Updated [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-01-91d0ce6f4b1f/regions/us-west1/backendServices/network-lb-backend-service].
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-01-91d0ce6f4b1f/regions/us-west1/addresses/network-lb-ip].
+Created [https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-01-91d0ce6f4b1f/regions/us-west1/forwardingRules/network-lb-backend-service-forwarding-rule].
+
+👉  Check the load balancer at
+https://console.cloud.google.com/net-services/loadbalancing/list/loadBalancers?project=qwiklabs-gcp-01-91d0ce6f4b1f
+
+
+========================================================
+Task 3. Test the load balancer
+========================================================
+
+👉  Load Balancer IP: 34.182.1.29
+
+<html><body><p>Web Server 2!</p></body></html>
+
+<html><body><p>Web Server 2!</p></body></html>
+
+<html><body><p>Web Server 2!</p></body></html>
+
+<html><body><p>Web Server 2!</p></body></html>
+
+<html><body><p>Web Server 1!</p></body></html>
+
+<html><body><p>Web Server 2!</p></body></html>
+
+<html><body><p>Web Server 1!</p></body></html>
+
+<html><body><p>Web Server 1!</p></body></html>
+
+<html><body><p>Web Server 2!</p></body></html>
+
+<html><body><p>Web Server 1!</p></body></html>
+
+
+✅  All done
+
