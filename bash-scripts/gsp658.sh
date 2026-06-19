@@ -172,10 +172,10 @@ until curl -X POST \
     "80"
   ],
   "region": "projects/'"$PROJECT_ID"'/regions/'"$REGION"'/"
-}' | grep -q "200\|201"
+}' | grep -q '"code": 409' && break
 do
-  echo "Waiting for backend service to become attachable..."
-  sleep 5
+  echo "Wait 10 seconds for backend service to become attachable..."
+  sleep 10
 done
 
 echo -e "\n👉  Check the load balancer at"  
