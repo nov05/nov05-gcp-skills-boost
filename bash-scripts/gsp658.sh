@@ -72,47 +72,103 @@ EOF
 gcloud compute health-checks create tcp basic-http-check \
   --region=$REGION \
   --port=80
-
-# Create a regional backend service
-gcloud compute backend-services create network-lb-backend-service \
-  --region=$REGION \
-  --load-balancing-scheme=EXTERNAL \
-  --protocol=TCP \
-  --health-checks=basic-http-check \
-  --health-checks-region=$REGION
-# Add the backend instance groups
-gcloud compute backend-services add-backend network-lb-backend-service \
-  --region=$REGION \
-  --instance-group=web-server-1 \
-  --instance-group-zone=$ZONE
-gcloud compute backend-services add-backend network-lb-backend-service \
-  --region=$REGION \
-  --instance-group=web-server-2 \
-  --instance-group-zone=$ZONE \
-
-## Task 2, frontend configuration
 # Reserve an external IP address
 gcloud compute addresses create network-lb-ip \
   --region=$REGION 
-# Create the forwarding rule
-## https://docs.cloud.google.com/sdk/gcloud/reference/compute/forwarding-rules/create#--load-balancing-scheme
-gcloud compute forwarding-rules create network-lb-backend-service-forwarding-rule \
-  --region=$REGION \
-  --load-balancing-scheme=EXTERNAL \
-  --ip-protocol=TCP \
-  --ports=80 \
-  --address=network-lb-ip \
-  --backend-service=network-lb-backend-service
+
+## CAUSION: The following commands work, however the result can't pass Task 2 check.
+# # Create a regional backend service
+# gcloud compute backend-services create network-lb-backend-service \
+#   --region=$REGION \
+#   --load-balancing-scheme=EXTERNAL \
+#   --protocol=TCP \
+#   --health-checks=basic-http-check \
+#   --health-checks-region=$REGION
+# # Add the backend instance groups
+# gcloud compute backend-services add-backend network-lb-backend-service \
+#   --region=$REGION \
+#   --instance-group=web-server-1 \
+#   --instance-group-zone=$ZONE
+# gcloud compute backend-services add-backend network-lb-backend-service \
+#   --region=$REGION \
+#   --instance-group=web-server-2 \
+#   --instance-group-zone=$ZONE \
+
+# ## Task 2, frontend configuration
+# # Create the forwarding rule
+# ## https://docs.cloud.google.com/sdk/gcloud/reference/compute/forwarding-rules/create#--load-balancing-scheme
+# gcloud compute forwarding-rules create network-lb-backend-service-forwarding-rule \
+#   --region=$REGION \
+#   --load-balancing-scheme=EXTERNAL \
+#   --ip-protocol=TCP \
+#   --ports=80 \
+#   --address=network-lb-ip \
+#   --backend-service=network-lb-backend-service
+
+: <<'COMMENT'
+gcloud compute forwarding-rules delete network-lb-forwarding-rule --region=$REGION --quiet
+gcloud compute addresses delete network-lb-ip --region=$REGION --quiet
+gcloud compute backend-services delete network-lb-backend-service --region=$REGION --quiet
+COMMENT
+
+## Using REST API can pass the check.
+curl -X POST \
+  -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+  -H "Content-Type: application/json" \
+  "https://compute.googleapis.com/compute/beta/projects/$PROJECT_ID/regions/$REGION/backendServices" \
+  -d '{
+  "backends": [
+    {
+      "balancingMode": "CONNECTION",
+      "failover": false,
+      "group": "projects/'"$PROJECT_ID"'/zones/europe-west1-b/instanceGroups/web-server-1"
+    },
+    {
+      "balancingMode": "CONNECTION",
+      "failover": false,
+      "group": "projects/'"$PROJECT_ID"'/zones/europe-west1-b/instanceGroups/web-server-2"
+    }
+  ],
+  "connectionDraining": {
+    "drainingTimeoutSec": 300
+  },
+  "description": "",
+  "failoverPolicy": {},
+  "healthChecks": [
+    "projects/'"$PROJECT_ID"'/regions/'"$REGION"'/healthChecks/basic-http-check"
+  ],
+  "loadBalancingScheme": "EXTERNAL",
+  "localityLbPolicy": "MAGLEV",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "network-lb-backend-service",
+  "protocol": "TCP",
+  "region": "projects/'"$PROJECT_ID"'/regions/'"$REGION"'/",
+  "sessionAffinity": "NONE"
+}'
+
+curl -X POST \
+  -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+  -H "Content-Type: application/json" \
+  "https://compute.googleapis.com/compute/beta/projects/$PROJECT_ID/regions/$REGION/forwardingRules" \
+  -d '{
+  "IPAddress": "projects/'"$PROJECT_ID"'/regions/'"$REGION"'/addresses/network-lb-ip",
+  "IPProtocol": "TCP",
+  "backendService": "projects/'"$PROJECT_ID"'/regions/'"$REGION"'/backendServices/network-lb-backend-service",
+  "description": "",
+  "ipVersion": "IPV4",
+  "loadBalancingScheme": "EXTERNAL",
+  "name": "network-lb-backend-service-forwarding-rule",
+  "networkTier": "PREMIUM",
+  "ports": [
+    "80"
+  ],
+  "region": "projects/'"$PROJECT_ID"'/regions/'"$REGION"'/"
+}'
 
 echo -e "\n👉  Check the load balancer at"  
 echo -e "https://console.cloud.google.com/net-services/loadbalancing/list/loadBalancers?project=$PROJECT_ID\n"
-
-# gcloud compute forwarding-rules delete network-lb-forwarding-rule \
-#   --region=$REGION --quiet
-# gcloud compute addresses delete network-lb-ip \
-#   --region=$REGION --quiet
-# gcloud compute backend-services delete network-lb-backend-service \
-#   --region=$REGION --quiet
 
 
 cat << 'EOF'
@@ -124,7 +180,7 @@ Task 3. Test the load balancer
 EOF
 
 # Get the load balancer IP address
-export IP_ADDRESS=$(gcloud compute forwarding-rules describe network-lb-forwarding-rule \
+export IP_ADDRESS=$(gcloud compute forwarding-rules describe network-lb-backend-service-forwarding-rule \
   --region=$REGION \
   --format="value(IPAddress)")
 echo -e "\n👉  Load Balancer IP: $IP_ADDRESS\n"
