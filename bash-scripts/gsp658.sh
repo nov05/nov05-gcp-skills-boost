@@ -148,6 +148,10 @@ curl -X POST \
   "sessionAffinity": "NONE"
 }'
 
+until gcloud compute backend-services describe network-lb-backend-service \
+  --region=$REGION >/dev/null 2>&1
+do sleep 5; done
+
 curl -X POST \
   -H "Authorization: Bearer $(gcloud auth print-access-token)" \
   -H "Content-Type: application/json" \
