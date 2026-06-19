@@ -150,10 +150,9 @@ curl -X POST \
 
 ## CAUTION: The backend service has to be ready for the forwarding rule creation.
 ##          The "describe" check isn't sufficient. 
-# until gcloud compute backend-services describe network-lb-backend-service \
-#   --region=$REGION >/dev/null 2>&1
+# until gcloud compute backend-services describe network-lb-backend-service --region=$REGION >/dev/null 2>&1
 until gcloud compute backend-services get-health network-lb-backend-service \
-  --region=$REGION 2>/dev/null | grep -E "HEALTHY|UNHEALTHY"
+  --region=$REGION 2>/dev/null | grep -q "backend:"
 do sleep 5; done
 
 curl -X POST \
