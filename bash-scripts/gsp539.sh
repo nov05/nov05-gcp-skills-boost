@@ -80,8 +80,6 @@ COMMENT
 
 
 
-set -e
-
 echo
 read -p "👉  Enter Region B: " REGION2
 export REGION2 
