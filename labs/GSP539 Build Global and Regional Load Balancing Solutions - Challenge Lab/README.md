@@ -19,6 +19,10 @@ sudo chmod +x gsp539.sh
 sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 ```
 
+* This lab can be fully automated by the Bash script.   
+
+## Additional information  
+
 * **Task 1**, Regional internal Network Load Balancer with regional access (glocal access in the figure)     
     https://docs.cloud.google.com/load-balancing/docs/l7-internal/setting-up-l7-internal   
     <img src="https://raw.githubusercontent.com/nov05/pictures/f966f106ed1af62c448b8ec7426b0a5d7fba91a8/gcp-skills-boost/gsp539/proxy-ilb-global-access-arch.svg" width=800>  

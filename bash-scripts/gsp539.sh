@@ -472,8 +472,9 @@ EOF
 export IP_ADDRESS2=$(gcloud compute addresses describe ip-alb-global \
   --global \
   --format="get(address)")
-echo -e "\n👉  Task 2 load balancer IP: $IP_ADDRESS2\n"
-for i in {1..1000}; do curl -k -s https://$IP_ADDRESS2 | grep "Hello from"; sleep 0.5; done
+echo -e "\n👉  Task 2 load balancer IP: $IP_ADDRESS2"
+echo -e "    Observe the global distribution.\n"
+for i in {1..100}; do curl -k -s https://$IP_ADDRESS2 | grep "Hello from"; sleep 0.5; done
 
 : << 'COMMENT'
 <h1>Hello from: mig-alb-api-a-ts0w!</h1>
@@ -514,7 +515,7 @@ while true; do
   [[ "$answer" =~ ^[Yy]$ ]] && break
 done
 
-for i in {1..10000}; do curl -k -s https://$IP_ADDRESS2 | grep "Hello from"; sleep 0.5; done
+for i in {1..1000}; do curl -k -s https://$IP_ADDRESS2 | grep "Hello from"; sleep 0.5; done
 
 
 
