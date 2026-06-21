@@ -260,6 +260,7 @@ curl -X POST \
 
 ## Create target TCP proxy "tcp-proxy-internal" with REST API
 ## Keep trying until Google says the resource already exists (409), then stop
+echo -e "\n👉  Creating target TCP proxy 'tcp-proxy-internal' with REST API...\n"
 until curl -X POST \
   -H "Authorization: Bearer $(gcloud auth print-access-token)" \
   -H "Content-Type: application/json" \
@@ -275,7 +276,7 @@ do
   sleep 10
 done
 
-## Create forwarding rule "rule-internal-proxy" (lab pre-defined name) with REST API 
+echo -e "\n👉  Creating forwarding rule 'rule-internal-proxy' with REST API...\n"
 until curl -X POST \
   -H "Authorization: Bearer $(gcloud auth print-access-token)" \
   -H "Content-Type: application/json" \
@@ -346,7 +347,7 @@ EOF
 gcloud compute instance-groups managed create mig-alb-api-a \
   --region=$REGION \
   --template=template-alb-api \
-  --size=2 \
+  --size=1 \
   --base-instance-name=mig-alb-api-a
 ## https://docs.cloud.google.com/load-balancing/docs/backend-service#named_ports
 gcloud compute instance-groups managed set-named-ports mig-alb-api-a \
@@ -356,7 +357,7 @@ gcloud compute instance-groups managed set-named-ports mig-alb-api-a \
 gcloud compute instance-groups managed create mig-alb-api-b \
   --region=$REGION2 \
   --template=template-alb-api \
-  --size=2 \
+  --size=1 \
   --base-instance-name=mig-alb-api-b
 gcloud compute instance-groups managed set-named-ports mig-alb-api-b \
   --region=$REGION2 \
@@ -472,14 +473,7 @@ export IP_ADDRESS2=$(gcloud compute addresses describe ip-alb-global \
   --global \
   --format="get(address)")
 echo -e "\n👉  Task 2 load balancer IP: $IP_ADDRESS2\n"
-# for i in {1..10}; do curl -k -s https://$IP_ADDRESS2 | grep "Hello from"; sleep 0.5; done
-# while true; do curl -k -s https://$IP_ADDRESS2 | grep "Hello from"; sleep 0.5; done
-while true; do
-  curl -k -s https://$IP_ADDRESS2 | grep "Hello from"
-  sleep 0.5
-done &
-PID=$!
-echo "👉  Started background job PID=$PID"
+for i in {1..1000}; do curl -k -s https://$IP_ADDRESS2 | grep "Hello from"; sleep 0.5; done
 
 : << 'COMMENT'
 <h1>Hello from: mig-alb-api-a-ts0w!</h1>
@@ -496,27 +490,22 @@ echo "👉  Started background job PID=$PID"
 COMMENT
 
 ## Test 2: simulate a backend failure. 
-## SSH into a VM in mig-alb-api-a and stop the Nginx service to simulate a failure.
-# read VM_NAME VM_ZONE < <(
-# gcloud compute instances list \
-#   --filter="name~mig-alb-api-a" \
-#   --format="value(name,zone)" | head -n 1)
-# echo -e "\n👉  Using Task 2 backend VM '$VM_NAME' in zone: '$VM_ZONE'...\n"
 ## Stop all the Nginx services in the mig-alb-api-a VMs to trigger failover to pass the lab check.
+## SSH into a VM in mig-alb-api-a and stop the Nginx service to simulate a failure.
+read VM_NAME VM_ZONE < <(
 gcloud compute instances list \
   --filter="name~mig-alb-api-a" \
-  --format="value(name,zone)" | while read VM_NAME VM_ZONE
-do
-  echo "👉  Stopping nginx on $VM_NAME ($VM_ZONE)..."
-  gcloud compute ssh "$VM_NAME" \
-    --zone="$VM_ZONE" \
-    --quiet \
-    --command="sudo systemctl stop nginx"
-done
-sleep 10
+  --format="value(name,zone)" | head -n 1)
+echo -e "\n👉  Using Task 2 backend VM '$VM_NAME' in zone: '$VM_ZONE'...\n"
 
-echo -e "\n👉  Check backend health:\n"
+gcloud compute ssh "$VM_NAME" \
+  --zone "$VM_ZONE" \
+  --quiet \
+  --command "sudo systemctl stop nginx"
+
+echo -e "\n👉  Check backend health (Press 'enter' if mig-alb-api-a is still healthy):\n"
 while true; do
+  sleep 5
   gcloud compute backend-services get-health service-alb-global \
     --global \
     --format="table(status,instance)"
@@ -524,6 +513,8 @@ while true; do
   read -rp "Ready to proceed? (y): " answer
   [[ "$answer" =~ ^[Yy]$ ]] && break
 done
+
+for i in {1..10000}; do curl -k -s https://$IP_ADDRESS2 | grep "Hello from"; sleep 0.5; done
 
 
 
