@@ -247,12 +247,15 @@ Task 3. Test failover and global distribution
 
 EOF
 
+echo -e "\n👉  Sleep 180 seconds...\n"
+sleep 180
+
 export IP_ADDRESS2=$(gcloud compute addresses describe ip-alb-global \
   --global \
   --format="get(address)")
 echo -e "\n👉  Task 2 load balancer IP: $IP_ADDRESS2"
 echo -e "    Observe the global distribution.\n"
-for i in {1..100}; do curl -k -s https://$IP_ADDRESS2 | grep "Hello from"; sleep 0.5; done
+for i in {1..30}; do curl -k -s --http1.0 https://$IP_ADDRESS2 | grep "Hello from"; sleep 0.5; done
 
 read VM_NAME VM_ZONE < <(
 gcloud compute instances list \
@@ -260,6 +263,7 @@ gcloud compute instances list \
   --format="value(name,zone)" | head -n 1)
 echo -e "\n👉  Using Task 2 backend VM '$VM_NAME' in zone: '$VM_ZONE'...\n"
 
+echo -e "\n👉  Stopping nginx on backend VM...\n"
 gcloud compute ssh "$VM_NAME" \
   --zone "$VM_ZONE" \
   --quiet \
@@ -276,7 +280,23 @@ while true; do
   [[ "$answer" =~ ^[Yy]$ ]] && break
 done
 
-for i in {1..1000}; do curl -k -s https://$IP_ADDRESS2 | grep "Hello from"; sleep 0.5; done
+for i in {1..100}; do curl -k -s https://$IP_ADDRESS2 | grep "Hello from"; sleep 0.5; done
 
+echo -e "\n👉  Starting nginx on backend VM...\n"
+gcloud compute ssh "$VM_NAME" \
+  --zone "$VM_ZONE" \
+  --quiet \
+  --command "sudo systemctl start nginx"
+
+echo -e "\n👉  Check backend health (Press 'enter' if 'mig-alb-api-a' is still unhealthy):\n"
+while true; do
+  sleep 5
+  gcloud compute backend-services get-health service-alb-global \
+    --global \
+    --format="table(status,instance)"
+  echo 
+  read -rp "Ready to proceed? (y): " answer
+  [[ "$answer" =~ ^[Yy]$ ]] && break
+done
 
 echo -e "\n✅  All done\n"
