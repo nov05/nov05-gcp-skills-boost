@@ -1,7 +1,7 @@
 #!/bin/bash
-## Created by nov05, 2026-06-18  
+## Created by nov05, 2026-06-18
 
-: <<'COMMENT'
+: << 'COMMENT'
 NLB = Network Load Balancer (L4)
 ALB = Application Load Balancer (L7)
 MIG = Managed Instance Group
@@ -222,6 +222,7 @@ gcloud compute backend-services delete bs-internal-proxy --region=$REGION2 --qui
 COMMENT
 
 ## Create backend service "bs-internal-proxy" with REST API 
+echo -e "\n👉  Creating backend service 'bs-internal-proxy' with REST API...\n"
 curl -X POST \
   -H "Authorization: Bearer $(gcloud auth print-access-token)" \
   -H "Content-Type: application/json" \
