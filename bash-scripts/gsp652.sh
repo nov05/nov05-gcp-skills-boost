@@ -84,6 +84,11 @@ Task 3. Create a backend service
 
 EOF
 
+## Configure frontend with HTTPS
+gcloud compute addresses create global-lb-ip \
+  --ip-version=IPV4 \
+  --global
+
 gcloud compute backend-services create global-backend-service \
   --protocol=HTTP \
   --port-name=http \
@@ -96,14 +101,9 @@ gcloud compute backend-services add-backend global-backend-service \
   --global
 # Add REGION2 backend instance group
 gcloud compute backend-services add-backend global-backend-service \
+  --global \
   --instance-group=${REGION2}-instance-group \
-  --instance-group-zone=$ZONE2 \
-  --global
-
-## Configure frontend with HTTPS
-gcloud compute addresses create global-lb-ip \
-  --ip-version=IPV4 \
-  --global
+  --instance-group-zone=$ZONE2
 
 ## Create a Certificate
 openssl genrsa -out key.pem 2048
@@ -122,9 +122,8 @@ gcloud compute url-maps create global-url-map \
 gcloud compute target-https-proxies create https-frontend \
   --url-map=global-url-map \
   --ssl-certificates=self-signed-lb-cert
-# gcloud compute target-https-proxies delete https-frontend --quiet
-# gcloud compute url-maps delete global-url-map --quiet
-
+## $ gcloud compute target-https-proxies delete https-frontend --quiet
+## $ gcloud compute url-maps delete global-url-map --quiet
 ## Create HTTPS forwarding rule (port 443)
 gcloud compute forwarding-rules create https-frontend-rule \
   --global \

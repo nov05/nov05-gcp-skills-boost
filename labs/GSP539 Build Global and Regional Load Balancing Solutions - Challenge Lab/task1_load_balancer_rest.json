@@ -1,0 +1,53 @@
+POST https://compute.googleapis.com/compute/beta/projects/qwiklabs-gcp-04-0066b05ae0c2/regions/europe-west1/backendServices
+{
+  "backends": [
+    {
+      "balancingMode": "UTILIZATION",
+      "capacityScaler": 1,
+      "group": "projects/qwiklabs-gcp-04-0066b05ae0c2/regions/europe-west1/instanceGroups/mig-proxy-internal",
+      "maxUtilization": 0.8
+    }
+  ],
+  "connectionDraining": {
+    "drainingTimeoutSec": 300
+  },
+  "description": "",
+  "healthChecks": [
+    "projects/qwiklabs-gcp-04-0066b05ae0c2/regions/europe-west1/healthChecks/hc-internal-proxy"
+  ],
+  "ipAddressSelectionPolicy": "IPV4_ONLY",
+  "loadBalancingScheme": "INTERNAL_MANAGED",
+  "localityLbPolicy": "ROUND_ROBIN",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "bs-internal-proxy",
+  "portName": "tcp80",
+  "protocol": "TCP",
+  "region": "projects/qwiklabs-gcp-04-0066b05ae0c2/regions/europe-west1",
+  "sessionAffinity": "NONE",
+  "timeoutSec": 30
+}
+
+POST https://compute.googleapis.com/compute/v1/projects/qwiklabs-gcp-04-0066b05ae0c2/regions/europe-west1/targetTcpProxies
+{
+  "name": "bs-internal-proxy-target-proxy",
+  "proxyHeader": "NONE",
+  "region": "projects/qwiklabs-gcp-04-0066b05ae0c2/regions/europe-west1",
+  "service": "projects/qwiklabs-gcp-04-0066b05ae0c2/regions/europe-west1/backendServices/bs-internal-proxy"
+}
+
+POST https://compute.googleapis.com/compute/beta/projects/qwiklabs-gcp-04-0066b05ae0c2/regions/europe-west1/forwardingRules
+{
+  "IPAddress": "10.20.0.4",
+  "IPProtocol": "TCP",
+  "allowGlobalAccess": false,
+  "loadBalancingScheme": "INTERNAL_MANAGED",
+  "name": "rule-internal-proxy",
+  "network": "projects/qwiklabs-gcp-04-0066b05ae0c2/global/networks/lb-network",
+  "networkTier": "PREMIUM",
+  "portRange": "110",
+  "region": "projects/qwiklabs-gcp-04-0066b05ae0c2/regions/europe-west1",
+  "subnetwork": "projects/qwiklabs-gcp-04-0066b05ae0c2/regions/europe-west1/subnetworks/lb-backend-subnet-region-b",
+  "target": "projects/qwiklabs-gcp-04-0066b05ae0c2/regions/europe-west1/targetTcpProxies/bs-internal-proxy-target-proxy"
+}

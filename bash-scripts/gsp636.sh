@@ -118,7 +118,6 @@ gcloud compute instance-groups managed create mig-a \
   --template=int-tcp-proxy-backend-template \
   --size=2 \
   --base-instance-name=mig-a
-
 # Set named port for mig-a
 gcloud compute instance-groups managed set-named-ports mig-a \
   --zone=$ZONE \
@@ -130,7 +129,6 @@ gcloud compute instance-groups managed create mig-c \
   --template=int-tcp-proxy-backend-template \
   --size=2 \
   --base-instance-name=mig-c
-
 # Set named port for mig-c
 gcloud compute instance-groups managed set-named-ports mig-c \
   --zone=$ZONE2 \
@@ -175,9 +173,9 @@ gcloud compute health-checks create tcp tcp-health-check \
 # Create regional backend service
 ## Regional L4 Envoy LB supports regional health checks only
 gcloud compute backend-services create my-int-tcp-lb \
+  --region=$REGION \
   --load-balancing-scheme=INTERNAL_MANAGED \
   --protocol=TCP \
-  --region=$REGION \
   --health-checks=tcp-health-check \
   --health-checks-region=$REGION \
   --timeout=30s
@@ -194,17 +192,17 @@ gcloud compute backend-services add-backend my-int-tcp-lb \
 
 # Create target TCP proxy
 gcloud compute target-tcp-proxies create my-int-tcp-proxy \
-  --backend-service=my-int-tcp-lb \
-  --region=$REGION
+  --region=$REGION \
+  --backend-service=my-int-tcp-lb 
 
 # Create forwarding rule on port 110
 gcloud compute forwarding-rules create int-tcp-forwarding-rule \
+  --region=$REGION \
   --load-balancing-scheme=INTERNAL_MANAGED \
   --network=lb-network \
   --subnet=backend-subnet \
   --address=int-tcp-ip-address \
   --ports=110 \
-  --region=$REGION \
   --target-tcp-proxy=my-int-tcp-proxy \
   --target-tcp-proxy-region=$REGION
 

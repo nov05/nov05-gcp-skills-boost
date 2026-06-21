@@ -149,8 +149,9 @@ curl -X POST \
 }'
 
 ## CAUTION: The backend service has to be ready for the forwarding rule creation.
-##          The "describe" or "get-health" check isn't sufficient. 
-# until gcloud compute backend-services describe network-lb-backend-service --region=$REGION >/dev/null 2>&1
+##          The "describe" or "get-health" check somehow isn't sufficient. 
+# until gcloud compute backend-services describe network-lb-backend-service --region=$REGION >/dev/null 2>&1 \
+# do sleep 5; done
 # until gcloud compute backend-services get-health network-lb-backend-service \
 #   --region=$REGION 2>/dev/null | grep -q "backend:"
 # do sleep 5; done
@@ -161,19 +162,19 @@ until curl -X POST \
   -H "Content-Type: application/json" \
   "https://compute.googleapis.com/compute/beta/projects/$PROJECT_ID/regions/$REGION/forwardingRules" \
   -d '{
-  "IPAddress": "projects/'"$PROJECT_ID"'/regions/'"$REGION"'/addresses/network-lb-ip",
-  "IPProtocol": "TCP",
-  "backendService": "projects/'"$PROJECT_ID"'/regions/'"$REGION"'/backendServices/network-lb-backend-service",
-  "description": "",
-  "ipVersion": "IPV4",
-  "loadBalancingScheme": "EXTERNAL",
-  "name": "network-lb-backend-service-forwarding-rule",
-  "networkTier": "PREMIUM",
-  "ports": [
-    "80"
-  ],
-  "region": "projects/'"$PROJECT_ID"'/regions/'"$REGION"'/"
-}' | grep -q '"code": 409' && break
+    "IPAddress": "projects/'"$PROJECT_ID"'/regions/'"$REGION"'/addresses/network-lb-ip",
+    "IPProtocol": "TCP",
+    "backendService": "projects/'"$PROJECT_ID"'/regions/'"$REGION"'/backendServices/network-lb-backend-service",
+    "description": "",
+    "ipVersion": "IPV4",
+    "loadBalancingScheme": "EXTERNAL",
+    "name": "network-lb-backend-service-forwarding-rule",
+    "networkTier": "PREMIUM",
+    "ports": [
+      "80"
+    ],
+    "region": "projects/'"$PROJECT_ID"'/regions/'"$REGION"'/"
+  }' | grep -q '"code": 409' && break
 do
   echo "Wait 10 seconds for backend service to become attachable..."
   sleep 10
