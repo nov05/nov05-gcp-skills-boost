@@ -16,8 +16,7 @@ sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 
 ## Tips  
 
-* 2026-06-21 【Issue solved: Task 2 uses the `default` VPC network rather than `lb-network`, which is used only for Task 1.
-】The health check issue persists. Yesterday i got "**no healthy upstream**" and now I got "**unconditional drop overload**" when open https://35.241.15.107/ in the browser.  
+* 2026-06-21 【🟢 Issue solved: Task 2 uses the `default` VPC network rather than `lb-network`. `lb-network` is used only for Task 1.】The health check issue persists. Yesterday i got "**no healthy upstream**" and now I got "**unconditional drop overload**" when open https://35.241.15.107/ in the browser.  
 
   - A "no healthy upstream" or "unhealthy upstream" error on a Google Cloud Platform (GCP) Load Balancer means the load balancer proxies cannot find a single backend instance passing its designated health check. Because the health check is down, the load balancer completely blocks traffic to prevent sending requests to a broken server. This issue is typically caused by missing firewall rules, mismatched app configurations, or SSL handshake failures. SSH into your instance and run `netstat -tuln` or `ss -tuln` to confirm the application is listening on `*:PORT` or `0.0.0.0:PORT`
   ```bash
