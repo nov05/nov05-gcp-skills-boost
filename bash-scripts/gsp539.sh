@@ -455,16 +455,6 @@ Test 2: simulate a backend failure
 sudo systemctl stop nginx
 sudo systemctl start nginx
 
-Tip: You can SSH into a VM and curl localhost:80 to confirm the Nginx service is running normally. 
-student-04-5fc135e005c8@mig-alb-api-b-p99x:~$ curl localhost:80
-<h1>Hello from: mig-alb-api-b-p99x!</h1>
-<p>Served by a Global ALB.</p>
-
-Tip: In curl, -i means include HTTP response headers in the output. 
-The following commands should return the same result.  
-curl -i http://localhost/ 
-curl -i http://localhost/index.html
-
 EOF
 ## Refer to GSP652, Task 5
 
@@ -488,6 +478,18 @@ for i in {1..100}; do curl -k -s https://$IP_ADDRESS2 | grep "Hello from"; sleep
 <h1>Hello from: mig-alb-api-a-ts0w!</h1>
 <h1>Hello from: mig-alb-api-a-ts0w!</h1>
 ...
+
+Tips: 
+
+You can SSH into a VM and curl localhost:80 to confirm the Nginx service is running normally. 
+student-04-5fc135e005c8@mig-alb-api-b-p99x:~$ curl localhost:80
+<h1>Hello from: mig-alb-api-b-p99x!</h1>
+<p>Served by a Global ALB.</p>
+
+In curl, -i means include HTTP response headers in the output. 
+The following commands should return the same result.  
+curl -i http://localhost/ 
+curl -i http://localhost/index.html
 COMMENT
 
 ## Test 2: simulate a backend failure. 
@@ -504,7 +506,7 @@ gcloud compute ssh "$VM_NAME" \
   --quiet \
   --command "sudo systemctl stop nginx"
 
-echo -e "\n👉  Check backend health (Press 'enter' if mig-alb-api-a is still healthy):\n"
+echo -e "\n👉  Check backend health (Press 'enter' if 'mig-alb-api-a' is still healthy):\n"
 while true; do
   sleep 5
   gcloud compute backend-services get-health service-alb-global \
