@@ -32,3 +32,79 @@ sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
   https://docs.cloud.google.com/load-balancing/docs/https/setup-global-ext-https-compute  
   <img src="https://raw.githubusercontent.com/nov05/pictures/ca42485c1ab8d50d02cbfe5a6cdcb0107dc17262/gcp-skills-boost/gsp539/https-load-balancer-simple-gxlb.svg" width=800>  
 
+* Lab resource landscape  
+  ```bash
+  NLB = Network Load Balancer (L4)
+  ALB = Application Load Balancer (L7)
+  MIG = Managed Instance Group
+  VM = Virtual Machine
+  /
+  └── GCP project/
+      ├── VPC network: lb-network (lab pre-created)
+      │    ├── Subnet: proxy-subnet-internal (Task 1, lab pre-created)
+      │    │
+      │    ├── Region A/
+      │    │   ├── Subnet: lb-backend-subnet-region-a (Task 1, lab pre-created)
+      │    │   │
+      │    │   └── MIG: mig-alb-api-a (Task 2)
+      │    │       ├── Global template: template-alb-api (lab pre-created)
+      │    │       |   └── Network tags: allow-ssh, tag-alb-api, http-server
+      │    │       ├── VM: nginx-instance-1
+      │    │       ├── VM: nginx-instance-2
+      │    │       └── Named port: http80:80
+      │    │
+      │    ├── Region B/
+      │    │   ├── Subnet: lb-backend-subnet-region-b (Task 1, lab pre-created)
+      │    │   │
+      │    │   ├── MIG template: template-proxy-internal (Task 1, lab pre-created) 
+      │    │   │
+      │    │   ├── MIG: mig-proxy-internal (Task 1, lab pre-defined name)/
+      │    │   │   ├── Regional template: template-proxy-internal (lab pre-created)
+      │    │   │   │   └── Network tags: allow-ssh, tag-proxy-internal (lab pre-defined)
+      │    │   │   ├── VM: tvs-backend-1
+      │    │   │   ├── VM: tvs-backend-2
+      │    │   │   └── Named port: tcp80:80
+      │    │   │
+      │    │   ├── VM: vm-client-internal (Task 1, lab pre-defined name)
+      │    │   │   └── Network tags: allow-ssh (lab pre-defined)
+      │    │   │
+      │    │   └── 👉 Load balancer: Regional Internal Proxy NLB (Task 1)
+      │    │       └── Backend service: bs-internal-proxy 
+      │    │           ├── health check: hc-internal-proxy
+      │    │           ├── Internal static IP: ip-internal-proxy
+      │    │           └── Internal forwarding rule TCP/110: rule-internal-proxy 
+      │    │
+      │    └── Firewall rules/
+      │        ├── fw-internal-health TCP/80 (Task 1, lab pre-defined name)
+      │        │   └── Target tag: tag-proxy-internal
+      │        └── fw-internal-proxy TCP/80 (Task 1, lab pre-defined name)
+      │            └── Target tag: tag-proxy-internal
+      │    
+      └── VPC network: default (Task 2, GCP created)
+          ├── Global/
+          │   ├── MIG template: template-alb-api (Task 2, lab pre-created)
+          │   │   └── Network tags: http-server, allow-ssh, tag-alb-api (lab pre-defined)
+          │   │
+          │   ├── MIG: mig-alb-api-b (Task 2, lab pre-defined name)
+          │   │   ├── Global template: template-alb-api (lab pre-created)
+          │   │   |   └── Network tags: allow-ssh, tag-alb-api, http-server (lab pre-defined)
+          │   │   ├── VM: nginx-instance-1
+          │   │   ├── VM: nginx-instance-2
+          │   │   └── Named port: http80:80
+          │   │
+          │   └── 👉 Load balancer: Global External HTTPS ALB (Task 2)
+          │       ├── Backend service: service-alb-global (lab pre-defined name)
+          │       │   └── Health check: http-check-alb (lab pre-defined name)
+          │       └── Frontend service
+          │           ├── HTTPS proxy: https-proxy-alb
+          │           │   ├── URL map: url-map-alb
+          │           │   └── SSL certificates: cert-self-signed (lab pre-defined name)
+          │           ├── External static IP: ip-alb-global (lab pre-defined name)
+          │           └── External forwarding rule: rule-alb-global
+          │
+          └── Firewall rules/
+              ├── fw-allow-ssh (Task 1 and 2, lab pre-created)
+              │   └── Target tag: allow-ssh
+              └── fw-allow-health-check-and-proxy (Task 2, lab pre-defined name)
+                  └── Target tag: tag-alb-api
+  ```
