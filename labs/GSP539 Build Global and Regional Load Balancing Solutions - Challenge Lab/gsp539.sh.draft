@@ -55,7 +55,7 @@ VM = Virtual Machine
         │   │
         │   ├── MIG: mig-alb-api-b (Task 2, lab pre-defined name)
         │   │   ├── Global template: template-alb-api (lab pre-created)
-        │   │   |   └── Network tags: allow-ssh, tag-alb-api, http-server (lab pre-defined)
+        │   │   │   └── Network tags: allow-ssh, tag-alb-api, http-server (lab pre-defined)
         │   │   ├── VM: nginx-instance-1
         │   │   ├── VM: nginx-instance-2
         │   │   └── Named port: http80:80
