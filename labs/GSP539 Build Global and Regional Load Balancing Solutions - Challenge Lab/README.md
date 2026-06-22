@@ -48,7 +48,7 @@ sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
       │    │   │
       │    │   └── MIG: mig-alb-api-a (Task 2)
       │    │       ├── Global template: template-alb-api (lab pre-created)
-      │    │       |   └── Network tags: allow-ssh, tag-alb-api, http-server
+      │    │       │   └── Network tags: allow-ssh, tag-alb-api, http-server
       │    │       ├── VM: nginx-instance-1
       │    │       ├── VM: nginx-instance-2
       │    │       └── Named port: http80:80
