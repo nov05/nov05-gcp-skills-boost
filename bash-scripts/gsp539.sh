@@ -39,7 +39,7 @@ echo "🔹  Zone in Region B: $ZONE2"
 echo
 gcloud auth list
 
-cat << 'EOF'
+cat <<'EOF'
 
 ========================================================
 Task 1. Secure internal transaction processor (regional internal proxy NLB)
@@ -165,7 +165,7 @@ echo -e "\n👉  Task 1 load balancer IP: $IP_ADDRESS\n"
 gcloud compute ssh vm-client-internal --zone=$ZONE2 --quiet \
   --command="for i in {1..10}; do curl -s ${IP_ADDRESS}:110; echo; done"
 
-cat << 'EOF'
+cat <<'EOF'
 
 ========================================================
 Task 2. Global external market data feed (global external application Load Balancer)
@@ -239,7 +239,7 @@ gcloud compute forwarding-rules create rule-alb-global \
   --ports=443 \
   --address=ip-alb-global
 
-cat << 'EOF'
+cat <<'EOF'
 
 ========================================================
 Task 3. Test failover and global distribution
