@@ -1,10 +1,10 @@
 #!/bin/bash
 ## Created by nov05, 2026-06-18
 
-echo
+echo ""
 read -p "👉  Enter Region B: " REGION2
 export REGION2 
-echo
+echo ""
 
 export USER_ID=$(gcloud auth list --format="value(account)" --filter="status:ACTIVE")
 export PROJECT_ID=$(gcloud config get-value project)
@@ -36,7 +36,7 @@ echo "🔹  Zone in Region A: $ZONE"
 echo "🔹  Region B: $REGION2"
 echo "🔹  Zone in Region B: $ZONE2"
 # echo "🔹  Bukect: $BUCKET"
-echo
+echo ""
 gcloud auth list
 
 cat <<'EOF'
