@@ -9,7 +9,7 @@
 ```text
 1. Wrap all the task titles using the following code. Don’t change the format.
 
-2. Extract all the Bash code (no JavaScript, JSON, etc. code blocks) from the lab content and replace <code> with the corresponding code exactly as it appears. Do not put code within EOF.
+2. Extract all the Bash code (no JavaScript, JSON, etc. code blocks) from the lab content and replace <code> with the corresponding code exactly as it appears. Do not put code within EOF. $PROJECT_ID, $REGION, $ZONE are known.  
 
 3. For multiple-choice questions, extract each question, identify the correct answer, and present the results in the following format:
 

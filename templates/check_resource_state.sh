@@ -90,7 +90,7 @@ gcloud compute instances create bigquery-instance \
   --metadata=enable-oslogin=FALSE
 until gcloud compute ssh bigquery-instance \
     --zone=$ZONE \
-    --command="echo Ready" \
+    --command="echo Instance is ready." \
     --quiet 2>/dev/null
 do sleep 5; done
 
@@ -119,3 +119,13 @@ gcloud services enable language.googleapis.com --project $PROJECT_ID
 until gcloud services list --enabled \
   --project=$PROJECT_ID | grep -q language.googleapis.com
 do sleep 5; done
+
+##==========================================================
+## 👉 Refer to GSP1164
+##==========================================================
+
+bq ls continuous_export_dataset
+until bq ls continuous_export_dataset 2>/dev/null | grep -q .; do
+  sleep 5
+done
+echo "Dataset is available."
