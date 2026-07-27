@@ -1,0 +1,89 @@
+#!/bin/bash
+## Created by nov05, 2026-05-11  
+
+export USER_ID=$(gcloud auth list --format="value(account)" --filter="status:ACTIVE")
+export PROJECT_ID=$(gcloud config get-value project)
+export PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID \
+  --format='value(projectNumber)')
+export REGION=$(gcloud compute project-info describe \
+  --format="value(commonInstanceMetadata.items[google-compute-default-region])")
+export ZONE=$(gcloud compute project-info describe \
+  --format="value(commonInstanceMetadata.items[google-compute-default-zone])")
+# export ZONE2=$(gcloud compute zones list \
+#   --filter="region:$REGION" \
+#   --format="value(name)" | grep -v $ZONE | head -n 1)
+# export BUCKET="$PROJECT_ID-bucket"
+gcloud config set account $USER_ID
+gcloud config set project $PROJECT_ID  
+gcloud config set compute/region $REGION
+gcloud config set compute/zone $ZONE
+echo
+echo "🔹  User: $USER"
+echo "🔹  Username: $USER_ID"
+echo "🔹  Project ID: $PROJECT_ID"
+echo "🔹  Project number: $PROJECT_NUMBER"
+echo "🔹  Region: $REGION"
+echo "🔹  Zone: $ZONE"
+# echo "🔹  Zone 2: $ZONE2"
+# echo "🔹  Bukect: $BUCKET"
+echo
+gcloud auth list
+
+gcloud services enable securitycenter.googleapis.com
+until gcloud services list --enabled \
+  --project=$PROJECT_ID | grep -q securitycenter.googleapis.com
+do sleep 5; done
+
+cat << 'EOF'
+
+========================================================
+Task 1. Initiate and mitigate a threat with Event Threat Detection
+========================================================
+
+EOF
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="user:demouser1@gmail.com" \
+  --role="roles/bigquery.admin"
+until gcloud projects get-iam-policy $PROJECT_ID \
+  --flatten="bindings[].members" \
+  --format="value(bindings.role, bindings.members)" 2>/dev/null \
+  | grep -q "roles/iam.bigquery.admin.*user:$USERID"
+do sleep 5; done
+
+gcloud scc findings list $PROJECT_ID \
+  --filter="state=\"ACTIVE\""
+
+gcloud projects remove-iam-policy-binding $PROJECT_ID \
+  --member="user:demouser1@gmail.com" \
+  --role="roles/bigquery.admin"
+until ! gcloud projects get-iam-policy $PROJECT_ID \
+  --flatten="bindings[].members" \
+  --format="value(bindings.role,bindings.members)" 2>/dev/null \
+  | grep -q "roles/bigquery.admin.*user:$USERID"
+do sleep 5; done
+
+cat << 'EOF'
+
+========================================================
+Task 2. Configure a cloud environment to detect threats
+========================================================
+
+EOF
+
+gcloud projects get-iam-policy $PROJECT_ID \
+  --flatten="bindings[].members" \
+  --format="value(bindings.role, bindings.members)" 2>/dev/null \
+  | grep -q "roles/iam.serviceAccountUser.*$USERID"
+
+cat << 'EOF'
+
+========================================================
+Task 3. Manage SCC findings with Event Threat Detection
+========================================================
+
+EOF
+
+curl etd-malware-trigger.goog
+
+echo -e "\n✅  All done\n"

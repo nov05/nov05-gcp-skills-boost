@@ -129,3 +129,17 @@ until bq ls continuous_export_dataset 2>/dev/null | grep -q .; do
   sleep 5
 done
 echo "Dataset is available."
+
+##==========================================================
+## 👉 Refer to GSP1125
+##==========================================================
+
+## Make sure a role is removed from the user.
+gcloud projects remove-iam-policy-binding $PROJECT_ID \
+  --member="user:demouser1@gmail.com" \
+  --role="roles/bigquery.admin"
+until ! gcloud projects get-iam-policy $PROJECT_ID \
+  --flatten="bindings[].members" \
+  --format="value(bindings.role,bindings.members)" 2>/dev/null \
+  | grep -q "roles/bigquery.admin.*user:$USERID"
+do sleep 5; done
