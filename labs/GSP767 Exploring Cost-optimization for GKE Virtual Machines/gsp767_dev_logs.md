@@ -1,4 +1,6 @@
+## Logs  
 
+* 2026-07-31 script gsp343.sh created but not tested.  
 
 
 ## 👉 Issues
