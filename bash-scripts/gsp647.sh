@@ -23,21 +23,23 @@ ask_to_proceed() {
 }
 
 echo
-# echo "Tips: Finc Zone 1 in Task 1 'gcloud config set compute/zone Zone1'."
-echo "Tips: Find Zone 2 in Task 4 'gcloud compute instances create lab-2 --zone Zone2 --machine-type=e2-standard-2'."
+echo -e "\n\nTips:" 
+echo -e "Find Zone 1 in Task 1 'gcloud config set compute/zone Zone1'."
+echo -e "Find Zone 2 in Task 2 'gcloud compute instances create lab-2 --zone Zone2 --machine-type=e2-standard-2'.\n"
 read -p "👉  Enter Username 1: " USERID
 read -p "👉  Enter Username 2: " USERID2
 read -p "👉  Enter Project ID 2: " PROJECTID2
-# read -p "👉  Enter Zone 1: " ZONE
+read -p "👉  Enter Zone 1: " ZONE
 read -p "👉  Enter Zone 2: " ZONE2
 export USERID USERID2 PROJECTID2 ZONE ZONE2
 export PROJECTID=$(gcloud config get-value project)
-# export REGION=$(echo "$ZONE" | sed 's/-[^-]*$//')
+## 2026-08-03: Now the default zone is set manually in the lab, so the following commands are commented out.
 ## The default zone is also where VM instance "centos-clean" is and the same with Zone1 in the lab.
-export REGION=$(gcloud compute project-info describe \
-  --format="value(commonInstanceMetadata.items[google-compute-default-region])")
-export ZONE=$(gcloud compute project-info describe \
-  --format="value(commonInstanceMetadata.items[google-compute-default-zone])")
+# export REGION=$(gcloud compute project-info describe \
+#   --format="value(commonInstanceMetadata.items[google-compute-default-region])")
+# export ZONE=$(gcloud compute project-info describe \
+#   --format="value(commonInstanceMetadata.items[google-compute-default-zone])")
+export REGION=$(echo "$ZONE" | sed 's/-[^-]*$//')
 echo
 echo "🔹  Username 1: $USERID"
 echo "🔹  Username 2: $USERID2"

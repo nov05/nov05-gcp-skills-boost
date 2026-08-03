@@ -1,5 +1,7 @@
 # 🟢 GSP647 Configuring IAM Permissions with gcloud
 
+Games Aug 2026: https://www.skills.google/games/7397/labs/45408  
+
 ```text
 Task 1. Configure the gcloud environment
 Task 2. Create and switch between multiple IAM configurations
@@ -43,4 +45,4 @@ gcloud compute scp \
 
 * You can find a sample log file in this folder.  
 * The final landscape  
-  <img src="https://raw.githubusercontent.com/nov05/pictures/refs/heads/master/gcp-skills-boost%20/gsp647/gsp647_landscape.jpg" width=500>
+  <img src="https://raw.githubusercontent.com/nov05/pictures/refs/heads/master/gcp-skills-boost/gsp647/gsp647_landscape.jpg" width=500>

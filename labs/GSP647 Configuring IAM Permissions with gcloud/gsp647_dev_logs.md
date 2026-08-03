@@ -26,3 +26,11 @@ gcloud compute scp \
   centos-clean:~/clean_logs.txt \
   ~/clean_logs.txt
 ```
+
+## Logs
+
+* 2026-08-03 Fnished the lab again. Zone1 was previously the default zone; it is now entered manually.   
+
+* 2026-06-08 Finished the lab. Figured out the grader uses `./bashrc` to store environment variables $ZONE2, $USERID2, $PROJECTID2, and OS login should be enabled for VM instance "centos-clean".  
+
+* 2026-06-07 I wasn't able to pass the 2nd check of Task 1.
