@@ -1,5 +1,5 @@
 #!/bin/bash
-## Created by nov05, 2026-05-11  
+## Created by nov05, YYYY-MM-DD  
 
 export USER_ID=$(gcloud auth list --format="value(account)" --filter="status:ACTIVE")
 export PROJECT_ID=$(gcloud config get-value project)
@@ -13,6 +13,8 @@ export ZONE=$(gcloud compute project-info describe \
 #   --filter="region:$REGION" \
 #   --format="value(name)" | grep -v $ZONE | head -n 1)
 # export BUCKET="$PROJECT_ID-bucket"
+# export ORG_ID=$(gcloud projects get-ancestors $PROJECT_ID \
+#   --format="value(id,type)" | awk '$2=="organization"{print $1}')
 gcloud config set account $USER_ID
 gcloud config set project $PROJECT_ID  
 gcloud config set compute/region $REGION
@@ -26,6 +28,7 @@ echo "🔹  Region: $REGION"
 echo "🔹  Zone: $ZONE"
 # echo "🔹  Zone 2: $ZONE2"
 # echo "🔹  Bukect: $BUCKET"
+# echo "🔹  Organization ID: $ORG_ID"
 echo
 gcloud auth list
 

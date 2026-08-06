@@ -25,15 +25,23 @@ Continue this format for all multiple-choice questions found in the lab. For eac
 
 5. Output the text in a code block.
 
+<code if any>  
+
+
+
+
 cat << 'EOF'
 
 ========================================================
 Task 1. ...
 ========================================================
 
-<questions>
+<questions and answers if any>
 
 EOF
+
+
+
 
 cat << 'EOF'
 
@@ -43,7 +51,10 @@ Task 2. ...
 
 EOF
 
-<code> 
+<code if any> 
+
+
+
 
 cat << 'EOF'
 
@@ -55,7 +66,10 @@ Task 3. ...
 
 EOF
 
-<code>
+<code if any> 
+
+
+
 
 echo -e "\n✅  All done\n"
 ```
