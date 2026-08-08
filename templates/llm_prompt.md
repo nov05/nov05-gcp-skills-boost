@@ -23,12 +23,7 @@ Continue this format for all multiple-choice questions found in the lab. For eac
 
 4. If there is no code or questions, remove the placeholders and reduce the blank lines properly.
 
-5. Output the text in a code block.
-
-<code if any>  
-
-
-
+5. Output the text in a code block <code if any>.  
 
 cat << 'EOF'
 
@@ -37,11 +32,9 @@ Task 1. ...
 ========================================================
 
 <questions and answers if any>
-
 EOF
 
-
-
+<code if any> 
 
 cat << 'EOF'
 
@@ -49,27 +42,10 @@ cat << 'EOF'
 Task 2. ...
 ========================================================
 
+<questions and answers if any>
 EOF
 
 <code if any> 
-
-
-
-
-cat << 'EOF'
-
-========================================================
-Task 3. ...
-========================================================
-
-<questions>
-
-EOF
-
-<code if any> 
-
-
-
 
 echo -e "\n✅  All done\n"
 ```

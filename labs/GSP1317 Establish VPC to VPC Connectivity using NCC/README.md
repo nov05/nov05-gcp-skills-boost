@@ -21,4 +21,7 @@ yes y | ./gsp1317.sh 2>&1 | tee -a logs.txt
 sed -r 's/\x1B\[[0-9;]*[a-zA-Z]//g' logs.txt > clean_logs.txt
 ```
 
-2026-08-06 `gsp1317.sh` was created and tested.
+* The Network Connectivity Center (NCC) architecture  
+  <img src="https://cdn.qwiklabs.com/an%2FMImmRr0bZEp1wdlWfF4xkSiDJ%2B7OpjhtqcirmAcQ%3D" width=400>  
+
+* 2026-08-06 `gsp1317.sh` was created and tested.
