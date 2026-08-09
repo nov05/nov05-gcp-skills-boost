@@ -32,6 +32,43 @@ echo "🔹  Zone: $ZONE"
 echo
 gcloud auth list
 
+echo -e "\n\n$ gcloud compute networks list --format=\"value(name)\""
+gcloud compute networks list --format="value(name)"
+echo -e "\n$ gcloud compute instances list --format=\"value(name)\""
+gcloud compute instances list --format="value(name)"
+echo -e "\n$ gcloud compute vpn-tunnels list --project=$PROJECT_ID --format=\"value(name)\""
+gcloud compute vpn-tunnels list --project=$PROJECT_ID --format="value(name)"
+echo
+
+: << 'EOF'
+$ gcloud compute networks list --format="value(name)"
+on-prem-office-1-vpc
+on-prem-office-2-vpc
+routing-vpc
+workload-vpc-1
+workload-vpc-2
+
+$ gcloud compute instances list --format="value(name)"
+cloudsql-client
+onprem-office1-vm
+onprem-office2-vm
+workload1-vm
+workload2-vm
+
+$ gcloud compute vpn-tunnels list --project=$PROJECT_ID --format="value(name)"
+onprem-office1-to-routing-tunnel-0
+onprem-office1-to-routing-tunnel-1
+onprem-office2-to-routing-tunnel-0
+onprem-office2-to-routing-tunnel-1
+routing-to-onprem-office1-tunnel-0
+routing-to-onprem-office1-tunnel-1
+routing-to-onprem-office2-tunnel-0
+routing-to-onprem-office2-tunnel-1
+EOF
+
+
+
+
 
 cat << 'EOF'
 
@@ -47,60 +84,69 @@ until gcloud services list --enabled \
   --project=$PROJECT_ID | grep -q networkconnectivity.googleapis.com
 do sleep 5; done
 
-
 # Create NCC Hub
 gcloud network-connectivity hubs create ncc-hub
 gcloud network-connectivity hubs describe ncc-hub
 
-# List VPN tunnels to identify preconfigured tunnel names
-# Get all VPN tunnel names
-VPN_TUNNELS=$(gcloud compute vpn-tunnels list \
-  --project=$PROJECT_ID \
-  --format="value(name)")
-# Store tunnel names
-OFFICE1_TUNNEL1=$(echo "$VPN_TUNNELS" | sed -n '1p')
-OFFICE1_TUNNEL2=$(echo "$VPN_TUNNELS" | sed -n '2p')
-OFFICE2_TUNNEL1=$(echo "$VPN_TUNNELS" | sed -n '3p')
-OFFICE2_TUNNEL2=$(echo "$VPN_TUNNELS" | sed -n '4p')
-# Verify values
-echo $OFFICE1_TUNNEL1
-echo $OFFICE1_TUNNEL2
-echo $OFFICE2_TUNNEL1
-echo $OFFICE2_TUNNEL2
-
 ## Create On-Prem Office 1 spoke
 ## The spoke corresponding to On-Prem Office 1 must have office-1 included in its name.
+if gcloud network-connectivity spokes describe office-1-spoke \
+  --region=$REGION >/dev/null 2>&1; then
+  gcloud network-connectivity spokes delete office-1-spoke \
+    --region=$REGION \
+    --quiet
+fi
+## If you omit --site-to-site-data-transfer, site-to-cloud behavior is configured by default.
 gcloud network-connectivity spokes linked-vpn-tunnels create office-1-spoke \
+  --region=$REGION \
   --hub=ncc-hub \
-  --vpn-tunnel=$OFFICE1_TUNNEL1 \
-  --vpn-tunnel=$OFFICE1_TUNNEL2 \
-  --region=$REGION
+  --vpn-tunnels=routing-to-onprem-office1-tunnel-0,routing-to-onprem-office1-tunnel-1 \
+  --site-to-site-data-transfer 
 
 ## Create On-Prem Office 2 spoke
 ## The spoke corresponding to On-Prem Office 2 must have office-2 included in its name.
+if gcloud network-connectivity spokes describe office-2-spoke \
+  --region=$REGION >/dev/null 2>&1; then
+  gcloud network-connectivity spokes delete office-2-spoke \
+    --region=$REGION \
+    --quiet
+fi
 gcloud network-connectivity spokes linked-vpn-tunnels create office-2-spoke \
+  --region=$REGION \
   --hub=ncc-hub \
-  --vpn-tunnel=$OFFICE2_TUNNEL1 \
-  --vpn-tunnel=$OFFICE2_TUNNEL2 \
-  --region=$REGION
+  --vpn-tunnels=routing-to-onprem-office2-tunnel-0,routing-to-onprem-office2-tunnel-1 \
+  --site-to-site-data-transfer
 
+## 👉 Check my progress
+
+## Verify NCC spokes
 gcloud network-connectivity spokes list \
-  --hub=ncc-hub \
   --region=$REGION
-
 gcloud network-connectivity hubs route-tables routes list \
   --hub=ncc-hub \
   --route_table=default
 
-gcloud compute ssh $OFFICE1_VM \
+## Test connectivity between On-Prem Office 1 and On-Prem Office 2 VMs
+OFFICE2_VM_INTERNAL_IP=$(gcloud compute instances describe onprem-office2-vm \
   --zone=$ZONE \
   --project=$PROJECT_ID \
-  --command="ping $OFFICE2_VM_INTERNAL_IP"
+  --format="value(networkInterfaces[0].networkIP)")
+gcloud compute ssh onprem-office1-vm \
+  --zone=$ZONE \
+  --project=$PROJECT_ID \
+  --command="ping -c 4 -W 2 $OFFICE2_VM_INTERNAL_IP" \
+  --quiet
 
-gcloud compute ssh <OFFICE_2_VM_NAME> \
+## Test connectivity between On-Prem Office 2 and On-Prem Office 1 VMs
+OFFICE1_VM_INTERNAL_IP=$(gcloud compute instances describe onprem-office1-vm \
   --zone=$ZONE \
   --project=$PROJECT_ID \
-  --command="ping <OFFICE_1_VM_INTERNAL_IP>"
+  --format="value(networkInterfaces[0].networkIP)")
+gcloud compute ssh onprem-office2-vm \
+  --zone=$ZONE \
+  --project=$PROJECT_ID \
+  --command="ping -c 4 -W 2 $OFFICE1_VM_INTERNAL_IP" \
+  --quiet
 
 
 cat << 'EOF'
@@ -111,49 +157,62 @@ Task 2. Connect VPC to VPC
 
 EOF
 
-# List VPC networks
-gcloud compute networks list
-
-# Configure Workload VPC 1 as an NCC spoke
+## Configure Workload VPC 1 as an NCC spoke
+## The spoke corresponding to Workload VPC 1 must have workload-1 included in its name.
+if gcloud network-connectivity spokes describe workload-1-spoke \
+  --global >/dev/null 2>&1; then
+  gcloud network-connectivity spokes delete workload-1-spoke \
+    --global \
+    --quiet
+fi
 gcloud network-connectivity spokes linked-vpc-network create workload-1-spoke \
   --hub=ncc-hub \
-  --vpc-network=<WORKLOAD_VPC_1_NAME> \
+  --vpc-network=workload-vpc-1 \
   --global
 
-# Configure Workload VPC 2 as an NCC spoke
-
+## Configure Workload VPC 2 as an NCC spoke
+## The spoke corresponding to Workload VPC 2 must have workload-2 included in its name.
+if gcloud network-connectivity spokes describe workload-2-spoke \
+  --global >/dev/null 2>&1; then
+  gcloud network-connectivity spokes delete workload-2-spoke \
+    --global \
+    --quiet
+fi
 gcloud network-connectivity spokes linked-vpc-network create workload-2-spoke \
---hub=ncc-hub \
---vpc-network=<WORKLOAD_VPC_2_NAME> \
---global
-
+  --hub=ncc-hub \
+  --vpc-network=workload-vpc-2 \
+  --global
 
 # Verify NCC spokes
-
 gcloud network-connectivity spokes list \
---hub=ncc-hub \
---global
-
+  --hub=ncc-hub \
+  --global
 
 # Verify NCC routes
-
 gcloud network-connectivity hubs route-tables routes list \
---hub=ncc-hub \
---route_table=default
-
-
-# List VM instances and internal IP addresses
-
-gcloud compute instances list \
---format="table(name,networkInterfaces.networkIP,zone)"
-
+  --hub=ncc-hub \
+  --route_table=default
 
 # Test connectivity from Workload VPC 1 VM to Workload VPC 2 VM
+WORKLOAD_2_VM_INTERNAL_IP=$(gcloud compute instances describe workload2-vm \
+  --zone=$ZONE \
+  --project=$PROJECT_ID \
+  --format="value(networkInterfaces[0].networkIP)")
+gcloud compute ssh workload1-vm \
+  --zone=$ZONE \
+  --project=$PROJECT_ID \
+  --command="ping -c 4 -W 2 $WORKLOAD_2_VM_INTERNAL_IP"
 
-gcloud compute ssh <WORKLOAD_1_VM_NAME> \
---zone=$ZONE \
---project=$PROJECT_ID \
---command="ping <WORKLOAD_2_VM_INTERNAL_IP>"
+# Test connectivity from Workload VPC 2 VM to Workload VPC 1 VM
+WORKLOAD1_VM_INTERNAL_IP=$(gcloud compute instances describe workload1-vm \
+  --zone=$ZONE \
+  --project=$PROJECT_ID \
+  --format="value(networkInterfaces[0].networkIP)")
+gcloud compute ssh workload2-vm \
+  --zone=$ZONE \
+  --project=$PROJECT_ID \
+  --command="ping -c 4 -W 2 $WORKLOAD1_VM_INTERNAL_IP"
+
 
 
 
@@ -165,6 +224,56 @@ Task 3. Connect VPC to On-prem
 ========================================================
 
 EOF
+
+## Create the hybrid spoke for On-Prem Office 1
+if gcloud network-connectivity spokes describe hybrid-office-1 \
+  --global >/dev/null 2>&1; then
+  gcloud network-connectivity spokes delete hybrid-office-1 \
+    --global \
+    --quiet
+fi
+gcloud network-connectivity spokes linked-vpc-network create hybrid-office-1 \
+  --hub=ncc-hub \
+  --vpc-network=on-prem-office-1-vpc \
+  --global
+
+## Create the hybrid spoke for Workload VPC 1
+if gcloud network-connectivity spokes describe hybrid-workload-1 \
+  --global >/dev/null 2>&1; then
+  gcloud network-connectivity spokes delete hybrid-workload-1 \
+    --global \
+    --quiet
+fi
+gcloud network-connectivity spokes linked-vpc-network create hybrid-workload-1 \
+  --hub=ncc-hub \
+  --vpc-network=workload-vpc-1 \
+  --global
+
+## Verify NCC spokes
+gcloud network-connectivity spokes list --global
+gcloud network-connectivity spokes describe hybrid-office-1 --global
+gcloud network-connectivity spokes describe hybrid-workload-1 --global
+
+## Verify NCC connectivity between Workload VPC 1 and On-Prem Office 1
+OFFICE1_VM_INTERNAL_IP=$(gcloud compute instances describe onprem-office1-vm \
+  --zone=$ZONE \
+  --project=$PROJECT_ID \
+  --format="value(networkInterfaces[0].networkIP)")
+gcloud compute ssh workload1-vm \
+  --zone=$ZONE \
+  --project=$PROJECT_ID \
+  --command="ping -c 4 -W 2 $OFFICE1_VM_INTERNAL_IP"
+
+## Verify NCC connectivity between Workload VPC 2 and On-Prem Office 2
+WORKLOAD2_VM_INTERNAL_IP=$(gcloud compute instances describe workload2-vm \
+  --zone=$ZONE \
+  --project=$PROJECT_ID \
+  --format="value(networkInterfaces[0].networkIP)")
+gcloud compute ssh workload2-vm \
+  --zone=$ZONE \
+  --project=$PROJECT_ID \
+  --command="ping -c 4 -W 2 $WORKLOAD2_VM_INTERNAL_IP"
+
 
 
 echo -e "\n✅  All done\n"
