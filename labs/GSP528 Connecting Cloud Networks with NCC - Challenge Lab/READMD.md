@@ -1,5 +1,6 @@
 # 🟢 GSP528 Connecting Cloud Networks with NCC: Challenge Lab
 
+Course: https://www.skills.google/course_templates/1364  
 Game Aug 2026: https://www.skills.google/games/7397/labs/45415   
 
 ```text
