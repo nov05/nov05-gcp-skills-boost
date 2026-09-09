@@ -143,3 +143,29 @@ until ! gcloud projects get-iam-policy $PROJECT_ID \
   --format="value(bindings.role,bindings.members)" 2>/dev/null \
   | grep -q "roles/bigquery.admin.*user:$USERID"
 do sleep 5; done
+
+##==========================================================
+## 👉 Refer to GSP213
+##==========================================================
+
+# Create the tagged firewall rule
+gcloud compute firewall-rules create allow-http-web-server \
+  --network=default \
+  --target-tags=web-server \
+  --source-ranges=0.0.0.0/0 \
+  --allow=tcp:80,icmp
+until gcloud compute firewall-rules describe allow-http-web-server \
+    --format="value(name)" 2>/dev/null | grep -q "^allow-http-web-server$"
+do sleep 2; done
+
+# Authorize a VM to use a service account
+NETWORK_ADMIN_SA="Network-admin@${PROJECT_ID}.iam.gserviceaccount.com"
+gcloud compute instances set-service-account test-vm \
+  --zone="$ZONE" \
+  --service-account="$NETWORK_ADMIN_SA" \
+  --scopes=https://www.googleapis.com/auth/cloud-platform
+until gcloud compute instances describe test-vm \
+  --zone="$ZONE" \
+  --format="value(serviceAccounts.email)" 2>/dev/null \
+  | grep -q "^${NETWORK_ADMIN_SA}$"
+do sleep 5; done
